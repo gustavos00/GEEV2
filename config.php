@@ -1,8 +1,13 @@
 <?php
-$db_name = "geedb";
-$db_host = "127.0.0.1";
-$db_user = "root";
-$db_pass = "";
+require realpath(__DIR__ . '/vendor/autoload.php');
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+$db_name = $_ENV['DB_NAME'];
+$db_host = $_ENV['DB_HOST'];
+$db_user = $_ENV['DB_USER'];
+$db_pass = $_ENV['DB_PASS'];
 
 try {
     $pdo = new PDO("mysql:dbname=" . $db_name . ";host" . $db_host, $db_user, $db_pass);
@@ -12,4 +17,3 @@ try {
 } catch (exception $e) {
     echo "Error:" . $e;
 }
-

@@ -24,12 +24,15 @@ function getUserIP() {
     return $ipaddress;
 }
 
-if(!isset($_SESSION['registred'])) {
-    $token = bin2hex(openssl_random_pseudo_bytes(32));
+function generateTokent() {
+    return bin2hex(openssl_random_pseudo_bytes(16));
+}
 
-    while (strlen($token) > 32) { 
-        echo strlen($token);
-        $token = bin2hex(openssl_random_pseudo_bytes(32)); 
+if(!isset($_SESSION['registred'])) {
+    $token = generateTokent();
+
+    while (strlen($token) > 64) { 
+        $token = generateTokent();
     }
 
     $user = new usersDaoMS($pdo);
@@ -41,5 +44,4 @@ if(!isset($_SESSION['registred'])) {
     $_SESSION['registred'] = $token;
 } 
 
-header('Location: ./pages/home.php');
-die();
+

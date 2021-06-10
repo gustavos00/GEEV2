@@ -1,4 +1,5 @@
-<?php require_once '../models/assistance.php';
+<?php 
+require_once '../models/assistance.php';
 
 class assistanceDAOMS implements assistanceDAO
 {
