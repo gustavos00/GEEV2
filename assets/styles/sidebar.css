@@ -1,0 +1,274 @@
+.sidebar {
+    width: 10vw;
+    height: 100vh;
+    max-width: 80px;
+    min-width: 65px;
+
+    background: var(--background-header);
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    position: sticky;
+    top : 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    
+    transition: all .5s ease-in-out;
+}
+
+.sidebar .sidebarBtnContainer {
+    width: 80px;
+    height: 80px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+    cursor: pointer;
+    transition: all .5s ease-in-out;
+}
+
+.sidebar .sidebarBtnContainer .sidebarBtn {
+    width: 35px;
+    height: 4px;
+    margin: 1rem auto;
+
+    background: var(--text-dark);   
+    border-radius: 5px;
+    box-shadow: 0 2px 5px var(--shadow-light);
+
+    transition: all .5s ease-in-out;
+}
+
+.sidebar .sidebarBtnContainer .sidebarBtn::before,
+.sidebar .sidebarBtnContainer .sidebarBtn::after {
+    width: 35px;
+    height: 4px;
+
+    background: var(--text-dark);
+    border-radius: 5px;
+    box-shadow: 0 2px 5px var(--shadow-light);
+    transition: all .5s ease-in-out;
+
+    position: absolute;
+    content: '';
+}
+
+.sidebar .sidebarBtnContainer:hover .sidebarBtn,
+.sidebar .sidebarBtnContainer:hover .sidebarBtn::before,
+.sidebar .sidebarBtnContainer:hover .sidebarBtn::after {
+    width: 35px;
+}
+
+.sidebar .sidebarBtnContainer .sidebarBtn::before {
+    transform: translateY(-10px);
+}
+
+.sidebar .sidebarBtnContainer .sidebarBtn::after {
+    transform: translateY(10px);
+}
+
+.sidebar .sidebarBtnContainer.open .sidebarBtn {
+    top: 0;
+    bottom: 0;
+    transform: translateX(-50px);
+    background: transparent;
+    box-shadow: none;
+}
+
+.sidebar .sidebarBtnContainer.open .sidebarBtn::before {
+    transform: rotate(45deg) translate(35px, -35px);
+}
+
+.sidebar .sidebarBtnContainer.open .sidebarBtn::after {
+    transform: rotate(-45deg) translate(35px, 35px);
+}
+
+.sidebar .actionsButtonsContainer {
+    width: 100%;
+    height: 75%;
+    max-height: 75%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-top: 2rem;
+}
+
+.sidebar .actionsButtonsContainer .actionButton {
+    width: 100%;
+    height: 60px;
+    padding: .2rem .2rem .2rem 1.2rem;
+    margin-bottom: .5rem;
+
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 1.5rem;
+    text-decoration: none;
+    color:  var(--text-dark);
+
+    background-color: var(--background-content-body);
+
+    display: none;
+    align-items:center;
+
+    position: relative;
+
+    opacity:.6 !important;
+    cursor: pointer;
+    transition: all .5s ease-in-out;
+}
+
+.sidebar .actionsButtonsContainer .actionButton:hover {
+    opacity: 1 !important;
+}
+
+.sidebar .actionsButtonsContainer .actionButton i {
+    font-size: 2rem;
+    margin: 0 .7rem 0 .5rem; 
+}
+
+.sidebar .actionsButtonsContainer .actionButton .arrow {
+    position: absolute;
+    right: 1rem;
+
+    transition: all .5s ease-in-out;
+}
+
+.sidebar .actionsButtonsContainer .actionButton:hover .arrow {
+    transform: rotate(90deg);
+}
+
+.sidebar .actionsButtonsContainer .dropdownContent {
+    margin: 0.3rem 0 1rem 1.5rem;
+
+    display:none;
+    flex-direction: column;
+    justify-content: center;
+
+    background-color: var(--secondary-background-content-body);
+    border-radius: 5px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    
+    position: relative;
+
+    opacity: 0;
+    transition: all .5s ease-in-out;
+}
+
+.sidebar .actionsButtonsContainer .dropdownContent a {
+    padding: .5rem;
+    border: 2px solid var(--secondary-background-content-body);
+
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 1.4rem;
+    text-decoration: none;
+    color:  var(--text-dark);
+
+    cursor: pointer;
+
+    transition: all .5s ease-in-out;
+}
+
+.sidebar .actionsButtonsContainer .dropdownContent a:first-child {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.sidebar .actionsButtonsContainer .dropdownContent a:last-child {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.sidebar .actionsButtonsContainer .dropdownContent a:hover {
+    background-color: var(--background-header);
+    border: 3px solid var(--secondary-background-content-body);
+} 
+
+/* SLIDER DARK MODE */
+
+.darkmodeSwitchContainer {
+    display: flex;
+    align-items: center;
+
+    position: absolute;
+    bottom: 2rem;
+}  
+
+.darkmodeSwitchContainer .darkmodeSwitchContent {
+    height: 30px;
+    width: 5vw;
+    max-width: 50px;
+    min-width: 40px;
+
+    display: inline-block;
+    position: relative;
+    
+}
+  
+.darkmodeSwitchContainer .darkmodeSwitchContent input {
+    display:none;
+}
+  
+.darkmodeSwitchContainer .darkmodeSwitchContent .slider {
+    position: absolute;
+    right: 0;
+    top: 0;   
+    left: 0;
+    bottom: 0;
+
+    background-color: var(--background-body);
+    cursor: pointer;
+
+    transition: all .5s ease-in-out;
+}
+  
+.darkmodeSwitchContainer .darkmodeSwitchContent .slider:before {
+    width: 23px;
+    height: 22px;
+
+    position: absolute;
+    left: 4px;
+    bottom: 4px;
+
+    background-color: var(--secondary-background-content-body);
+
+    content: "";
+    transition: all .5s ease-in-out;
+}
+  
+.darkmodeSwitchContainer .darkmodeSwitchContent input:checked + .slider {
+    background-color: var(--secondary-background-content-body);
+}
+  
+.darkmodeSwitchContainer .darkmodeSwitchContent input:checked + .slider:before {
+    transform: translateX(17px);
+    background-color: #fff;
+}
+  
+.darkmodeSwitchContainer .darkmodeSwitchContent .slider.round {
+    border-radius: 34px;
+}
+  
+.darkmodeSwitchContainer .darkmodeSwitchContent .slider.round:before {
+    border-radius: 50%;
+}
+
+/* SIDEBAR MODALS STYLES */
+
+.lendEquipmentModal {
+    width: 500px;
+    height: 530px;
+
+    justify-content: unset;
+}
+
+.lendEquipmentModal form textarea {
+    height: 70px;
+    max-height: 90px;
+}

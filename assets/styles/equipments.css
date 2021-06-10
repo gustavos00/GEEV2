@@ -1,0 +1,72 @@
+/* CREATE EQUIPMENT */
+
+
+.container form .dataContainer .buttonsContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+}
+
+.container form .dataContainer .buttonsContainer .btn {
+    width: 100%;
+
+    font-size: 1.4rem;
+}
+
+.submitContainer {
+    height: 100px;
+    display: block;
+    padding-bottom: 2rem;
+}
+
+.submitContainer button {
+    color: var(--text-light)
+}
+
+/* CREATE STATE MODAL & CREATE BRAND MODAL*/
+.createState,
+.createBrand,
+.createCategory {
+    height: 170px;
+    padding: 1rem 0;
+
+    justify-content: unset;
+}
+
+.createState form,
+.createBrand form,
+.createCategory form {
+    width: 90%;
+    height: 90%;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    font-size: 1.4rem;
+}
+
+.createCategory form input {
+    margin: 1rem .5rem;
+}
+
+.createState form .btn,
+.createBrand form .btn,
+.createCategory form .btn{
+    width: 80%;
+    margin: .5rem 0;
+}
+
+.createState form .btn:hover,
+.createBrand form .btn:hover,
+.createCategory form .btn:hover{
+    width: 85%;
+}
+
+/* CREATE CATEGORY MODAL */
+.createCategory {
+    height: 200px;
+    padding: 1rem 0;
+
+    justify-content: unset;
+}

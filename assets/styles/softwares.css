@@ -1,0 +1,36 @@
+/* CREATE SOFTWARE */
+
+.container form {
+    width: 50%;
+    height: unset;
+
+    display: unset;
+}
+
+.container form .dataContainer {
+    width: 100%;
+    height: unset;    
+    padding: 2rem;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.equipmentsActionButton {
+    width: 30%;
+    height: 35px;
+    font-size: 1.4rem;
+}
+
+.equipmentsActionButton:hover {
+    width: 32%;
+}
+
+/* UPDATE SOFTWARE MODAL */
+
+.modalFilter .softwareModal form {
+    width: 90%;
+    height: 40%;
+}
