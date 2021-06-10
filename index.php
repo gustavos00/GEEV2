@@ -27,12 +27,10 @@ function getUserIP() {
 if(!isset($_SESSION['registred'])) {
     $token = bin2hex(openssl_random_pseudo_bytes(32));
 
-    echo strlen($token);
-    while (strlen($token) > 32) {
+    while (strlen($token) > 32) { 
+        echo strlen($token);
         $token = bin2hex(openssl_random_pseudo_bytes(32)); 
     }
-
-
 
     $user = new usersDaoMS($pdo);
     $newUser = new user();
