@@ -62,9 +62,7 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
     <link rel="stylesheet" href="../assets/styles/sidebar.css">
     <link rel="stylesheet" href="../assets/styles/equipments.css">
 
-    <title>Página inicial - GEE</title>
-
-    <title>Document</title>
+    <title>Atualizar equipamento - GEE</title>
 </head>
     <body>
     <nav class="sidebar">

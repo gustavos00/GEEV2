@@ -50,9 +50,7 @@ function getUrl($adress)
     <link rel="stylesheet" href="../assets/styles/sidebar.css">
     <link rel="stylesheet" href="../assets/styles/equipments.css">
 
-    <title>Página inicial - GEE</title>
-
-    <title>Document</title>
+    <title>Criar equipamento - GEE</title>
 </head>
     <body>
     <nav class="sidebar">

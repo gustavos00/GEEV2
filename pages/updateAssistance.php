@@ -39,7 +39,7 @@ $allProviders = $providers->getAll();
     <link rel="stylesheet" href="../assets/styles/sidebar.css">
     <link rel="stylesheet" href="../assets/styles/equipments.css">
 
-    <title>Criar avaria - GEE</title>
+    <title>Atualizar assistência - GEE</title>
 </head>
     <body>
     <nav class="sidebar">

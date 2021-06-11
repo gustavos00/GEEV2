@@ -374,10 +374,11 @@ $allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
                 <h3>Olá, qual equipamento você quer emprestar?</h3>
 
                 <form id="lendEquipmentForm" action="<?php getUrl('/actions/lendEquipment.php'); ?>" method="post">
+                    <input type="hidden" name="selectedEquipment" id="selectedEquipment">
                     <input class="input" type="date" name="initialDate" id="initialDate">
                     <input class="input" type="date" name="finalDate" id="finalDate">
                     
-                    <input class="input" placeholder="Responsável pelo emprestimo..." type="text" name="responsibleUser" id="responsibleUser">
+                    <input class="input" required maxlength="100" placeholder="Responsável pelo emprestimo..." type="text" name="responsibleUser" id="responsibleUser">
                     <input class="input" placeholder="Contacto...." type="text" name="contact" id="contact">
 
                     <textarea class="textarea" placeholder="Observações..." name="obs" id="obs" cols="30" rows="10"></textarea>
@@ -393,8 +394,7 @@ $allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
                         <input class="input" autocomplete="off" data-filtername="lendEquipmentSelect" placeholder="Pesquisar por equipamentos..." type="text" name="filter">
                     </div>
                 </form>
-                
-                <input type="submit" form="lendEquipmentForm" id="deleteEquipmentBtnAction" class="btn">Emprestar</input>
+                <input type="submit" form="lendEquipmentForm" data-who="lendEquipment" data-select="lendEquipmentSelect" id="lendEquipmentBtnAction" value="Emprestar" class="btn"/>
             </div>
             
             <div data-actionBtn="returnEquipmentBtnAction" id="returnEquipmentModal" class="equipmentModal modalContent returnEquipmentBtnAction">

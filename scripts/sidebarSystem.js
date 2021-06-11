@@ -98,7 +98,7 @@ for (let i = 0; i < actionsBtn.length; i++) {
       desactiveDropdown(dropdown, actionsBtn[i]);
       dropdownOpen = false;
     }
-    
+
   })
 }
 
@@ -166,7 +166,19 @@ for (let i = 0; i < openModalAction.length; i++) {
 
           break;
 
+        case "lendEquipment":
+          console.log(optionSelected)
+          document.getElementById('selectedEquipment').value = optionSelected.dataset.id;
+
+          const formId = e.target.attributes.form.nodeValue;
+          const form = document.getElementById(formId)
+          form.submit();
+
+
+          break;
+
         case "retireEquipment":
+        case "returnEquipment":
           url = "../actions/" + who + ".php?id=" + selectedElementId
           window.location.href = url;
 

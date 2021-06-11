@@ -61,7 +61,7 @@ if(isset($_POST['brand']) && isset($_POST['model']) && isset($_POST['category'])
         $equipments->createEquipment($newEquipment);
 
         unset($_SESSION['createEquipmentError']);
-        $_SESSION['createEquipmentSuccess'] = "O equipmento " . $_POST['internalCode'] . " foi criado com sucesso.";
+        $_SESSION['successMessage'] = "O equipmento " . $_POST['internalCode'] . " foi criado com sucesso.";
         
         if(isset($_COOKIE['__geecreateequipment'])) {
             setcookie("__geecreateequipment", 'DELETED', 1, '/');
