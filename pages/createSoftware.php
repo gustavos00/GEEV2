@@ -42,9 +42,7 @@ $allSoftwaresType = $softwares->getAllSoftwareTypes();
     <link rel="stylesheet" href="../assets/styles/sidebar.css">
     <link rel="stylesheet" href="../assets/styles/softwares.css">
 
-    <title>Página inicial - GEE</title>
-
-    <title>Document</title>
+    <title>Criar software - GEE</title>
 </head>
     <body>
     <nav class="sidebar">

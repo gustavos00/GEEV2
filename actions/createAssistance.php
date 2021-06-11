@@ -51,6 +51,8 @@ if ($_POST['technical'] !== "" && $_POST['objective'] !== "") {
     $newAssistance->setEquipmentId($equipmentId);
 
     $assistance->createAssistance($newAssistance);
+
+    $_SESSION['successMessage'] = "A assistência foi criada com sucesso."
     
     header('Location: ../index.php');
     exit(0);

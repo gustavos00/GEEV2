@@ -42,7 +42,7 @@ $allSoftwaresType = $softwares->getAllSoftwareTypes();
     <link rel="stylesheet" href="../assets/styles/sidebar.css">
     <link rel="stylesheet" href="../assets/styles/malfunction.css">
 
-    <title>Página inicial - GEE</title>
+    <title>Atualizar avaria - GEE</title>
 </head>
     <body>
         <!-- NAV BAR -->

@@ -31,6 +31,8 @@ if(checkFullDate($_POST['dateMalfunction'])) {
 
         $malfunction->createMalfunction($newMalfunction);
 
+        unset($_SESSION['createMalfunctionError']);
+
         header('Location: ../index.php');
         die();
     } else {
