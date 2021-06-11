@@ -33,9 +33,9 @@ if(checkFullDate($_POST['initialDate']) && checkFullDate($_POST['finalDate'])) {
 
             $softwares->insertSoftware($newSoftware);
 
-            if(isset($_SESSION['createSoftwareError'])) {
-                unset($_SESSION['createSoftwareError']);
-            }
+            unset($_SESSION['createSoftwareError']);
+            $_SESSION['successMessage'] = "O software" . $_POST['type'] . " ( " . $_POST['version'] . " ) foi criada com sucesso.";
+            
 
             header('Location: ../index.php');
             die();

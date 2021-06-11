@@ -141,12 +141,12 @@ $allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
         <div class="container">
 
             <?php
-                if (isset($_SESSION['createEquipmentSuccess'])) {
+                if (isset($_SESSION['successMessage'])) {
                     echo '
                     <div class="alert">
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            ' . $_SESSION['createEquipmentSuccess'] . '
-                            <button type="button" class="btn-close unsetSessionVariable" data-session-name="createEquipmentSuccess" data-bs-dismiss="alert"></button>
+                            ' . $_SESSION['successMessage'] . '
+                            <button type="button" class="btn-close unsetSessionVariable" data-session-name="successMessage" data-bs-dismiss="alert"></button>
                         </div>
                     </div>
                     ';
@@ -374,7 +374,8 @@ $allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
                 <h3>Olá, qual equipamento você quer emprestar?</h3>
 
                 <form id="lendEquipmentForm" action="<?php getUrl('/actions/lendEquipment.php'); ?>" method="post">
-                    <input type="hidden" name="selectedEquipment" id="selectedEquipment">
+                    <input type="hidden" name="selectedEquipmentId" id="selectedEquipmentId">
+                    <input type="hidden" name="selectedEquipmentInternalCode" id="selectedEquipmentInternalCode">
                     <input class="input" type="date" name="initialDate" id="initialDate">
                     <input class="input" type="date" name="finalDate" id="finalDate">
                     
