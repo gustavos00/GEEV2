@@ -32,6 +32,7 @@ if(checkFullDate($_POST['dateMalfunction'])) {
         $malfunction->createMalfunction($newMalfunction);
 
         unset($_SESSION['createMalfunctionError']);
+        $_SESSION['successMessage'] = "O avaria na data " . $_POST['dateMalfunction'] . " foi criada com sucesso.";
 
         header('Location: ../index.php');
         die();

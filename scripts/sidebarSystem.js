@@ -152,7 +152,6 @@ for (let i = 0; i < openModalAction.length; i++) {
       const optionSelected = select.options[select.selectedIndex];
       const selectedElementId = optionSelected.dataset.id;
 
-      var data = {};
       let url = null;
 
       switch (who) {
@@ -167,16 +166,13 @@ for (let i = 0; i < openModalAction.length; i++) {
           break;
 
         case "lendEquipment":
-          console.log(optionSelected)
-          document.getElementById('selectedEquipment').value = optionSelected.dataset.id;
-
           const formId = e.target.attributes.form.nodeValue;
-          const form = document.getElementById(formId)
+          document.getElementById('selectedEquipmentId').value = selectedElementId;
+
+          const form = document.getElementById(formId);
           form.submit();
 
-
           break;
-
         case "retireEquipment":
         case "returnEquipment":
           url = "../actions/" + who + ".php?id=" + selectedElementId

@@ -17,6 +17,8 @@ if((count((array)$data)) == 2) {
             $newBrand = new brand();
             $newBrand->setBrandName($brandContent);
             $brand->createBrand($newBrand);
+
+            $_SESSION['successMessage'] = "A marca " . $brandContent . " foi criada com sucesso.";
             break;
 
         case 'state':
@@ -26,6 +28,8 @@ if((count((array)$data)) == 2) {
             $newState = new state();
             $newState->setState($stateContent);
             $state->createState($newState);
+
+            $_SESSION['successMessage'] = "O estado " . $stateContent . " foi criada com sucesso.";
             break;
     };
 } else if ((count((array)$data)) == 3) {
@@ -37,6 +41,9 @@ if((count((array)$data)) == 2) {
     $newCategory->setCategoryName($categoryName);
     $newCategory->setCategoryCode($categoryCode);
     $category->createCategory($newCategory);
+
+    $_SESSION['successMessage'] = "A categoria " . $categoryName . " foi criada com sucesso.";
+    break;
 } else {
     
 }

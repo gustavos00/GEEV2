@@ -10,10 +10,9 @@ function checkFullDate($date) {
 }
 
 $lentDao = new lentDAOMS($pdo);
-$isLent = $lentDao->checkIfIsLent($_POST['selectedEquipment']);
+$isLent = $lentDao->checkIfIsLent($_POST['selectedEquipmentId']);
 
-var_dump($_POST);
-if(isset($_POST['responsibleUser']) && isset($_POST['selectedEquipment'])) {
+if(isset($_POST['responsibleUser']) && isset($_POST['selectedEquipmentId'])) {
     if(!$isLent) {
         if(checkFullDate($_POST['initialDate']) && checkFullDate($_POST['finalDate'])) { //Se não existir ou se não for válida
             $newLent = new lent();
@@ -22,10 +21,16 @@ if(isset($_POST['responsibleUser']) && isset($_POST['selectedEquipment'])) {
             $newLent->setFinalDate($_POST['finalDate']);
             $newLent->setContact($_POST['contact']);
             $newLent->setObs($_POST['obs']);
-            $newLent->setEquipmentId($_POST['selectedEquipment']);
+            $newLent->setEquipmentId($_POST['selectedEquipmentId']);
 
             $lentDao->createLent($newLent);
+
             unset($_SESSION['lentEquipmentError']);
+            $internalCode = explode(" - ", $_POST['equipments'])[0];
+            $_SESSION['successMessage'] = "O processo de emprestimo do equipamento "  .  $internalCode . " foi criado com sucesso.";
+
+            header('Location ../index.php');
+            die();
         } else {
             $_SESSION['lentEquipmentError'] = "As datas inseridas não são validas.";
         }
@@ -36,3 +41,5 @@ if(isset($_POST['responsibleUser']) && isset($_POST['selectedEquipment'])) {
     $_SESSION['lentEquipmentError'] = "Não foram inseridos todos os dados necessários.";
 }
 
+header('Location ../index.php');
+die();

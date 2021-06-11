@@ -52,7 +52,7 @@ if ($_POST['technical'] !== "" && $_POST['objective'] !== "") {
 
     $assistance->createAssistance($newAssistance);
 
-    $_SESSION['successMessage'] = "A assistência foi criada com sucesso."
+    $_SESSION['successMessage'] = "A assistência na data " . $initialDateAssistance . " foi criada com sucesso.";
     
     header('Location: ../index.php');
     exit(0);

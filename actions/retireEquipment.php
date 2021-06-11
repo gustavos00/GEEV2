@@ -14,6 +14,10 @@ if(isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
 
     $equipments->setEquipmentAsRetired($newEquipment, $categoryId);
 
+    $_SESSION['successMessage'] = "O processo de emprestimo do equipamento "  .  $internalCode . " foi criado com sucesso.";
     header('Location: ../index.php');
     die();
 }
+
+header('Location: ../index.php');
+die();
