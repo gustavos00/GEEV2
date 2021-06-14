@@ -5,6 +5,7 @@ require_once '../dao/softwaresDaoMS.php';
 require_once '../dao/malfunctionsDaoMS.php';
 require_once '../dao/providersDaoMS.php';
 require_once '../dao/assistanceDaoMS.php';
+require_once '../dao/lentDaoMS.php';
 session_start();
 
 function getUrl($adress)
@@ -20,6 +21,7 @@ $softwares = new softwaresDAOMS($pdo);
 $malfunctions = new malfunctionsDAOMS($pdo);
 $providers = new providersDAOMS($pdo);
 $assistance = new assistanceDAOMS($pdo);
+$lent = new lentDAOMS($pdo);
 
 $AllMalfunctions = $malfunctions->getAll();
 $allSoftwares = $softwares->getAllSoftwares();
@@ -29,7 +31,7 @@ $allAssistances = $assistance->getAll();
 $allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
 $AllNotLentEquipments = $equipments->getAllNotLentEquipments();
 $AllLentEquipments = $equipments->getAllLentEquipments();
-
+$allEquipmentsLent = $lent->getAll();
 
 ?>
 
@@ -320,6 +322,45 @@ $AllLentEquipments = $equipments->getAllLentEquipments();
                     </div>
                 </div>
             </div>
+
+            <div id="assistancesContainer" class="dataContainer assistances">
+                <h3>Emprestimos</h3>
+
+                <div class="dataContent">
+                    <div class="filter">
+                        <form method="POST">
+                            <a href="#" class="searchBtn">
+                                <i class="fas fa-search"></i>
+                            </a>    
+                            <input class="search-input" data-filterName="softwares" type="text" name="filter" placeholder="Pesquise por data inicial, data final, versão, tipo...">
+                        </form>
+                    </div>
+
+                    <div class="tableContainer">
+                        <table id="softwares" class="table table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Responsável</th>
+                                    <th scope="col">Data inicio</th>
+                                    <th scope="col">Contacto</th>
+                                    <th scope="col">Equipamento</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach($allEquipmentsLent as $equipmentLent) :  ?>
+                                    <tr>
+                                        <td><?=$equipmentLent->getUser();?></td>
+                                        <td><?=$equipmentLent->getInitialDate();?></td>
+                                        <td><?=$equipmentLent->getContact();?></td>
+                                        <td><?=$equipmentLent->getEquipmentInternalCode();?></td>
+
+                                    </tr>
+                                <?php endforeach ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="modalFilter" id="modalFilter">
@@ -380,7 +421,7 @@ $AllLentEquipments = $equipments->getAllLentEquipments();
                     <input class="input" type="date" name="initialDate" id="initialDate">
                     <input class="input" type="date" name="finalDate" id="finalDate">
                     
-                    <input class="input" required maxlength="100" placeholder="Responsável pelo emprestimo..." type="text" name="responsibleUser" id="responsibleUser">
+                    <input class="input" required maxlength="50" placeholder="Responsável pelo emprestimo..." type="text" name="responsibleUser" id="responsibleUser">
                     <input class="input" placeholder="Contacto...." type="text" name="contact" id="contact">
 
                     <textarea class="textarea" placeholder="Observações..." name="obs" id="obs" cols="30" rows="10"></textarea>
