@@ -14,11 +14,17 @@ $isLent = $lentDao->checkIfIsLent($_POST['selectedEquipmentId']);
 
 if(isset($_POST['responsibleUser']) && isset($_POST['selectedEquipmentId'])) {
     if(!$isLent) {
-        if(checkFullDate($_POST['initialDate']) && checkFullDate($_POST['finalDate'])) { //Se não existir ou se não for válida
+        if(checkFullDate($_POST['initialDate'])) { //Se não existir ou se não for válida
+            if(!isset($_POST['finalDate'])) {
+                $finalDate = null;
+            } else {
+                $finalDate = $_POST['finalDate'];
+            }
+            
             $newLent = new lent();
             $newLent->setUser($_POST['responsibleUser']);
             $newLent->setInitialDate($_POST['initialDate']);
-            $newLent->setFinalDate($_POST['finalDate']);
+            $newLent->setFinalDate($finalDate);
             $newLent->setContact($_POST['contact']);
             $newLent->setObs($_POST['obs']);
             $newLent->setEquipmentId($_POST['selectedEquipmentId']);

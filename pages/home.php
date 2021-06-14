@@ -27,6 +27,8 @@ $allEquipments = $equipments->getAll();
 $allProviders = $providers->getAll();
 $allAssistances = $assistance->getAll();
 $allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
+$AllNotLentEquipments = $equipments->getAllNotLentEquipments();
+$AllLentEquipments = $equipments->getAllLentEquipments();
 
 
 ?>
@@ -375,7 +377,6 @@ $allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
 
                 <form id="lendEquipmentForm" action="<?php getUrl('/actions/lendEquipment.php'); ?>" method="post">
                     <input type="hidden" name="selectedEquipmentId" id="selectedEquipmentId">
-                    <input type="hidden" name="selectedEquipmentInternalCode" id="selectedEquipmentInternalCode">
                     <input class="input" type="date" name="initialDate" id="initialDate">
                     <input class="input" type="date" name="finalDate" id="finalDate">
                     
@@ -387,7 +388,7 @@ $allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
                     <div class="filter">
                         <select class="select" id="lendEquipmentSelect" name="equipments">
                             <option value="" selected disabled hidden>Selecione um equipamento..</option>
-                            <?php foreach ($allEquipments as $equipment) {
+                            <?php foreach ($AllNotLentEquipments as $equipment) {
                                 echo ' <option data-id="' . $equipment->getId() . '"> ' . $equipment->getInternalCode() . ' - ' . $equipment->getCategoryName() . ' (' . $equipment->getIpAdress() . ')' . '</option> ';
                             } ?>
                         </select>
@@ -395,23 +396,25 @@ $allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
                         <input class="input" autocomplete="off" data-filtername="lendEquipmentSelect" placeholder="Pesquisar por equipamentos..." type="text" name="filter">
                     </div>
                 </form>
-                <input type="submit" form="lendEquipmentForm" data-who="lendEquipment" data-select="lendEquipmentSelect" id="lendEquipmentBtnAction" value="Emprestar" class="btn"/>
+                <input type="submit" form="lendEquipmentForm" data-hiddenInput="selectedEquipmentId" data-who="lendEquipment" data-select="lendEquipmentSelect" id="lendEquipmentBtnAction" value="Emprestar" class="btn"/>
             </div>
             
-            <div data-actionBtn="returnEquipmentBtnAction" id="returnEquipmentModal" class="equipmentModal modalContent returnEquipmentBtnAction">
+            <div data-actionBtn="returnEquipmentBtnAction" id="returnEquipmentModal" class="equipmentModal modalContent returnEquipment">
                 <h3>Olá, qual equipamento você quer retornar?</h3>
 
-                <form>
+                <form id="returnEquipmentForm" action="<?php getUrl('/actions/returnEquipment.php'); ?>" method="post">
+                    <input type="hidden" name="selectedEquipmentId" id="returnEquipmentId">
+                    <input class="input" type="date" name="finalDate" id="finalDate">
                     <select class="select" id="returnEquipmentSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione um equipamento..</option>
-                        <?php foreach ($allEquipments as $equipment) {
+                        <?php foreach ($AllLentEquipments as $equipment) {
                             echo ' <option data-id="' . $equipment->getId() . '"> ' . $equipment->getInternalCode() . ' - ' . $equipment->getCategoryName() . ' (' . $equipment->getIpAdress() . ')' . '</option> ';
                         } ?>
                     </select>
 
                     <input class="input" autocomplete="off" data-filtername="returnEquipmentSelect" placeholder="Pesquisar por avarias..." type="text" name="filter">
                 </form>
-                <button data-who="returnEquipment" data-select="returnEquipmentSelect" id="returnEquipmentBtnAction" class="btn">Retornar</button>
+                <input type="submit" form="returnEquipmentForm" data-hiddenInput="returnEquipmentId" data-who="returnEquipment" data-select="returnEquipmentSelect" id="returnEquipmentBtnAction" value="Retornar" class="btn"/>
             </div>
 
             <div data-actionBtn="updateSoftwareBtnAction" class="softwareModal updateSoftware modalContent" id="updateSoftware">

@@ -220,6 +220,10 @@ body::-webkit-scrollbar-thumb,
     margin-bottom: 1rem;
 }
 
+.returnEquipment {
+    height: 280px;
+}
+
 /* CREATE SOMETHING GENERAL STYLES */
 
 .contentWrap {
