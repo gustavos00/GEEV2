@@ -40,7 +40,7 @@ if(checkFullDate($_POST['initialDate']) && checkFullDate($_POST['finalDate'])) {
                 setcookie("__geeupdatesoftware", 'DELETED', 1, '/');
             }
 
-            $_SESSION['successMessage'] = "O software" . $_POST['type'] . " ( " . $_POST['version'] . " ) foi atualizado com sucesso.";
+            $_SESSION['successMessage'] = "O software " . $_POST['type'] . " (" . $_POST['version'] . ") foi atualizado com sucesso.";
 
             header('Location: ../index.php');
             die();

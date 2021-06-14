@@ -31,7 +31,7 @@ $allAssistances = $assistance->getAll();
 $allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
 $AllNotLentEquipments = $equipments->getAllNotLentEquipments();
 $AllLentEquipments = $equipments->getAllLentEquipments();
-$allEquipmentsLent = $lent->getAll();
+$allEquipmentsLent = $lent->getAllOpenLentProcess();
 
 ?>
 
@@ -487,7 +487,7 @@ $allEquipmentsLent = $lent->getAll();
 
                     <input class="input" autocomplete="off" data-filtername="deleteSoftwareSelect" placeholder="Pesquisar por softwares..." type="text" name="filter">
                 </form>
-                <button data-who="deleteSoftware" data-select="deleteSoftwareSelect" id="deleteSoftwareBtnAction" class="btn">Atualizar</button>
+                <button data-who="deleteSoftware" data-select="deleteSoftwareSelect" id="deleteSoftwareBtnAction" class="btn">Apgar</button>
             </div>
 
             <div data-actionBtn="updateProviderBtnAction" class="ProviderModal updateProvider modalContent" id="updateProvider">
