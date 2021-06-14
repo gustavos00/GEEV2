@@ -176,6 +176,58 @@ class equipmentsDAOMS implements equipmentsDAO
         $sql->execute();
     }
 
+    public function getAllNotLentEquipments() {
+        $equipmentData = [];
+
+        $sql = $this->pdo->prepare("SELECT equipamentos.idequipamentos, equipamentos.codInterno, equipamentos.enderecoip, categoria.nomecategoria FROM ((equipamentos 
+        INNER JOIN categoria ON equipamentos.categoria_idCategoria = categoria.idcategoria) 
+        INNER JOIN estados ON equipamentos.estados_idestados = estados.idestados) 
+        WHERE estados.estado <> 'Emprestado';");
+        $sql->execute();
+
+        if($sql->rowCount() > 0) {
+            $data = $sql->fetchAll(\PDO::FETCH_ASSOC);
+
+            foreach ($data as $item) {
+                $eq = new equipments();
+
+                $eq->setId($item['idequipamentos']);
+                $eq->setInternalCode($item['codInterno']);
+                $eq->setIpAdress($item['enderecoip']);
+                $eq->setCategoryName(ucwords(strtolower($item['nomecategoria'])));
+
+                $equipmentData[] =  $eq;
+            }
+            return $equipmentData;
+        }
+    }
+
+    public function getAllLentEquipments() {
+        $equipmentData = [];
+
+        $sql = $this->pdo->prepare("SELECT equipamentos.idequipamentos, equipamentos.codInterno, equipamentos.enderecoip, categoria.nomecategoria FROM ((equipamentos 
+        INNER JOIN categoria ON equipamentos.categoria_idCategoria = categoria.idcategoria) 
+        INNER JOIN estados ON equipamentos.estados_idestados = estados.idestados) 
+        WHERE estados.estado = 'Emprestado';");
+        $sql->execute();
+
+        if($sql->rowCount() > 0) {
+            $data = $sql->fetchAll(\PDO::FETCH_ASSOC);
+
+            foreach ($data as $item) {
+                $eq = new equipments();
+
+                $eq->setId($item['idequipamentos']);
+                $eq->setInternalCode($item['codInterno']);
+                $eq->setIpAdress($item['enderecoip']);
+                $eq->setCategoryName(ucwords(strtolower($item['nomecategoria'])));
+
+                $equipmentData[] =  $eq;
+            }
+            return $equipmentData;
+        }
+    }
+
     public function getAllNotRetiredEquipaments() {
         $equipmentData = [];
 

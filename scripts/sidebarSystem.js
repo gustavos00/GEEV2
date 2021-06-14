@@ -166,15 +166,17 @@ for (let i = 0; i < openModalAction.length; i++) {
           break;
 
         case "lendEquipment":
+        case "returnEquipment":
           const formId = e.target.attributes.form.nodeValue;
-          document.getElementById('selectedEquipmentId').value = selectedElementId;
-
           const form = document.getElementById(formId);
+
+          console.log(e.target);
+
+          document.getElementById(e.target.dataset.hiddeninput).value = selectedElementId;
           form.submit();
 
           break;
         case "retireEquipment":
-        case "returnEquipment":
           url = "../actions/" + who + ".php?id=" + selectedElementId
           window.location.href = url;
 
