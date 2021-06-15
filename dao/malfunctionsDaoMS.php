@@ -12,7 +12,7 @@ class malfunctionsDAOMS implements malfunctionsDAO
     public function getAll() {
         $malfunctionData = [];
 
-        $sql = $this->pdo->prepare("SELECT avarias.*, prestadorservicos.* FROM avarias INNER JOIN prestadorservicos ON prestadorservicos_idprestadorservico = prestadorservicos.idprestadorservico");
+        $sql = $this->pdo->prepare("SELECT avarias.*, prestadorservicos.* FROM avarias LEFT JOIN prestadorservicos ON prestadorservicos_idprestadorservico = prestadorservicos.idprestadorservico");
         $sql->execute();
 
         if ($sql->rowCount() > 0) {
@@ -31,7 +31,9 @@ class malfunctionsDAOMS implements malfunctionsDAO
                 $malfunctionData[] = $mf;
             }
         }
+
         return $malfunctionData;
+
     }
 
     public function createMalfunction(malfunction $mf) {
