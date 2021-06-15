@@ -18,6 +18,10 @@ $providerId = $providers->getIdByName($_POST['provider']);
 $stateId = $states->getIdByName($_POST['state']);
 $brandId = $brands->getIdByName($_POST['brand']);
 
+function checkInput($i) {
+    return (trim($i) != "");
+}
+
 if(!isset($_POST['dataAdquisicao'])) {
     $date = date("Y-m-d");
 } else {
@@ -28,53 +32,57 @@ if($_POST['userDate'] == "") {
     $_POST['userDate'] = null;
 }
 
-if(isset($_POST['brand']) && isset($_POST['model']) && isset($_POST['category']) && isset($_POST['model'])) {
-    if (filter_var($_POST['ipAdress'], FILTER_VALIDATE_IP) && isset($_POST['ipAdress'])) {
-        $newEquipment = new equipments();
-        
-        $newEquipment->setInternalCode($_POST['internalCode']);
-        $newEquipment->setModel($_POST['model']);
-        $newEquipment->setSerieNumber($_POST['serieNumber']);
-        $newEquipment->setFeatures($_POST['features']);
-        $newEquipment->setObs($_POST['obs']);
-        $newEquipment->setAcquisitionDate($date);
-        $newEquipment->setPatrimonialCode($_POST['patrimonialCode']);
-        $newEquipment->setUser($_POST['user']);
-        $newEquipment->setLocation($_POST['location']);
-        $newEquipment->setUserDate($_POST['userDate']);
-        $newEquipment->setLanPort($_POST['lanPort']);
-        $newEquipment->setActiveEquipment($_POST['activeEquipment']);
-        $newEquipment->setIpAdress($_POST['ipAdress']);
+if(checkInput($_POST['intenalCode']) && checkInput($_POST['serieNumber'])) {
+    if(isset($_POST['brand']) && isset($_POST['model']) && isset($_POST['category']) && isset($_POST['model'])) {
+        if (filter_var($_POST['ipAdress'], FILTER_VALIDATE_IP) && isset($_POST['ipAdress'])) {
+            $newEquipment = new equipments();
+            
+            $newEquipment->setInternalCode($_POST['internalCode']);
+            $newEquipment->setModel($_POST['model']);
+            $newEquipment->setSerieNumber($_POST['serieNumber']);
+            $newEquipment->setFeatures($_POST['features']);
+            $newEquipment->setObs($_POST['obs']);
+            $newEquipment->setAcquisitionDate($date);
+            $newEquipment->setPatrimonialCode($_POST['patrimonialCode']);
+            $newEquipment->setUser($_POST['user']);
+            $newEquipment->setLocation($_POST['location']);
+            $newEquipment->setUserDate($_POST['userDate']);
+            $newEquipment->setLanPort($_POST['lanPort']);
+            $newEquipment->setActiveEquipment($_POST['activeEquipment']);
+            $newEquipment->setIpAdress($_POST['ipAdress']);
 
-        $newEquipment->setProviderId($providerId);
-        $newEquipment->setProviderName($_POST['provider']);
+            $newEquipment->setProviderId($providerId);
+            $newEquipment->setProviderName($_POST['provider']);
 
-        $newEquipment->setBrandId($brandId);
-        $newEquipment->setBrandName($_POST['brand']);
+            $newEquipment->setBrandId($brandId);
+            $newEquipment->setBrandName($_POST['brand']);
 
-        $newEquipment->setStateId($stateId);
-        $newEquipment->setStateName($_POST['state']);
+            $newEquipment->setStateId($stateId);
+            $newEquipment->setStateName($_POST['state']);
 
-        $newEquipment->setCategoryId($categoryId);
-        $newEquipment->setCategoryName($_POST['category']);
+            $newEquipment->setCategoryId($categoryId);
+            $newEquipment->setCategoryName($_POST['category']);
 
-        $equipments->createEquipment($newEquipment);
+            $equipments->createEquipment($newEquipment);
 
-        unset($_SESSION['createEquipmentError']);
-        $_SESSION['successMessage'] = "O equipmento " . $_POST['internalCode'] . " foi criado com sucesso.";
-        
-        if(isset($_COOKIE['__geecreateequipment'])) {
-            setcookie("__geecreateequipment", 'DELETED', 1, '/');
+            unset($_SESSION['createEquipmentError']);
+            $_SESSION['successMessage'] = "O equipmento " . $_POST['internalCode'] . " foi criado com sucesso.";
+            
+            if(isset($_COOKIE['__geecreateequipment'])) {
+                setcookie("__geecreateequipment", 'DELETED', 1, '/');
+            }
+
+            header('Location: ../index.php');
+            die();
+
+        } else {
+            $_SESSION['createEquipmentError'] = "O endereço IP inserido não é valido.";
         }
-
-        header('Location: ../index.php');
-        die();
-
     } else {
-        $_SESSION['createEquipmentError'] = "O endereço IP inserido não é valido.";
+        $_SESSION['createEquipmentError'] = "Não foram introduzidos todos os dados necessários.";
     }
 } else {
-    $_SESSION['createEquipmentError'] = "Não foram introduzidos todos os dados necessários.";
+    $_SESSION['createEquipmentError'] = "Algum dos dados inseridos não é valido.";
 }
 
 header('Location: ../pages/createEquipment.php');

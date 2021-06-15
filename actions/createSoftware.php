@@ -9,10 +9,15 @@ function checkFullDate($date) {
     return checkdate($dateArray[1], $dateArray[2], $dateArray[0]);
 }
 
+function checkInput($i) {
+    return (trim($i) != "");
+}
+
 $softwares = new softwaresDAOMS($pdo);
 $providers = new providersDAOMS($pdo);
 
-if(checkFullDate($_POST['initialDate']) && checkFullDate($_POST['finalDate'])) {
+
+if(checkFullDate($_POST['initialDate']) && checkFullDate($_POST['finalDate']) && checkInput($_POST['key']) && checkInput($_POST['version'])) {
     if(isset($_POST['type']) && isset($_POST['provider'])) {
         $typeId = $softwares->getSoftwareTypeIdByName($_POST['type']);
         $providerId = $providers->getIdByName($_POST['provider']);
@@ -47,7 +52,7 @@ if(checkFullDate($_POST['initialDate']) && checkFullDate($_POST['finalDate'])) {
         $_SESSION['createSoftwareError'] = 'Aparentemente não inseriu todos os dados necessário (Tipo e fornecedor).';
     }
 } else {
-    $_SESSION['createSoftwareError'] = 'As datas inseridas não são validas.';
+    $_SESSION['createSoftwareError'] = 'Algum dos dados inseridos não são validos.';
 }
 
 header('Location: ../pages/createEquipment.php');
