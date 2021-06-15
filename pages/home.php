@@ -30,8 +30,8 @@ $allProviders = $providers->getAll();
 $allAssistances = $assistance->getAll();
 $allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
 $AllNotLentEquipments = $equipments->getAllNotLentEquipments();
-$AllLentEquipments = $equipments->getAllLentEquipments();
-$allEquipmentsLent = $lent->getAllOpenLentProcess();
+$allOpenLentProcess = $lent->getAllOpenLentProcess();
+$allLentProcess = $lent->getAll();
 
 ?>
 
@@ -76,6 +76,7 @@ $allEquipmentsLent = $lent->getAllOpenLentProcess();
                         <a data-doWhat="deleteEquipment" class="openModalAction">• Apagar equipamento</a>
                         <a data-doWhat="lendEquipmentModal" class="openModalAction">• Emprestar equipamento</a>
                         <a data-doWhat="returnEquipmentModal" class="openModalAction">• Retornar equipamento de emprestimo</a>
+                        <a data-doWhat="deleteLentProcess" class="openModalAction">• Apagar processo de emprestimo</a>
                     </div>
                 </div>
 
@@ -353,7 +354,6 @@ $allEquipmentsLent = $lent->getAllOpenLentProcess();
                                         <td><?=$equipmentLent->getInitialDate();?></td>
                                         <td><?=$equipmentLent->getContact();?></td>
                                         <td><?=$equipmentLent->getEquipmentInternalCode();?></td>
-
                                     </tr>
                                 <?php endforeach ?>
                             </tbody>
@@ -429,8 +429,8 @@ $allEquipmentsLent = $lent->getAllOpenLentProcess();
                     <div class="filter">
                         <select class="select" id="lendEquipmentSelect" name="equipments">
                             <option value="" selected disabled hidden>Selecione um equipamento..</option>
-                            <?php foreach ($AllNotLentEquipments as $equipment) {
-                                echo ' <option data-id="' . $equipment->getId() . '"> ' . $equipment->getInternalCode() . ' - ' . $equipment->getCategoryName() . ' (' . $equipment->getIpAdress() . ')' . '</option> ';
+                            <?php foreach ($AllNotLentEquipments as $notLentEquipment) {
+                                echo ' <option data-id="' . $notLentEquipment->getId() . '"> ' . $notLentEquipment->getInternalCode() . ' - ' . $notLentEquipment->getCategoryName() . ' (' . $notLentEquipment->getIpAdress() . ')' . '</option> ';
                             } ?>
                         </select>
 
@@ -448,14 +448,30 @@ $allEquipmentsLent = $lent->getAllOpenLentProcess();
                     <input class="input" type="date" name="finalDate" id="finalDate">
                     <select class="select" id="returnEquipmentSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione um equipamento..</option>
-                        <?php foreach ($AllLentEquipments as $equipment) {
-                            echo ' <option data-id="' . $equipment->getId() . '"> ' . $equipment->getInternalCode() . ' - ' . $equipment->getCategoryName() . ' (' . $equipment->getIpAdress() . ')' . '</option> ';
+                        <?php foreach ($allNotRetiredEquipments as $lentEquipment) {
+                            echo ' <option data-id="' . $lentEquipment->getId() . '"> ' . $lentEquipment->getInternalCode() . ' - ' . $lentEquipment->getCategoryName() . ' (' . $lentEquipment->getIpAdress() . ')' . '</option> ';
                         } ?>
                     </select>
 
                     <input class="input" autocomplete="off" data-filtername="returnEquipmentSelect" placeholder="Pesquisar por avarias..." type="text" name="filter">
                 </form>
                 <input type="submit" form="returnEquipmentForm" data-hiddenInput="returnEquipmentId" data-who="returnEquipment" data-select="returnEquipmentSelect" id="returnEquipmentBtnAction" value="Retornar" class="btn"/>
+            </div>
+
+            <div data-actionBtn="deleteLentProcessBtnAction" id="deleteLentProcess" class="equipmentModal modalContent deleteLentProcess">
+                <h3>Olá, qual processo de emprestimo você quer apagar?</h3>
+
+                <form>
+                    <select class="select" id="deleteLentProcessSelect" name="equipments">
+                        <option value="" selected disabled hidden>Selecione um processo de emprestimo..</option>
+                        <?php foreach($allLentProcess as $lentProcess) {
+                            echo ' <option data-id="' . $lentProcess->getId() . '"> ' . $lentProcess->getInitialDate() . ' - ' . $lentProcess->getFinalDate() . ' (' . $lentProcess->getEquipmentInternalCode() . ')' . '</option> ';
+                        } ?>
+                    </select>
+
+                    <input class="input" autocomplete="off" data-filtername="deleteLentProcessSelect" placeholder="Pesquisar por assistências..." type="text" name="filter">
+                </form>
+                < <button data-who="deleteLentProcess" data-select="deleteLentProcessSelect" id="deleteLentProcessBtnAction" class="btn">Apagar</button>
             </div>
 
             <div data-actionBtn="updateSoftwareBtnAction" class="softwareModal updateSoftware modalContent" id="updateSoftware">

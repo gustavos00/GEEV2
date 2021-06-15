@@ -170,8 +170,6 @@ for (let i = 0; i < openModalAction.length; i++) {
           const formId = e.target.attributes.form.nodeValue;
           const form = document.getElementById(formId);
 
-          console.log(e.target);
-
           document.getElementById(e.target.dataset.hiddeninput).value = selectedElementId;
           form.submit();
 
@@ -183,6 +181,7 @@ for (let i = 0; i < openModalAction.length; i++) {
           break;
         case "deleteEquipment":
         case "deleteSoftware":
+        case "deleteLentProcess":
         case "deleteProvider":
         case "deleteMalfunction":
         case "deleteAssistance":
