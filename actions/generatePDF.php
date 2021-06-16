@@ -1,6 +1,6 @@
 <?php
 require_once '../vendor/autoload.php';
-require_once '../dao/malfunctionsDaoMS.php';
+require_once '../dao/softwaresDaoMS.php';
 require_once '../dao/equipmentsDaoMS.php';
 require_once '../dao/malfunctionsDaoMS.php';
 require_once '../config.php';
@@ -76,7 +76,7 @@ function generateMalfuncion($pdo) {
     foreach($allMalfunctions as $malfunctionData) {
         $providerName = $malfunctionData->getProviderName();
 
-        $data .= generateHeader('Equipamento', $malfunctionData->getId());
+        $data .= generateHeader('Avaria', $malfunctionData->getId());
         $data .= generateSubheader('Descrição');
         $data .= '<p><strong>Data avaria: </strong>' . $malfunctionData->getDate() . '</p>';
         $data .= '<p><strong>Descrição: </strong>' . $malfunctionData->getDescription() . '</p>';
@@ -86,6 +86,29 @@ function generateMalfuncion($pdo) {
             $data .= '<p><strong>Reparado por: </strong>' . $providerName . '</p>';
         }
         
+    }
+    return $data;
+}
+
+
+function generateSoftware($pdo) {
+    $softwares = new softwaresDAOMS($pdo);
+    $allSoftwares = $softwares->getAllSoftwares();
+    $data = '';
+
+    foreach($allSoftwares as $softwareData) {
+        $providerName = $softwareData->getProviderName();
+
+        $data .= generateHeader('Software', $softwareData->getId());
+        $data .= '<p><strong>Tipo: </strong>' . $softwareData->getTypeName() . '</p>';
+        $data .= '<p><strong>Versão: </strong>' . $softwareData->getVersion() . '</p>';
+        $data .= '<p><strong>Chave: </strong>' . $softwareData->getKey() . '</p>';
+        $data .= '<p><strong>Data inicial de contrato: </strong>' . $softwareData->getInitialDate() . '</p>';
+        $data .= '<p><strong>Data final de contrato: </strong>' . $softwareData->getFinalDate() . '</p>';
+
+        if (trim($providerName) !== "") {
+            $data .= '<p><strong>Fornecedor: </strong>' . $providerName . '</p>';
+        }
     }
     return $data;
 }
@@ -110,6 +133,11 @@ switch ($who) {
         $pdfData = generateMalfuncion($pdo);
         break; 
 
+    case 'software':
+        echo ' <title> Relatorio avarias - GEE</title>';
+
+        $pdfData = generateSoftware($pdo);
+        break; 
     default:
         $_SESSION['generatePDFError'] = "Aparentemente ocorreu um problema ao determinar que tipo de PDF você quer gerar. Tente novamemente";
 
@@ -125,4 +153,3 @@ $pdfData .= '<p> Gerado na data: ' . $date . '</p>';
 $mpdf = new \Mpdf\Mpdf();
 $mpdf->WriteHTML($pdfData);
 $mpdf->Output();
-

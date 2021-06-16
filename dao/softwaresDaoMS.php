@@ -69,8 +69,8 @@ class softwaresDAOMS implements sotfwaresDAO
         $softwares = [];
 
         $sql = $this->pdo->prepare("SELECT softwares.*, tiposoftwares.tiposoftware, prestadorservicos.nome FROM ((softwares
-        INNER JOIN tiposoftwares ON tiposoftwares.idtiposoftwares = softwares.tiposoftwares_idtiposoftwares)
-        INNER JOIn prestadorservicos ON prestadorservicos.idprestadorservico = softwares.tiposoftwares_idtiposoftwares) ");
+        LEFT JOIN tiposoftwares ON tiposoftwares.idtiposoftwares = softwares.tiposoftwares_idtiposoftwares)
+        LEFT JOIN prestadorservicos ON prestadorservicos.idprestadorservico = softwares.tiposoftwares_idtiposoftwares) ");
         $sql->execute();
 
         if ($sql->rowCount() > 0) {
