@@ -14,11 +14,11 @@ class equipmentsDAOMS implements equipmentsDAO
         $equipmentData = [];
 
         $sql = $this->pdo->prepare(
-            "SELECT equipamentos.*, prestadorservicos.nome, estados.estado, marca.nomeMarca, categoria.nomecategoria FROM ((((equipamentos
-            INNER JOIN estados ON equipamentos.estados_idestados = estados.idestados)
-            INNER JOIN marca ON equipamentos.marca_idmarca = marca.idmarca)
-            INNER JOIN categoria ON equipamentos.categoria_idcategoria = categoria.idcategoria)
-            INNER JOIN prestadorservicos ON equipamentos.prestadorservicos_idprestadorservico = prestadorservicos.idprestadorservico)"
+            "SELECT equipamentos.*, prestadorservicos.nome, estados.estado, marca.nomeMarca, categoria.nomecategoria FROM equipamentos
+            LEFT JOIN estados ON equipamentos.estados_idestados = estados.idestados
+            LEFT JOIN marca ON equipamentos.marca_idmarca = marca.idmarca
+            LEFT JOIN categoria ON equipamentos.categoria_idcategoria = categoria.idcategoria
+            LEFT JOIN prestadorservicos ON equipamentos.prestadorservicos_idprestadorservico = prestadorservicos.idprestadorservico"
         );
 
         $sql->execute();
@@ -52,7 +52,7 @@ class equipmentsDAOMS implements equipmentsDAO
                 $eq->setCategoryName(ucwords(strtolower($item['nomecategoria'])));
                 $eq->setStateName(ucwords(strtolower($item['estado'])));
                 $eq->setBrandName($item['nomeMarca']);
-                $eq->setProviderName(ucwords(strtolower($item['nome'])));
+                $eq->setProviderName($item['nome']);
 
                 $equipmentData[] =  $eq;
             }
