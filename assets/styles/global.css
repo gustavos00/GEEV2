@@ -72,11 +72,6 @@ body::-webkit-scrollbar-thumb,
 
 /* INPUTS STYLES */
 
-.textarea {
-    height: 100px;
-    max-height: 150px;
-}
-
 .input, 
 .select,
 .select option, 
@@ -302,4 +297,8 @@ body::-webkit-scrollbar-thumb,
 
 .container form .dataContainer .filter input {
     margin: 2rem 0 !important;
+}
+
+.container form .dataContainer textarea { 
+    min-height: 100px;
 }

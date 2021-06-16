@@ -77,7 +77,6 @@ $allLentProcess = $lent->getAll();
                         <a data-doWhat="lendEquipmentModal" class="openModalAction">• Emprestar equipamento</a>
                         <a data-doWhat="returnEquipmentModal" class="openModalAction">• Retornar equipamento de emprestimo</a>
                         <a data-doWhat="deleteLentProcess" class="openModalAction">• Apagar processo de emprestimo</a>
-                        <a href="../actions/generatePDF.php?who=equipments">• Gerar PDF com todos os equipamentos</a>
                     </div>
                 </div>
 
