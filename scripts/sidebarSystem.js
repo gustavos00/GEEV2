@@ -98,7 +98,7 @@ for (let i = 0; i < actionsBtn.length; i++) {
       desactiveDropdown(dropdown, actionsBtn[i]);
       dropdownOpen = false;
     }
-    
+
   })
 }
 
@@ -152,7 +152,6 @@ for (let i = 0; i < openModalAction.length; i++) {
       const optionSelected = select.options[select.selectedIndex];
       const selectedElementId = optionSelected.dataset.id;
 
-      var data = {};
       let url = null;
 
       switch (who) {
@@ -166,6 +165,15 @@ for (let i = 0; i < openModalAction.length; i++) {
 
           break;
 
+        case "lendEquipment":
+        case "returnEquipment":
+          const formId = e.target.attributes.form.nodeValue;
+          const form = document.getElementById(formId);
+
+          document.getElementById(e.target.dataset.hiddeninput).value = selectedElementId;
+          form.submit();
+
+          break;
         case "retireEquipment":
           url = "../actions/" + who + ".php?id=" + selectedElementId
           window.location.href = url;
@@ -173,6 +181,7 @@ for (let i = 0; i < openModalAction.length; i++) {
           break;
         case "deleteEquipment":
         case "deleteSoftware":
+        case "deleteLentProcess":
         case "deleteProvider":
         case "deleteMalfunction":
         case "deleteAssistance":

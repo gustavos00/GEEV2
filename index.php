@@ -44,4 +44,5 @@ if(!isset($_SESSION['registred'])) {
     $_SESSION['registred'] = $token;
 } 
 
-
+header('Location: ./pages/home.php');
+die();

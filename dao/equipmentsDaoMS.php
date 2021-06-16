@@ -14,11 +14,11 @@ class equipmentsDAOMS implements equipmentsDAO
         $equipmentData = [];
 
         $sql = $this->pdo->prepare(
-            "SELECT equipamentos.*, prestadorservicos.nome, estados.estado, marca.nomeMarca, categoria.nomecategoria FROM ((((equipamentos
-            INNER JOIN estados ON equipamentos.estados_idestados = estados.idestados)
-            INNER JOIN marca ON equipamentos.marca_idmarca = marca.idmarca)
-            INNER JOIN categoria ON equipamentos.categoria_idcategoria = categoria.idcategoria)
-            INNER JOIN prestadorservicos ON equipamentos.prestadorservicos_idprestadorservico = prestadorservicos.idprestadorservico)"
+            "SELECT equipamentos.*, prestadorservicos.nome, estados.estado, marca.nomeMarca, categoria.nomecategoria FROM equipamentos
+            LEFT JOIN estados ON equipamentos.estados_idestados = estados.idestados
+            LEFT JOIN marca ON equipamentos.marca_idmarca = marca.idmarca
+            LEFT JOIN categoria ON equipamentos.categoria_idcategoria = categoria.idcategoria
+            LEFT JOIN prestadorservicos ON equipamentos.prestadorservicos_idprestadorservico = prestadorservicos.idprestadorservico"
         );
 
         $sql->execute();
@@ -52,7 +52,7 @@ class equipmentsDAOMS implements equipmentsDAO
                 $eq->setCategoryName(ucwords(strtolower($item['nomecategoria'])));
                 $eq->setStateName(ucwords(strtolower($item['estado'])));
                 $eq->setBrandName($item['nomeMarca']);
-                $eq->setProviderName(ucwords(strtolower($item['nome'])));
+                $eq->setProviderName($item['nome']);
 
                 $equipmentData[] =  $eq;
             }
@@ -174,6 +174,58 @@ class equipmentsDAOMS implements equipmentsDAO
         $sql->bindValue(':categoryId', $categoryId);
         $sql->bindValue(':equipmentId', $e->getId());
         $sql->execute();
+    }
+
+    public function getAllNotLentEquipments() {
+        $equipmentData = [];
+
+        $sql = $this->pdo->prepare("SELECT equipamentos.idequipamentos, equipamentos.codInterno, equipamentos.enderecoip, categoria.nomecategoria FROM ((equipamentos 
+        INNER JOIN categoria ON equipamentos.categoria_idCategoria = categoria.idcategoria) 
+        INNER JOIN estados ON equipamentos.estados_idestados = estados.idestados) 
+        WHERE estados.estado <> 'Emprestado';");
+        $sql->execute();
+
+        if($sql->rowCount() > 0) {
+            $data = $sql->fetchAll(\PDO::FETCH_ASSOC);
+
+            foreach ($data as $item) {
+                $eq = new equipments();
+
+                $eq->setId($item['idequipamentos']);
+                $eq->setInternalCode($item['codInterno']);
+                $eq->setIpAdress($item['enderecoip']);
+                $eq->setCategoryName(ucwords(strtolower($item['nomecategoria'])));
+
+                $equipmentData[] =  $eq;
+            }
+            return $equipmentData;
+        }
+    }
+
+    public function getAllLentEquipments() {
+        $equipmentData = [];
+
+        $sql = $this->pdo->prepare("SELECT equipamentos.idequipamentos, equipamentos.codInterno, equipamentos.enderecoip, categoria.nomecategoria FROM ((equipamentos 
+        INNER JOIN categoria ON equipamentos.categoria_idCategoria = categoria.idcategoria) 
+        INNER JOIN estados ON equipamentos.estados_idestados = estados.idestados) 
+        WHERE estados.estado = 'Emprestado';");
+        $sql->execute();
+
+        if($sql->rowCount() > 0) {
+            $data = $sql->fetchAll(\PDO::FETCH_ASSOC);
+
+            foreach ($data as $item) {
+                $eq = new equipments();
+
+                $eq->setId($item['idequipamentos']);
+                $eq->setInternalCode($item['codInterno']);
+                $eq->setIpAdress($item['enderecoip']);
+                $eq->setCategoryName(ucwords(strtolower($item['nomecategoria'])));
+
+                $equipmentData[] =  $eq;
+            }
+            return $equipmentData;
+        }
     }
 
     public function getAllNotRetiredEquipaments() {

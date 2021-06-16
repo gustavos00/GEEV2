@@ -5,6 +5,7 @@ require_once '../dao/softwaresDaoMS.php';
 require_once '../dao/malfunctionsDaoMS.php';
 require_once '../dao/providersDaoMS.php';
 require_once '../dao/assistanceDaoMS.php';
+require_once '../dao/lentDaoMS.php';
 session_start();
 
 function getUrl($adress)
@@ -20,6 +21,7 @@ $softwares = new softwaresDAOMS($pdo);
 $malfunctions = new malfunctionsDAOMS($pdo);
 $providers = new providersDAOMS($pdo);
 $assistance = new assistanceDAOMS($pdo);
+$lent = new lentDAOMS($pdo);
 
 $AllMalfunctions = $malfunctions->getAll();
 $allSoftwares = $softwares->getAllSoftwares();
@@ -27,7 +29,9 @@ $allEquipments = $equipments->getAll();
 $allProviders = $providers->getAll();
 $allAssistances = $assistance->getAll();
 $allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
-
+$AllNotLentEquipments = $equipments->getAllNotLentEquipments();
+$allOpenLentProcess = $lent->getAllOpenLentProcess();
+$allLentProcess = $lent->getAll();
 
 ?>
 
@@ -72,6 +76,8 @@ $allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
                         <a data-doWhat="deleteEquipment" class="openModalAction">• Apagar equipamento</a>
                         <a data-doWhat="lendEquipmentModal" class="openModalAction">• Emprestar equipamento</a>
                         <a data-doWhat="returnEquipmentModal" class="openModalAction">• Retornar equipamento de emprestimo</a>
+                        <a data-doWhat="deleteLentProcess" class="openModalAction">• Apagar processo de emprestimo</a>
+                        <a target="_blank" href="../actions/generatePDF.php?who=equipments">• Gerar PDF com todos os equipamentos</a>
                     </div>
                 </div>
 
@@ -114,6 +120,7 @@ $allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
                         <a href="createMalfunction.php">• Criar avaria</a>
                         <a data-doWhat="updateMalfunction" class="openModalAction">• Atualizar avaria</a>
                         <a data-doWhat="deleteMalfunction" class="openModalAction">• Apagar avarias</a>
+                        <a target="_blank" href="../actions/generatePDF.php?who=malfunction">• Gerar PDF com todas as avarias</a>
                     </div>
                 </div>
 
@@ -128,6 +135,7 @@ $allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
                         <a href="createAssistance.php">• Criar assistência</a>
                         <a data-doWhat="updateAssistance" class="openModalAction">• Atualizar assistência</a>
                         <a data-doWhat="deleteAssistance" class="openModalAction">• Apagar assistência</a>
+                        <a target="_blank" href="../actions/generatePDF.php?who=assistance">• Gerar PDF com todas as assistências</a>
                     </div>
                 </div>
             </div>
@@ -141,12 +149,12 @@ $allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
         <div class="container">
 
             <?php
-                if (isset($_SESSION['createEquipmentSuccess'])) {
+                if (isset($_SESSION['successMessage'])) {
                     echo '
                     <div class="alert">
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            ' . $_SESSION['createEquipmentSuccess'] . '
-                            <button type="button" class="btn-close unsetSessionVariable" data-session-name="createEquipmentSuccess" data-bs-dismiss="alert"></button>
+                            ' . $_SESSION['successMessage'] . '
+                            <button type="button" class="btn-close unsetSessionVariable" data-session-name="successMessage" data-bs-dismiss="alert"></button>
                         </div>
                     </div>
                     ';
@@ -318,6 +326,44 @@ $allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
                     </div>
                 </div>
             </div>
+
+            <div id="assistancesContainer" class="dataContainer assistances">
+                <h3>Emprestimos</h3>
+
+                <div class="dataContent">
+                    <div class="filter">
+                        <form method="POST">
+                            <a href="#" class="searchBtn">
+                                <i class="fas fa-search"></i>
+                            </a>    
+                            <input class="search-input" data-filterName="softwares" type="text" name="filter" placeholder="Pesquise por data inicial, data final, versão, tipo...">
+                        </form>
+                    </div>
+
+                    <div class="tableContainer">
+                        <table id="softwares" class="table table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Responsável</th>
+                                    <th scope="col">Data inicio</th>
+                                    <th scope="col">Contacto</th>
+                                    <th scope="col">Equipamento</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach($allEquipmentsLent as $equipmentLent) :  ?>
+                                    <tr>
+                                        <td><?=$equipmentLent->getUser();?></td>
+                                        <td><?=$equipmentLent->getInitialDate();?></td>
+                                        <td><?=$equipmentLent->getContact();?></td>
+                                        <td><?=$equipmentLent->getEquipmentInternalCode();?></td>
+                                    </tr>
+                                <?php endforeach ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="modalFilter" id="modalFilter">
@@ -374,10 +420,11 @@ $allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
                 <h3>Olá, qual equipamento você quer emprestar?</h3>
 
                 <form id="lendEquipmentForm" action="<?php getUrl('/actions/lendEquipment.php'); ?>" method="post">
+                    <input type="hidden" name="selectedEquipmentId" id="selectedEquipmentId">
                     <input class="input" type="date" name="initialDate" id="initialDate">
                     <input class="input" type="date" name="finalDate" id="finalDate">
                     
-                    <input class="input" placeholder="Responsável pelo emprestimo..." type="text" name="responsibleUser" id="responsibleUser">
+                    <input class="input" required maxlength="50" placeholder="Responsável pelo emprestimo..." type="text" name="responsibleUser" id="responsibleUser">
                     <input class="input" placeholder="Contacto...." type="text" name="contact" id="contact">
 
                     <textarea class="textarea" placeholder="Observações..." name="obs" id="obs" cols="30" rows="10"></textarea>
@@ -385,32 +432,49 @@ $allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
                     <div class="filter">
                         <select class="select" id="lendEquipmentSelect" name="equipments">
                             <option value="" selected disabled hidden>Selecione um equipamento..</option>
-                            <?php foreach ($allEquipments as $equipment) {
-                                echo ' <option data-id="' . $equipment->getId() . '"> ' . $equipment->getInternalCode() . ' - ' . $equipment->getCategoryName() . ' (' . $equipment->getIpAdress() . ')' . '</option> ';
+                            <?php foreach ($AllNotLentEquipments as $notLentEquipment) {
+                                echo ' <option data-id="' . $notLentEquipment->getId() . '"> ' . $notLentEquipment->getInternalCode() . ' - ' . $notLentEquipment->getCategoryName() . ' (' . $notLentEquipment->getIpAdress() . ')' . '</option> ';
                             } ?>
                         </select>
 
                         <input class="input" autocomplete="off" data-filtername="lendEquipmentSelect" placeholder="Pesquisar por equipamentos..." type="text" name="filter">
                     </div>
                 </form>
-                
-                <input type="submit" form="lendEquipmentForm" id="deleteEquipmentBtnAction" class="btn">Emprestar</input>
+                <input type="submit" form="lendEquipmentForm" data-hiddenInput="selectedEquipmentId" data-who="lendEquipment" data-select="lendEquipmentSelect" id="lendEquipmentBtnAction" value="Emprestar" class="btn"/>
             </div>
             
-            <div data-actionBtn="returnEquipmentBtnAction" id="returnEquipmentModal" class="equipmentModal modalContent returnEquipmentBtnAction">
+            <div data-actionBtn="returnEquipmentBtnAction" id="returnEquipmentModal" class="equipmentModal modalContent returnEquipment">
                 <h3>Olá, qual equipamento você quer retornar?</h3>
 
-                <form>
+                <form id="returnEquipmentForm" action="<?php getUrl('/actions/returnEquipment.php'); ?>" method="post">
+                    <input type="hidden" name="selectedEquipmentId" id="returnEquipmentId">
+                    <input class="input" type="date" name="finalDate" id="finalDate">
                     <select class="select" id="returnEquipmentSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione um equipamento..</option>
-                        <?php foreach ($allEquipments as $equipment) {
-                            echo ' <option data-id="' . $equipment->getId() . '"> ' . $equipment->getInternalCode() . ' - ' . $equipment->getCategoryName() . ' (' . $equipment->getIpAdress() . ')' . '</option> ';
+                        <?php foreach ($allNotRetiredEquipments as $lentEquipment) {
+                            echo ' <option data-id="' . $lentEquipment->getId() . '"> ' . $lentEquipment->getInternalCode() . ' - ' . $lentEquipment->getCategoryName() . ' (' . $lentEquipment->getIpAdress() . ')' . '</option> ';
                         } ?>
                     </select>
 
                     <input class="input" autocomplete="off" data-filtername="returnEquipmentSelect" placeholder="Pesquisar por avarias..." type="text" name="filter">
                 </form>
-                <button data-who="returnEquipment" data-select="returnEquipmentSelect" id="returnEquipmentBtnAction" class="btn">Retornar</button>
+                <input type="submit" form="returnEquipmentForm" data-hiddenInput="returnEquipmentId" data-who="returnEquipment" data-select="returnEquipmentSelect" id="returnEquipmentBtnAction" value="Retornar" class="btn"/>
+            </div>
+
+            <div data-actionBtn="deleteLentProcessBtnAction" id="deleteLentProcess" class="equipmentModal modalContent deleteLentProcess">
+                <h3>Olá, qual processo de emprestimo você quer apagar?</h3>
+
+                <form>
+                    <select class="select" id="deleteLentProcessSelect" name="equipments">
+                        <option value="" selected disabled hidden>Selecione um processo de emprestimo..</option>
+                        <?php foreach($allLentProcess as $lentProcess) {
+                            echo ' <option data-id="' . $lentProcess->getId() . '"> ' . $lentProcess->getInitialDate() . ' - ' . $lentProcess->getFinalDate() . ' (' . $lentProcess->getEquipmentInternalCode() . ')' . '</option> ';
+                        } ?>
+                    </select>
+
+                    <input class="input" autocomplete="off" data-filtername="deleteLentProcessSelect" placeholder="Pesquisar por assistências..." type="text" name="filter">
+                </form>
+                < <button data-who="deleteLentProcess" data-select="deleteLentProcessSelect" id="deleteLentProcessBtnAction" class="btn">Apagar</button>
             </div>
 
             <div data-actionBtn="updateSoftwareBtnAction" class="softwareModal updateSoftware modalContent" id="updateSoftware">
@@ -442,7 +506,7 @@ $allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
 
                     <input class="input" autocomplete="off" data-filtername="deleteSoftwareSelect" placeholder="Pesquisar por softwares..." type="text" name="filter">
                 </form>
-                <button data-who="deleteSoftware" data-select="deleteSoftwareSelect" id="deleteSoftwareBtnAction" class="btn">Atualizar</button>
+                <button data-who="deleteSoftware" data-select="deleteSoftwareSelect" id="deleteSoftwareBtnAction" class="btn">Apgar</button>
             </div>
 
             <div data-actionBtn="updateProviderBtnAction" class="ProviderModal updateProvider modalContent" id="updateProvider">

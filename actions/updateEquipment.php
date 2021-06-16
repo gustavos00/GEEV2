@@ -56,6 +56,7 @@ if(isset($_POST['brand']) && isset($_POST['model']) && isset($_POST['type']) && 
         $equipments->updateEquipment($updatedEquipment);
 
         unset($_SESSION['updateEquipmentError']);
+        $_SESSION['successMessage'] = "O equipmento " . $_POST['internalCode'] . " foi criado com sucesso.";
         
         if(isset($_COOKIE['__geeupdateequipment'])) {
             setcookie("__geeupdateequipment", 'DELETED', 1, '/');

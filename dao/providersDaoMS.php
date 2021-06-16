@@ -65,4 +65,8 @@ class providersDAOMS implements providersDAO
         }
         return;
     }
+
+    public function deleteProvider(provider $p) {
+
+    }
 }

@@ -10,7 +10,11 @@ function validateDate($date, $format = 'Y-m-dH:i')
     return $d && $d->format($format) == $date;
 }
 
-if ($_POST['technical'] !== "" && $_POST['objective'] !== "") {
+function checkInput($i) {
+    return (trim($i) != "");
+}
+
+if (checkInput($_POST['technical']) && checkInput($_POST['objective'])) {
     $assistance = new assistanceDAOMS($pdo);
     $equipments = new equipmentsDAOMS($pdo);
     $newAssistance = new assistance();
@@ -51,6 +55,8 @@ if ($_POST['technical'] !== "" && $_POST['objective'] !== "") {
     $newAssistance->setEquipmentId($equipmentId);
 
     $assistance->createAssistance($newAssistance);
+
+    $_SESSION['successMessage'] = "A assistência na data " . $initialDateAssistance . " foi criada com sucesso.";
     
     header('Location: ../index.php');
     exit(0);
