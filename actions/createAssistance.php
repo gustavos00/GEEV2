@@ -14,7 +14,7 @@ function checkInput($i) {
     return (trim($i) != "");
 }
 
-if (checkInput($_POST['technical']) && checkInput($_POST['objective']) {
+if (checkInput($_POST['technical']) && checkInput($_POST['objective'])) {
     $assistance = new assistanceDAOMS($pdo);
     $equipments = new equipmentsDAOMS($pdo);
     $newAssistance = new assistance();
