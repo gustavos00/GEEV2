@@ -32,7 +32,7 @@ if($_POST['userDate'] == "") {
     $_POST['userDate'] = null;
 }
 
-if(checkInput($_POST['intenalCode']) && checkInput($_POST['serieNumber'])) {
+if(checkInput($_POST['internalCode']) && checkInput($_POST['serieNumber'])) {
     if(isset($_POST['brand']) && isset($_POST['model']) && isset($_POST['category']) && isset($_POST['model'])) {
         if (filter_var($_POST['ipAdress'], FILTER_VALIDATE_IP) && isset($_POST['ipAdress'])) {
             $newEquipment = new equipments();
