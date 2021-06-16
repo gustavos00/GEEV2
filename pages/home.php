@@ -77,7 +77,7 @@ $allLentProcess = $lent->getAll();
                         <a data-doWhat="lendEquipmentModal" class="openModalAction">• Emprestar equipamento</a>
                         <a data-doWhat="returnEquipmentModal" class="openModalAction">• Retornar equipamento de emprestimo</a>
                         <a data-doWhat="deleteLentProcess" class="openModalAction">• Apagar processo de emprestimo</a>
-                        <a href="../actions/generatePDF.php?who=equipments">• Gerar PDF com todos os equipamentos</a>
+                        <a target="_blank" href="../actions/generatePDF.php?who=equipments">• Gerar PDF com todos os equipamentos</a>
                     </div>
                 </div>
 
@@ -120,6 +120,7 @@ $allLentProcess = $lent->getAll();
                         <a href="createMalfunction.php">• Criar avaria</a>
                         <a data-doWhat="updateMalfunction" class="openModalAction">• Atualizar avaria</a>
                         <a data-doWhat="deleteMalfunction" class="openModalAction">• Apagar avarias</a>
+                        <a target="_blank" href="../actions/generatePDF.php?who=malfunction">• Gerar PDF com todas as avarias</a>
                     </div>
                 </div>
 
@@ -134,6 +135,7 @@ $allLentProcess = $lent->getAll();
                         <a href="createAssistance.php">• Criar assistência</a>
                         <a data-doWhat="updateAssistance" class="openModalAction">• Atualizar assistência</a>
                         <a data-doWhat="deleteAssistance" class="openModalAction">• Apagar assistência</a>
+                        <a target="_blank" href="../actions/generatePDF.php?who=assistance">• Gerar PDF com todas as assistências</a>
                     </div>
                 </div>
             </div>

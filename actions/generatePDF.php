@@ -2,6 +2,7 @@
 require_once '../vendor/autoload.php';
 require_once '../dao/malfunctionsDaoMS.php';
 require_once '../dao/equipmentsDaoMS.php';
+require_once '../dao/malfunctionsDaoMS.php';
 require_once '../config.php';
 session_start();
 
@@ -35,7 +36,6 @@ function generateEquipment($pdo) {
     $equipment = new equipmentsDAOMS($pdo);
     $allEquipments = $equipment->getAll();
     $data = '';
-    
 
     foreach($allEquipments as $equipmentData) {
         $data .= generateHeader('Equipamento', $equipmentData->getId());
@@ -68,15 +68,47 @@ function generateEquipment($pdo) {
     return $data;
 }
 
+function generateMalfuncion($pdo) {
+    $malfunctions = new malfunctionsDAOMS($pdo);
+    $allMalfunctions = $malfunctions->getAll();
+    $data = '';
+
+    foreach($allMalfunctions as $malfunctionData) {
+        $providerName = $malfunctionData->getProviderName();
+
+        $data .= generateHeader('Equipamento', $malfunctionData->getId());
+        $data .= generateSubheader('Descrição');
+        $data .= '<p><strong>Data avaria: </strong>' . $malfunctionData->getDate() . '</p>';
+        $data .= '<p><strong>Descrição: </strong>' . $malfunctionData->getDescription() . '</p>';
+        $data .= '<p><strong>Estado: </strong>' . $malfunctionData->getStatus() . '</p>';
+
+        if (trim($providerName) !== "") {
+            $data .= '<p><strong>Reparado por: </strong>' . $providerName . '</p>';
+        }
+        
+    }
+    return $data;
+}
+
 $who = $_GET['who'];
 switch ($who) {
     case 'assistance':
+        echo ' <title> Relatorio assistências - GEE</title>';
+
         $pdfData = generateAssistance($pdo);
         break;
 
     case 'equipments':
+        echo ' <title> Relatorio equipamentos - GEE</title>';
+
         $pdfData = generateEquipment($pdo);
         break;
+
+    case 'malfunction':
+        echo ' <title> Relatorio avarias - GEE</title>';
+
+        $pdfData = generateMalfuncion($pdo);
+        break; 
 
     default:
         $_SESSION['generatePDFError'] = "Aparentemente ocorreu um problema ao determinar que tipo de PDF você quer gerar. Tente novamemente";
