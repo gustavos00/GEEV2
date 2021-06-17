@@ -85,8 +85,8 @@ class malfunction
 interface malfunctionsDAO
 {
     public function getAll();
+    public function getSpecific($id);
 
     public function createMalfunction(malfunction $mf);
-
     public function deleteMalfunction(malfunction $mf);
 }

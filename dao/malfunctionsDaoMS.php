@@ -50,4 +50,25 @@ class malfunctionsDAOMS implements malfunctionsDAO
         $sql->bindValue(':malfunctionId', $mf->getId());
         $sql->execute();
     }
+
+    public function getSpecific($id) {
+        $sql = $this->pdo->prepare("SELECT avarias.*, prestadorservicos.* FROM avarias LEFT JOIN prestadorservicos ON prestadorservicos_idprestadorservico = prestadorservicos.idprestadorservico WHERE avarias.idavarias = :id");
+        $sql->bindValue(':id', $id);
+        $sql->execute();
+
+        if ($sql->rowCount() > 0) {
+            $data = $sql->fetch(\PDO::FETCH_ASSOC);
+
+            $mf = new malfunction();
+            $mf->setId($data['idavarias']);
+            $mf->setDate($data['dataAvaria']);
+            $mf->setDescription($data['descricao']);
+            $mf->setAssistanceId($data['assistencia_idAssistencia']);
+            $mf->setProviderName($data['nome']);
+            $mf->setProviderId($data['idprestadorServico']);
+
+            return $mf;
+        }
+        return;
+    }
 }

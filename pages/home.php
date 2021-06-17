@@ -92,6 +92,7 @@ $allLentProcess = $lent->getAll();
                         <a href="createSoftware.php">• Criar softwares</a>
                         <a data-doWhat="updateSoftware" class="openModalAction">• Atualizar softwares</a>
                         <a data-doWhat="deleteSoftware" class="openModalAction">• Apagar softwares</a>
+                        <a target="_blank" href="../actions/generatePDF.php?who=softwares">• Gerar PDF com todos os softwares</a>
                     </div>
                 </div>
 

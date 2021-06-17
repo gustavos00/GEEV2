@@ -77,7 +77,6 @@ function generateMalfuncion($pdo) {
         $providerName = $malfunctionData->getProviderName();
 
         $data .= generateHeader('Avaria', $malfunctionData->getId());
-        $data .= generateSubheader('Descrição');
         $data .= '<p><strong>Data avaria: </strong>' . $malfunctionData->getDate() . '</p>';
         $data .= '<p><strong>Descrição: </strong>' . $malfunctionData->getDescription() . '</p>';
         $data .= '<p><strong>Estado: </strong>' . $malfunctionData->getStatus() . '</p>';
