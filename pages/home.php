@@ -77,7 +77,6 @@ $allLentProcess = $lent->getAll();
                         <a data-doWhat="lendEquipmentModal" class="openModalAction">• Emprestar equipamento</a>
                         <a data-doWhat="returnEquipmentModal" class="openModalAction">• Retornar equipamento de emprestimo</a>
                         <a data-doWhat="deleteLentProcess" class="openModalAction">• Apagar processo de emprestimo</a>
-                        <a target="_blank" href="../actions/generatePDF.php?who=equipments">• Gerar PDF com todos os equipamentos</a>
                     </div>
                 </div>
 
@@ -120,7 +119,6 @@ $allLentProcess = $lent->getAll();
                         <a href="createMalfunction.php">• Criar avaria</a>
                         <a data-doWhat="updateMalfunction" class="openModalAction">• Atualizar avaria</a>
                         <a data-doWhat="deleteMalfunction" class="openModalAction">• Apagar avarias</a>
-                        <a target="_blank" href="../actions/generatePDF.php?who=malfunction">• Gerar PDF com todas as avarias</a>
                     </div>
                 </div>
 
@@ -135,7 +133,14 @@ $allLentProcess = $lent->getAll();
                         <a href="createAssistance.php">• Criar assistência</a>
                         <a data-doWhat="updateAssistance" class="openModalAction">• Atualizar assistência</a>
                         <a data-doWhat="deleteAssistance" class="openModalAction">• Apagar assistência</a>
-                        <a target="_blank" href="../actions/generatePDF.php?who=assistance">• Gerar PDF com todas as assistências</a>
+                    </div>
+                </div>
+
+                <div class="dropdownContainer">
+                    <div id="openPdfsModal" class="T pdfs">
+                        <i class="fas fa-life-ring"></i>
+                        Gerar PDF
+                        <i id="arrow" class="arrow fas fa-arrow-right"></i>
                     </div>
                 </div>
             </div>
@@ -509,7 +514,7 @@ $allLentProcess = $lent->getAll();
                 <button data-who="deleteSoftware" data-select="deleteSoftwareSelect" id="deleteSoftwareBtnAction" class="btn">Apgar</button>
             </div>
 
-            <div data-actionBtn="updateProviderBtnAction" class="ProviderModal updateProvider modalContent" id="updateProvider">
+            <div data-actionBtn="updateProviderBtnAction" class="providerModal updateProvider modalContent" id="updateProvider">
                 <h3>Olá, qual fornecedor você quer atualizar?</h3>
 
                 <form>
@@ -541,7 +546,7 @@ $allLentProcess = $lent->getAll();
                 <button data-who="deleteProvider" data-select="deleteProviderSelect" id="deleteProviderBtnAction" class="btn">Apagar</button>
             </div>
 
-            <div data-actionBtn="updateMalfunctionBtnAction" id="updateMalfunction" class="equipmentModal modalContent updateMalfunction">
+            <div data-actionBtn="updateMalfunctionBtnAction" id="updateMalfunction" class="malfunctionModal modalContent updateMalfunction">
                 <h3>Olá, qual avaria você quer atualizar?</h3>
 
                 <form>
@@ -557,7 +562,7 @@ $allLentProcess = $lent->getAll();
                 <button data-who="updateMalfunction" data-select="updateMalfunctionSelect" id="updateMalfunctionBtnAction" class="btn">Atualizar</button>
             </div>
 
-            <div data-actionBtn="deleteMalfunctionBtnAction" id="deleteMalfunction" class="equipmentModal modalContent deleteMalfunction">
+            <div data-actionBtn="deleteMalfunctionBtnAction" id="deleteMalfunction" class="malfunctionModal modalContent deleteMalfunction">
                 <h3>Olá, qual avaria você quer apagar?</h3>
 
                 <form>
@@ -573,7 +578,7 @@ $allLentProcess = $lent->getAll();
                 < <button data-who="deleteMalfunction" data-select="deleteMalfunctionSelect" id="deleteMalfunctionBtnAction" class="btn">Apagar</button>
             </div>
 
-            <div data-actionBtn="updateAssistanceBtnAction" id="updateAssistance" class="equipmentModal modalContent updateAssistance">
+            <div data-actionBtn="updateAssistanceBtnAction" id="updateAssistance" class="malfunctionModal modalContent updateAssistance">
                 <h3>Olá, qual avaria você quer atualizar?</h3>
 
                 <form>
@@ -589,7 +594,7 @@ $allLentProcess = $lent->getAll();
                 <button data-who="updateAssistance" data-select="updateAssistanceSelect" id="updateAssistanceBtnAction" class="btn">Atualizar</button>
             </div>
 
-            <div data-actionBtn="deleteAssistanceBtnAction" id="deleteAssistance" class="equipmentModal modalContent deleteAssistance">
+            <div data-actionBtn="deleteAssistanceBtnAction" id="deleteAssistance" class="assistanceModal modalContent deleteAssistance">
                 <h3>Olá, qual assistência você quer apagar?</h3>
 
                 <form>
@@ -603,6 +608,27 @@ $allLentProcess = $lent->getAll();
                     <input class="input" autocomplete="off" data-filtername="deleteAssistanceSelect" placeholder="Pesquisar por assistências..." type="text" name="filter">
                 </form>
                 < <button data-who="deleteAssistance" data-select="deleteAssistanceSelect" id="deleteAssistanceBtnAction" class="btn">Apagar</button>
+            </div>
+
+            <div data-actionBtn="generatePdfActionBtn" id="generatePdf" class="equipmentModal modalContent generatePdf">
+                <h3>Olá, qual é o PDF que deseja gerar?</h3>
+
+                <form id="generatePdF" action="<?php getUrl('/actions/generatePDF.php'); ?>" method="post">
+                    <select class="select" id="generatePdfSelect" name="category">
+                        <option value="" selected disabled hidden>Selecione uma categoria..</option>
+                        <option>Equipamentos</option>
+                        <option>Softwares</option>
+                        <option>Avarias</option>
+                        <option>Assistências</option>
+                        <option>Emprestimos</option>
+                    </select>
+
+                    <select class="select" id="generatePdfFilter" name="generatePdfFilter">
+                        <option id="withoutFilterOption" value="" selected>Sem filtro</option>
+                    </select>
+                
+                    <input type="submit" data-who="generatePdf" data-select="generatePdfSelect" id="generatePdfActionBtn" value="Gerar" class="btn">
+                </form>
             </div>
         </div>
 

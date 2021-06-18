@@ -3,6 +3,9 @@ require_once '../config.php';
 require_once '../dao/softwaresDaoMS.php';
 require_once '../dao/providersDaoMS.php';
 require_once '../dao/equipmentsDaoMS.php';
+require_once '../dao/assistanceDaoMS.php';
+require_once '../dao/malfunctionsDaoMS.php';
+session_start();
 
 function getUrl($adress)
 {
@@ -13,14 +16,16 @@ function getUrl($adress)
 }
 
 $softwares = new softwaresDaoMS($pdo);
-$providers = new providersDaoMS($pdo);
 $equipments = new equipmentsDaoMS($pdo);
+$providers = new providersDaoMS($pdo);
+$assistance = new assistanceDAOMS($pdo);
+$malfunction = new malfunctionsDAOMS($pdo);
 
-$AllProviders = $providers->getAll();
-$allEquipments = $equipments->getAll();
+$malfunctionData = $malfunction->getSpecific($_GET['id']);
+$allAssistances = $assistance->getAll();
 $allSoftwares = $softwares->getAllSoftwares();
-$allSoftwaresType = $softwares->getAllSoftwareTypes();
-$allSoftwaresType = $softwares->getAllSoftwareTypes();
+$allEquipments = $equipments->getAll();
+$allProviders = $providers->getAll();
 
 ?>
 
@@ -30,7 +35,6 @@ $allSoftwaresType = $softwares->getAllSoftwareTypes();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Web application to manage electronic equipment of Praia da Vitoria City Hall">
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
@@ -45,8 +49,7 @@ $allSoftwaresType = $softwares->getAllSoftwareTypes();
     <title>Atualizar avaria - GEE</title>
 </head>
     <body>
-        <!-- NAV BAR -->
-        <nav class="sidebar">
+    <nav class="sidebar">
             <div class="sidebarBtnContainer">
                 <div class="sidebarBtn"></div>
             </div>
@@ -133,7 +136,6 @@ $allSoftwaresType = $softwares->getAllSoftwareTypes();
             </div>
         </nav>
 
-        <!-- PAGE BODY -->
         <div class="contentWrap">
             <div class="container">
                 <h1>Atualizar avaria</h1>
@@ -150,11 +152,11 @@ $allSoftwaresType = $softwares->getAllSoftwareTypes();
                     }
                     ?>
 
-                <form id="form" data-cookieName="__geeupdatemalfunction" action="<?php getUrl('/actions/updateMalfunction.php'); ?>" method="post">
+                <form id="form" data-cookieName="__geecreatemalfunction" action="<?php getUrl('/actions/createMalfunction.php'); ?>" method="post">
                     <div class="dataContainer">
                         <input class="input" type="date" name="dateMalfunction" id="dateMalfunction">
 
-                        <textarea class="textarea" placeholder="Insira uma descrição..." name="description" id="description" cols="30" rows="10"></textarea>
+                        <textarea class="textarea" value=<?php echo ($malfunctionData->getObs());?> placeholder="Insira uma descrição..." name="description" id="description" cols="30" rows="10"></textarea>
 
                         <div class="filter">
                             <select class="select" id="provider" name="provider">
@@ -170,32 +172,34 @@ $allSoftwaresType = $softwares->getAllSoftwareTypes();
 
                         <div class="filterContainer">
                             <p>Caso já esteja uma assistência criada para esta avaria, escolha-a abaixo.</p>
+                            <input id="assistanceId" type="hidden" name="assistanceId">
+
                             <div class="filter">
+                                <select class="select" id="assistance" name="assistance">
+                                    <option value="" selected disabled hidden>Selecione uma assistência..</option>
+                                    <?php foreach($allAssistances as $assistance) {  
+                                        echo ' <option data-id=' . $assistance->getId() . '>' . $assistance->getTypeName() . '(' . $assistance->getInitialDate() . ' / ' . $assistance->getFinalDate() . ') </option> ';
+                                    } ?>
+                                </select>
 
-                            <select class="select" id="assistance" name="assistance">
-                                <option value="" selected disabled hidden>Selecione uma assistência..</option>
-                                <?php foreach($allAssistances as $assistance) {  
-                                    echo ' <option>' . $assistance->getTypeName() . '(' . $assistance->getInitialDate() . ' / ' . $assistance->getFinalDate() . ') </option> ';
-                                } ?>
-                            </select>
-
-                            <input class="input" autocomplete="off" data-filterName="assistance" placeholder="Pesquisar por tipos..." type="text" name="filter">
+                                <input class="input" autocomplete="off" data-filterName="assistance" placeholder="Pesquisar por assistências..." type="text" name="filter">
                             </div>
                         </div>
                         
-                        <input class="btn" type="submit" value="Atualizar avaria">
+                        <input id="actionButton" data-who="createMalfunction" class="btn" type="submit" value="Criar avaria">
                     </div>
                 </form>
             </div>
         </div>
-        
+
         <div class="modalFilter" id="modalFilter">
-            <div id="equipmentModal" class="equipmentModal modalContent updateEquipment">
+            <!--MODALS TO SIDEBAR -->
+            <div data-actionBtn="updateEquipmentBtnAction" id="updateEquipment" class="equipmentModal modalContent updateEquipment">
                 <h3>Olá, qual equipamento você quer atualizar?</h3>
 
                 <form>
                     <select class="select" id="updateEquipmentsSelect" name="equipments">
-                        <option value="" selected disabled>Selecione um equipamento..</option>
+                        <option value="" selected disabled hidden>Selecione um equipamento..</option>
                         <?php foreach ($allEquipments as $equipment) {
                             echo ' <option data-id="' . $equipment->getId() . '"> ' . $equipment->getInternalCode() . ' - ' . $equipment->getCategoryName() . ' (' . $equipment->getIpAdress() . ')' . '</option> ';
                         } ?>
@@ -203,15 +207,15 @@ $allSoftwaresType = $softwares->getAllSoftwareTypes();
 
                     <input class="input" autocomplete="off" data-filtername="updateEquipmentsSelect" placeholder="Pesquisar por equipamentos..." type="text" name="filter">
                 </form>
-                <button id="actionModal" class="btn">Atualizar</button>
+                <button id="updateEquipmentBtnAction" class="btn">Atualizar</button>
             </div>
 
-            <div id="retireEquipment" class="equipmentModal modalContent retireEquipment">
+            <div data-actionBtn="retireEquipmentBtnAction" id="retireEquipment" class="equipmentModal modalContent retireEquipment">
                 <h3>Olá, qual equipamento você quer abater?</h3>
 
                 <form>
                     <select class="select" id="retireEquipmentsSelect" name="equipments">
-                        <option value="" selected disabled>Selecione um equipamento..</option>
+                        <option value="" selected disabled hidden>Selecione um equipamento..</option>
                         <?php foreach ($allEquipments as $equipment) {
                             echo ' <option data-id="' . $equipment->getId() . '"> ' . $equipment->getInternalCode() . ' - ' . $equipment->getCategoryName() . ' (' . $equipment->getIpAdress() . ')' . '</option> ';
                         } ?>
@@ -219,17 +223,77 @@ $allSoftwaresType = $softwares->getAllSoftwareTypes();
 
                     <input class="input" autocomplete="off" data-filtername="retireEquipmentsSelect" placeholder="Pesquisar por equipamentos..." type="text" name="filter">
                 </form>
-                <button id="retireEquipmentBtAction" class="btn">Abater</button>
+                <button id="retireEquipmentBtnAction" class="btn">Abater</button>
             </div>
 
-            <div class="softwareModal updateSoftware modalContent" id="updateSoftware">
+            <div data-actionBtn="deleteEquipmentBtnAction" id="deleteEquipment" class="equipmentModal modalContent deleteEquipment">
+                <h3>Olá, qual equipamento você quer apagar?</h3>
+
+                <form>
+                    <select class="select" id="deleteEquipmentSelect" name="equipments">
+                        <option value="" selected disabled hidden>Selecione um equipamento..</option>
+                        <?php foreach ($allEquipments as $equipment) {
+                            echo ' <option data-id="' . $equipment->getId() . '"> ' . $equipment->getInternalCode() . ' - ' . $equipment->getCategoryName() . ' (' . $equipment->getIpAdress() . ')' . '</option> ';
+                        } ?>
+                    </select>
+
+                    <input class="input" autocomplete="off" data-filtername="deleteEquipmentSelect" placeholder="Pesquisar por equipamentos..." type="text" name="filter">
+                </form>
+                <button id="deleteEquipmentBtnAction" class="btn">Apagar</button>
+            </div>
+
+            <div data-actionBtn="lendEquipmentBtnAction" id="lendEquipmentModal" class="equipmentModal modalContent lendEquipmentModal">
+                <h3>Olá, qual equipamento você quer emprestar?</h3>
+
+                <form>
+                    <input class="input" type="date" name="initialDate" id="initialDate">
+                    <input class="input" type="date" name="finalDate" id="finalDate">
+                    
+                    <input class="input" placeholder="Responsável pelo emprestimo..." type="text" name="responsibleUser" id="responsibleUser">
+                    <input class="input" placeholder="Contacto...." type="text" name="contact" id="contact">
+
+                    <textarea class="textarea" placeholder="Observações..." name="obs" id="obs" cols="30" rows="10"></textarea>
+
+                    <div class="filter">
+                        <select class="select" id="lendEquipmentSelect" name="equipments">
+                            <option value="" selected disabled hidden>Selecione um equipamento..</option>
+                            <?php foreach ($allEquipments as $equipment) {
+                                echo ' <option data-id="' . $equipment->getId() . '"> ' . $equipment->getInternalCode() . ' - ' . $equipment->getCategoryName() . ' (' . $equipment->getIpAdress() . ')' . '</option> ';
+                            } ?>
+                        </select>
+
+                        <input class="input" autocomplete="off" data-filtername="lendEquipmentSelect" placeholder="Pesquisar por equipamentos..." type="text" name="filter">
+                    </div>
+                   
+                </form>
+                
+                <button id="lendEquipmentBtnAction" class="btn">Atualizar</button>
+            </div>
+            
+            <div data-actionBtn="returnEquipmentBtnAction" id="returnEquipmentModal" class="equipmentModal modalContent returnEquipmentBtnAction">
+                <h3>Olá, qual equipamento você quer retornar?</h3>
+
+                <form>
+                    <select class="select" id="returnEquipmentSelect" name="equipments">
+                        <option value="" selected disabled hidden>Selecione um equipamento..</option>
+                        <?php foreach ($allEquipments as $equipment) {
+                            echo ' <option data-id="' . $equipment->getId() . '"> ' . $equipment->getInternalCode() . ' - ' . $equipment->getCategoryName() . ' (' . $equipment->getIpAdress() . ')' . '</option> ';
+                        } ?>
+                    </select>
+
+                    <input class="input" autocomplete="off" data-filtername="returnEquipmentSelect" placeholder="Pesquisar por equipamentos..." type="text" name="filter">
+                </form>
+                <button id="returnEquipmentBtnAction" class="btn">Retornar</button>
+            </div>
+
+            <div data-actionBtn="updateSoftwareBtnAction" class="softwareModal updateSoftware modalContent" id="updateSoftware">
                 <h3>Olá, qual software você quer atualizar?</h3>
 
                 <form>
                     <select class="select" id="updateSoftwareSelect" name="softwares">
                         <option value="" selected disabled hidden>Selecione um software..</option>
                         <?php foreach ($allSoftwares as $software) {
-                                    echo ' <option data-id="' . $software->getId() . '"> ' . $software->getTypeName() . ' - ' . $software->getVersion() . '</option> ';
+                            echo ' <option data-id="' . $software->getId() . '"> ' . $software->getTypeName() . ' - ' . $software->getVersion() . '</option> ';
                         } ?>
                     </select>
 
@@ -237,12 +301,60 @@ $allSoftwaresType = $softwares->getAllSoftwareTypes();
                 </form>
                 <button id="updateSoftwareBtnAction" class="btn">Atualizar</button>
             </div>
+
+            <div data-actionBtn="deleteSoftwareBtnAction" class="softwareModal deleteSoftware modalContent" id="deleteSoftware">
+                <h3>Olá, qual software você quer apagar?</h3>
+
+                <form>
+                    <select class="select" id="deleteSoftwareSelect" name="softwares">
+                        <option value="" selected disabled hidden>Selecione um software..</option>
+                        <?php foreach ($allSoftwares as $software) {
+                            echo ' <option data-id="' . $software->getId() . '"> ' . $software->getTypeName() . ' - ' . $software->getVersion() . '</option> ';
+                        } ?>
+                    </select>
+
+                    <input class="input" autocomplete="off" data-filtername="deleteSoftwareSelect" placeholder="Pesquisar por softwares..." type="text" name="filter">
+                </form>
+                <button id="deleteSoftwareBtnAction" class="btn">Atualizar</button>
+            </div>
+
+            <div data-actionBtn="updateProviderBtnAction" class="ProviderModal updateProvider modalContent" id="updateProvider">
+                <h3>Olá, qual fornecedor você quer atualizar?</h3>
+
+                <form>
+                    <select class="select" id="updateProviderSelect" name="Providers">
+                        <option value="" selected disabled hidden>Selecione um fornecedor..</option>
+                        <?php foreach ($allProviders as $provider) {
+                            echo ' <option data-id= ' . $provider->getId() . '>' . $provider->getName() . ' </option> ';
+                        } ?>
+                    </select>
+
+                    <input class="input" autocomplete="off" data-filtername="updateProviderSelect" placeholder="Pesquisar por fornecedores..." type="text" name="filter">
+                </form>
+                <button id="updateProviderBtnAction" class="btn">Atualizar</button>
+            </div>
+
+            <div data-actionBtn="deleteProviderBtnAction" class="ProviderModal deleteProvider modalContent" id="deleteProvider">
+                <h3>Olá, qual fornecedor você quer apagar?</h3>
+
+                <form>
+                    <select class="select" id="deleteProviderSelect" name="Providers">
+                        <option value="" selected disabled hidden>Selecione um fornecedor..</option>
+                        <?php foreach ($allProviders as $provider) {
+                            echo ' <option data-id= ' . $provider->getId() . '>' . $provider->getName() . ' </option> ';
+                        } ?>
+                    </select>
+
+                    <input class="input" autocomplete="off" data-filtername="deleteProviderSelect" placeholder="Pesquisar por fornecedores..." type="text" name="filter">
+                </form>
+                <button id="deleteProviderBtnAction" class="btn">Apagar</button>
+            </div>
         </div>
 
         <script src="../scripts/filterSystem.js"></script>
         <script src="../scripts/storeFormData.js"></script>
+        <script src="../scripts/malfunctionSystem.js"></script>
         <script src="../scripts/sidebarSystem.js"></script>
         <script src="../scripts/unsetSessionVariable.js"></script>
-        <script src="../scripts/malfunctionSystem.js"></script>
     </body>
 </html>
