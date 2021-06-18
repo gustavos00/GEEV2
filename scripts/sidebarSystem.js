@@ -2,6 +2,7 @@ const menuBtn = document.querySelector('.sidebarBtnContainer');
 const sidebar = document.querySelector('.sidebar');
 const actionsBtn = document.getElementsByClassName('actionButton');
 const dropdownContent = document.getElementsByClassName('dropdownContent');
+const generatePDFsBtn = document.getElementById('openPdfsModal');
 
 let menuOpen = false;
 let dropdownOpen = false;
@@ -15,9 +16,11 @@ function openSidebar() {
 
   for (let i = 0; i < actionsBtn.length; i++) {
     actionsBtn[i].style.display = 'flex';
+    generatePDFsBtn.style.display = 'flex';
 
     setTimeout(() => {
       actionsBtn[i].style.opacity = 1;
+      generatePDFsBtn.style.opacity = 1;
     }, 60)
   }
 
@@ -34,9 +37,11 @@ function closeSidebar() {
   for (let i = 0; i < actionsBtn.length; i++) {
     setTimeout(() => {
       actionsBtn[i].style.opacity = 0;
+      generatePDFsBtn.style.opacity = 0;
     }, 30)
 
     actionsBtn[i].style.display = 'none';
+    generatePDFsBtn.style.display = 'none';
   }
   closeAllDropdowns();
   menuOpen = false;
@@ -47,6 +52,7 @@ function closeAllDropdowns() {
   for (let k = 0; k < dropdownContent.length; k++) {
     dropdownContent[k].style.opacity = 0;
     actionsBtn[k].style.setProperty("opacity", "0.5", "important")
+    generatePDFsBtn.style.setProperty("opacity", "0.5", "important")
 
     setTimeout(() => {
       dropdownContent[k].style.display = 'none'
@@ -131,6 +137,12 @@ toggleSwitch.addEventListener('change', switchTheme, false);
 //MODALS 
 const modalFilter = document.getElementById('modalFilter');
 const openModalAction = document.getElementsByClassName('openModalAction');
+const generatePDFModal = document.getElementById('generatePdf');
+
+generatePDFsBtn.addEventListener('click', () => {
+  modalFilter.style.display = 'flex';
+  generatePDFModal.style.display = 'flex';
+})
 
 for (let i = 0; i < openModalAction.length; i++) {
   const element = openModalAction[i];
@@ -217,3 +229,49 @@ function closeAllModals(e) {
     modalFilter.style.display = 'none';
   }
 }
+
+//GENERATE PDF MODAL
+const malFunctionsFiterOptions = ['Com assistências']
+const softwaresFiterOptions = ['Caducados']
+const assistanceFiterOptions = ['Concluidos', 'Front Office', 'Em aberto']
+const equipmentsFiterOptions = ['Ativos', 'Emprestados', 'Avariado']
+const lentProcessFiterOptions = ['Em aberto', 'Devolvidos']
+
+const generatePDFFilterSelect = document.getElementById('generatePdfFilter');
+
+function renderFilter(options) {
+  options.forEach(element => {
+    const option = document.createElement('option');
+    option.innerHTML = element;
+
+    generatePDFFilterSelect.appendChild(option);
+  });
+}
+
+document.getElementById('generatePdfSelect').addEventListener('change', function () {
+  switch (this.value) {
+    case 'Avarias':
+      renderFilter(malFunctionsFiterOptions);
+      break;
+    case 'Softwares':
+      renderFilter(softwaresFiterOptions);
+      break;
+    case 'Assistências':
+      renderFilter(assistanceFiterOptions);
+      break;
+    case 'Equipamentos':
+      renderFilter(equipmentsFiterOptions);
+      break;
+    case 'Emprestimos':
+      renderFilter(lentProcessFiterOptions);
+      break;
+    default:
+      console.log(this.value);
+      alert('Ocorreu um erro, tente novamente.')
+      break;
+  }
+
+  generatePDFModal.style.height = '200px';
+  generatePDFFilterSelect.style.display = 'flex';
+  generatePDFFilterSelect.style.visibility = 'visible';
+});

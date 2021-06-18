@@ -303,3 +303,14 @@ body::-webkit-scrollbar-thumb,
 .container form .dataContainer .filter input {
     margin: 2rem 0 !important;
 }
+
+
+/* GENERATE PDF MODAL */
+
+#generatePdf {
+height: 150px;
+}
+#generatePdfFilter {
+    display: none;
+    visibility: hidden;
+}

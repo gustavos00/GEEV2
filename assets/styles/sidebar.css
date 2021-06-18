@@ -98,7 +98,8 @@
     margin-top: 2rem;
 }
 
-.sidebar .actionsButtonsContainer .actionButton {
+.sidebar .actionsButtonsContainer .actionButton, 
+.T {
     width: 100%;
     height: 60px;
     padding: .2rem .2rem .2rem 1.2rem;
@@ -122,23 +123,27 @@
     transition: all .3s ease-in-out;
 }
 
-.sidebar .actionsButtonsContainer .actionButton:hover {
+.sidebar .actionsButtonsContainer .actionButton:hover,
+.T:hover {
     opacity: 1 !important;
 }
 
-.sidebar .actionsButtonsContainer .actionButton i {
+.sidebar .actionsButtonsContainer .actionButton i, 
+.T i {
     font-size: 2rem;
     margin: 0 .7rem 0 .5rem; 
 }
 
-.sidebar .actionsButtonsContainer .actionButton .arrow {
+.sidebar .actionsButtonsContainer .actionButton .arrow,
+.T .arrow {
     position: absolute;
     right: 1rem;
 
     transition: all .3s ease-in-out;
 }
 
-.sidebar .actionsButtonsContainer .actionButton:hover .arrow {
+.sidebar .actionsButtonsContainer .actionButton:hover .arrow,
+.T:hover .arrow {
     transform: rotate(90deg);
 }
 

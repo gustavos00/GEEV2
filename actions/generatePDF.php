@@ -112,37 +112,42 @@ function generateSoftware($pdo) {
     return $data;
 }
 
-$who = $_GET['who'];
-switch ($who) {
-    case 'assistance':
+var_dump($_POST);
+
+switch ($_POST['category']) {
+    case 'Assistências':
         echo ' <title> Relatorio assistências - GEE</title>';
 
         $pdfData = generateAssistance($pdo);
         break;
 
-    case 'equipments':
+    case 'Equipamentos':
         echo ' <title> Relatorio equipamentos - GEE</title>';
 
         $pdfData = generateEquipment($pdo);
         break;
 
-    case 'malfunction':
+    case 'Avarias':
         echo ' <title> Relatorio avarias - GEE</title>';
 
         $pdfData = generateMalfuncion($pdo);
         break; 
 
-    case 'software':
+    case 'Softwares':
         echo ' <title> Relatorio avarias - GEE</title>';
+
+        $pdfData = generateSoftware($pdo);
+        break; 
+
+    case 'Emprestimos':
+        echo ' <title> Relatorio emprestimos - GEE</title>';
 
         $pdfData = generateSoftware($pdo);
         break; 
     default:
         $_SESSION['generatePDFError'] = "Aparentemente ocorreu um problema ao determinar que tipo de PDF você quer gerar. Tente novamemente";
 
-        header('Location: ../index.php');
-        die();
-        
+
         break;
 }
 
@@ -151,4 +156,3 @@ $pdfData .= '<p> Gerado na data: ' . $date . '</p>';
 
 $mpdf = new \Mpdf\Mpdf();
 $mpdf->WriteHTML($pdfData);
-$mpdf->Output();
