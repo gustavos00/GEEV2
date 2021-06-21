@@ -170,9 +170,9 @@ $allLentProcess = $lent->getAll();
 
                 <form id="form" data-cookieName="__geecreateprovider" action="<?php getUrl('/actions/createMalfunction.php'); ?>" method="post">
                     <div class="dataContainer">
-                        <input class="input" placeholder="Nome" type="text" name="name" id="name">
+                        <input class="input" placeholder="Nome" type="text" name="nameProvider" id="nameProvider">
 
-                        <textarea class="textarea" placeholder="Observações" name="obs" id="obs" cols="30" rows="10"></textarea>
+                        <textarea class="textarea" placeholder="Observações" name="obsProvider" id="obsProvider" cols="30" rows="10"></textarea>
                     </div>
 
                     <div class="dataContainer">
@@ -201,33 +201,13 @@ $allLentProcess = $lent->getAll();
                                     </tr>
                                 </thead>
                                 <tbody id="tbody">
-                                    <tr>
-                                        <td>1</td>
-                                        <td>2</td>
-                                        <td>3</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>2</td>
-                                        <td>3</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>2</td>
-                                        <td>3</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>2</td>
-                                        <td>3</td>
-                                    </tr>
-
+                                    
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
-                    <input type="submit" value="Criar fornecedor" class="btn">
+                    <input id="createProviderBtn" type="submit" value="Criar fornecedor" class="btn">
                 </form>
             </div>
         </div>

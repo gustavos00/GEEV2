@@ -2,7 +2,8 @@ const contactsInput = document.getElementById('contactsInput');
 const contactsType = document.getElementById('contactsType');
 const tbodyElement = document.getElementById('tbody');
 
-const contacts = [];
+let contactsData = [];
+let providerData = []
 
 function generateTable(contactsArray) {
     tbodyElement.innerHTML = '';
@@ -28,14 +29,36 @@ document.getElementById('createProviderContact').addEventListener('click', (e) =
     e.preventDefault();
 
     if (contactsInput.value.replace(/ /g, '').length > 0) {
-        const contactsData = {
+        const oneContactData = {
             contact: contactsInput.value,
             type: contactsType.value
         }
-        contacts.push(contactsData);
-        generateTable(contacts)
+        contactsData.push(oneContactData);
+        generateTable(contactsData)
     } else {
         console.log(contactsInput.value.replace(/ /g, '').length)
     }
 
+})
+
+document.getElementById('createProviderBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+
+    const providerData = {
+        name: nameProvider.value,
+        obs: obsProvider.value,
+
+        contacts: contactsData
+    }
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "../actions/createProvider.php", true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText);
+        }
+    };
+
+    xhttp.send(JSON.stringify(providerData));
 })
