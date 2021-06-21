@@ -83,4 +83,34 @@ class providersDAOMS implements providersDAO
             return $contactsType;
         }
     }
+
+    public function createContact(provider $p) {
+        $sql = $this->pdo->prepare("INSERT INTO contactos(contacto, tipoContacto_idtipoContacto) VALUES (:contact, :contactTypeId)");
+        $sql->bindValue(':contact', $p->getContact());
+        $sql->bindValue(':contactTypeId', $p->getContactTypeId());
+        $sql->execute();
+
+        return $this->pdo->lastInsertId();
+    }
+
+    public function createProvider(provider $p, $contactsIds) {
+        $sql = $this->pdo->prepare("INSERT INTO prestadorservicos(nome, observacoes, contactos_idcontactos) VALUES (:name, :obs, :contactId);");
+        $sql->bindValue(':name', $p->getName());
+        $sql->bindValue(':obs', $p->getObs());
+        $sql->bindValue(':contactId', $contactsIds[0]);
+        $sql->execute();
+    }
+
+    public function getContactTypeIdByName($n) {
+        $sql = $this->pdo->prepare("SELECT idtipoContacto FROM tipocontacto WHERE tipo = :type");
+        $sql->bindValue(':type', $n);
+        $sql->execute();
+
+        if($sql->rowCount() > 0) {
+            $item = $sql->fetch(\PDO::FETCH_ASSOC);
+
+            return $item['idtipoContacto'];
+        }
+        return;
+    }
 }
