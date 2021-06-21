@@ -10,12 +10,6 @@ $db_host = $_ENV['DB_HOST'];
 $db_user = $_ENV['DB_USER'];
 $db_pass = $_ENV['DB_PASS'];
 
-
-$db_name = 'geedb';
-$db_host = '127.0.0.1';
-$db_user = 'root';
-$db_pass = '';
-
 try {
     $pdo = new PDO("mysql:dbname=" . $db_name . ";host" . $db_host, $db_user, $db_pass);
 
