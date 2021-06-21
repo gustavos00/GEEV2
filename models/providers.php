@@ -5,6 +5,7 @@ class provider
     private $id;
     private $name;
     private $obs;
+    private $contactType;  
 
     function getId()
     {
@@ -35,12 +36,22 @@ class provider
     {
         $this->obs = $o;
     }
+
+    function getContactType() {
+        return $this->contactType;
+    } 
+
+    
+    function setContactType($ct) {
+        $this->contactType = $ct;
+    }
 }
 
 interface providersDao
 {
     public function getAll();
-    public function getSpecific($id);
-    
+    public function getSpecific($id);    
     public function getIdByName($n);
+
+    public function getAllContactsType();
 }
