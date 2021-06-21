@@ -66,7 +66,21 @@ class providersDAOMS implements providersDAO
         return;
     }
 
-    public function deleteProvider(provider $p) {
+    public function getAllContactsType() {
+        $contactsType = [];
+        $sql = $this->pdo->prepare("SELECT * from tipocontacto");
+        $sql->execute();
 
+        if($sql->rowCount() > 0) {
+            $data = $sql->fetchAll(\PDO::FETCH_ASSOC);
+
+            foreach($data as $item) {
+                $p = new provider();
+                $p->setContactType($item['tipo']);
+
+                $contactsType[] = $p;
+            }   
+            return $contactsType;
+        }
     }
 }
