@@ -75,6 +75,7 @@ interface providersDao
     public function getIdByName($n);
 
     public function createContact(provider $p);
+    public function linkProviderToContacts($providerId, $contactsId);
 
     public function getAllContactsType();
 }

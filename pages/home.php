@@ -333,6 +333,42 @@ $allLentProcess = $lent->getAll();
             </div>
 
             <div id="assistancesContainer" class="dataContainer assistances">
+                <h3>Fornecedores</h3>
+
+                <div class="dataContent">
+                    <div class="filter">
+                        <form method="POST">
+                            <a href="#" class="searchBtn">
+                                <i class="fas fa-search"></i>
+                            </a>    
+                            <input class="search-input" data-filterName="softwares" type="text" name="filter" placeholder="Pesquise por data inicial, data final, versão, tipo...">
+                        </form>
+                    </div>
+
+                    <div class="tableContainer">
+                        <table id="softwares" class="table table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Nome</th>
+                                    <th scope="col">Obsservações final</th>
+                                    <th scope="col">Contactos</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach($allAssistances as $assistance) :  ?>
+                                    <tr>
+                                        <td><?= $assistance->getInitialDate(); ?></td>
+                                        <td><?= $assistance->getFinalDate(); ?></td>
+                                        <td><?= $assistance->getTechnical(); ?></td>
+                                    </tr>
+                                <?php endforeach ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="assistancesContainer" class="dataContainer assistances">
                 <h3>Emprestimos</h3>
 
                 <div class="dataContent">
