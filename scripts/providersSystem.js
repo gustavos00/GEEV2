@@ -1,9 +1,17 @@
 const contactsInput = document.getElementById('contactsInput');
 const contactsType = document.getElementById('contactsType');
 const tbodyElement = document.getElementById('tbody');
+const form = document.getElementById('form');
 
 let contactsData = [];
 let providerData = []
+let actionFile;
+
+if (form.dataset.cookieName = '__geeupdateprovider') {
+    actionFile = 'updateProvider';
+} else {
+    actionFile = 'createProvider';
+}
 
 function generateTable(contactsArray) {
     tbodyElement.innerHTML = '';
@@ -24,6 +32,19 @@ function generateTable(contactsArray) {
     }
 }
 
+function request(providerData) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "../actions/" + actionFile + ".php", true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText);
+            window.location.href = "../index.php";
+        }
+    };
+
+    xhttp.send(JSON.stringify(providerData));
+}
 
 document.getElementById('createProviderContact').addEventListener('click', (e) => {
     e.preventDefault();
@@ -43,25 +64,21 @@ document.getElementById('createProviderContact').addEventListener('click', (e) =
 
 document.getElementById('createProviderBtn').addEventListener('click', (e) => {
     e.preventDefault();
+    let id = 0;
 
-    if (contactsData.length != 0) {
+    if (document.getElementById('id')) {
+        id = document.getElementById('id').value
+    }
+
+    if (contactsData.length != 0 || confirm("Tem a certeza que deseja criar um fornecedor sem contactos?")) {
         const providerData = {
             name: nameProvider.value,
             obs: obsProvider.value,
+            id: id,
 
             contacts: contactsData
         }
 
-        var xhttp = new XMLHttpRequest();
-        xhttp.open("POST", "../actions/createProvider.php", true);
-        xhttp.setRequestHeader("Content-Type", "application/json");
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                console.log(this.responseText);
-                window.location.href = "/pages/home.php";
-            }
-        };
-
-        xhttp.send(JSON.stringify(providerData));
+        request(providerData);
     }
 })

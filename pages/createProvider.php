@@ -155,7 +155,7 @@ $allLentProcess = $lent->getAll();
             <div class="container">
                 <h1>Criar fornecedor</h1>
                     <?php
-                    if (isset($_SESSION['createMalfunctionError'])) {
+                    if (isset($_SESSION['createProviderError'])) {
                         echo '
                         <div class="alert">
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
