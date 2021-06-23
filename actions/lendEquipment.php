@@ -12,7 +12,7 @@ function checkFullDate($date) {
 $lentDao = new lentDAOMS($pdo);
 $isLent = $lentDao->checkIfIsLent($_POST['selectedEquipmentId']);
 
-if(isset($_POST['responsibleUser']) && isset($_POST['selectedEquipmentId'])) {
+if(isset($_POST['responsibleUser']) && $_POST['initialDate'] != "" && isset($_POST['selectedEquipmentId'])) {
     if(!$isLent) {
         if(checkFullDate($_POST['initialDate'])) { //Se não existir ou se não for válida
             if(!isset($_POST['finalDate'])) {
@@ -33,19 +33,17 @@ if(isset($_POST['responsibleUser']) && isset($_POST['selectedEquipmentId'])) {
 
             unset($_SESSION['lentEquipmentError']);
             $internalCode = explode(" - ", $_POST['equipments'])[0];
-            $_SESSION['successMessage'] = "O processo de emprestimo do equipamento "  .  $internalCode . " foi criado com sucesso.";
 
-            header('Location ../index.php');
-            die();
+            $_SESSION['successMessage'] = "O processo de emprestimo do equipamento "  .  $internalCode . " foi criado com sucesso.";
         } else {
-            $_SESSION['lentEquipmentError'] = "As datas inseridas não são validas.";
+            $_SESSION['indexErrorMessage'] = "As datas inseridas não são validas.";
         }
     } else {
-        $_SESSION['lentEquipmentError'] = "Este equipamento já está emprestado.";
+        $_SESSION['indexErrorMessage'] = "Este equipamento já está emprestado.";
     }
 } else {
-    $_SESSION['lentEquipmentError'] = "Não foram inseridos todos os dados necessários.";
+    $_SESSION['indexErrorMessage'] = "Não foram inseridos todos os dados necessários.";
 }
 
-header('Location ../index.php');
-die();
+header('Location: ../index.php');
+die(); 

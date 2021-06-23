@@ -17,20 +17,20 @@ class providersDAOMS implements providersDAO
         $sql = $this->pdo->prepare("SELECT * FROM prestadorservicos");
         $sql->execute();
 
-        if ($sql->rowCount() > 0) {
+        if($sql->rowCount() > 0) {
             $data = $sql->fetchAll(\PDO::FETCH_ASSOC);
 
-            foreach ($data as $item) {
+            foreach($data as $item) {
                 $p = new provider();
 
-                $p->setId($item['idprestadorServico']);
                 $p->setName($item['nome']);
                 $p->setObs($item['observacoes']);
+                $p->setId($item['idprestadorServico']);
 
-                $providerData[] =  $p;
-            }
+                $providerData[] = $p;
+            }   
+            return $providerData;
         }
-        return $providerData;
     }
 
     public function getSpecific($id) {
@@ -66,6 +66,31 @@ class providersDAOMS implements providersDAO
         return;
     }
 
+    public function getSpecificProviderContacts($id) {
+        $contactData = [];
+
+        $sql = $this->pdo->prepare("SELECT prestadorservicos_has_contactos.*, contactos.*, tipocontacto.* FROM ((prestadorservicos_has_contactos
+        INNER JOIN contactos ON prestadorservicos_has_contactos.contactos_idcontactos = contactos.idcontactos)
+        INNER JOIN tipocontacto ON contactos.tipoContacto_idtipoContacto = tipocontacto.idtipoContacto)
+        WHERE prestadorservicos_has_contactos.prestadorservicos_idprestadorServico = :id");
+        $sql->bindValue(':id', $id);
+        $sql->execute();
+
+        if($sql->rowCount() > 0) {
+            $data = $sql->fetchAll(\PDO::FETCH_ASSOC);
+
+            foreach($data as $item) {
+                $p = new provider();
+
+                $p->setContact($item['contacto']);
+                $p->setContactType($item['tipo']);
+
+                $contactData[] = $p;
+            }
+        }
+        return $contactData;
+    }
+
     public function getAllContactsType() {
         $contactsType = [];
         $sql = $this->pdo->prepare("SELECT * from tipocontacto");
@@ -93,12 +118,31 @@ class providersDAOMS implements providersDAO
         return $this->pdo->lastInsertId();
     }
 
-    public function createProvider(provider $p, $contactsIds) {
-        $sql = $this->pdo->prepare("INSERT INTO prestadorservicos(nome, observacoes, contactos_idcontactos) VALUES (:name, :obs, :contactId);");
+    public function createProvider(provider $p) {
+        $sql = $this->pdo->prepare("INSERT INTO prestadorservicos(nome, observacoes) VALUES (:name, :obs);");
         $sql->bindValue(':name', $p->getName());
         $sql->bindValue(':obs', $p->getObs());
-        $sql->bindValue(':contactId', $contactsIds[0]);
         $sql->execute();
+
+        return $this->pdo->lastInsertId();
+    }
+
+    public function linkProviderToContacts($providerId, $contactsIds) {
+        $data = "INSERT INTO prestadorservicos_has_contactos(prestadorservicos_idprestadorServico, contactos_idcontactos) VALUES ";
+
+        for($i = 0; $i < count($contactsIds); $i++) {  
+            if ($i != count($contactsIds) - 1) {
+                $data .= "({$providerId}, {$contactsIds[$i]}), ";
+            } else {
+                $data .= "({$providerId}, {$contactsIds[$i]}); ";
+            }
+        }
+
+
+        echo $data;
+        $sql = $this->pdo->prepare($data);
+        $sql->execute();
+        
     }
 
     public function getContactTypeIdByName($n) {

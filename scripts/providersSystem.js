@@ -44,21 +44,24 @@ document.getElementById('createProviderContact').addEventListener('click', (e) =
 document.getElementById('createProviderBtn').addEventListener('click', (e) => {
     e.preventDefault();
 
-    const providerData = {
-        name: nameProvider.value,
-        obs: obsProvider.value,
+    if (contactsData.length != 0) {
+        const providerData = {
+            name: nameProvider.value,
+            obs: obsProvider.value,
 
-        contacts: contactsData
-    }
-
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "../actions/createProvider.php", true);
-    xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText);
+            contacts: contactsData
         }
-    };
 
-    xhttp.send(JSON.stringify(providerData));
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", "../actions/createProvider.php", true);
+        xhttp.setRequestHeader("Content-Type", "application/json");
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log(this.responseText);
+                window.location.href = "/pages/home.php";
+            }
+        };
+
+        xhttp.send(JSON.stringify(providerData));
+    }
 })

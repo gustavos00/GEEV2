@@ -39,6 +39,7 @@ for (let i = 0; i < equipmentsActionButton.length; i++) {
                 alert('Ocorreu um erro, tente novamente.');
             }
 
+            console.log(' Request x');
             var xhttp = new XMLHttpRequest();
             xhttp.open("POST", "../actions/createStateCategoryOrBrand.php", true);
             xhttp.setRequestHeader("Content-Type", "application/json");
@@ -49,7 +50,7 @@ for (let i = 0; i < equipmentsActionButton.length; i++) {
 
             };
             xhttp.send(JSON.stringify(data));
-            location.reload();
+
         })
     })
 }

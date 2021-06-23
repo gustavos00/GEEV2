@@ -4,14 +4,16 @@ require_once '../dao/malfunctionsDaoMS.php';
 session_start();
 
 if(isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
-    $equipments = new malfunctionsDAOMS($pdo);
+    $malfunctions = new malfunctionsDAOMS($pdo);
 
-    $newEquipment = new malfunction();
-    $newEquipment->setId($_GET['id']);
+    $malfunctionModel = new malfunction();
+    $malfunctionModel->setId($_GET['id']);
 
-    $equipments->deleteMalfunction($newEquipment);
+    $malfunctions->deleteMalfunction($malfunctionModel);
     $_SESSION['successMessage'] = "A assistência " . $_GET['id'] . " foi apagada com sucesso.";
-}    
+} else {
+    $_SESSION['indexErrorMessage'] = "Não foram inseridos todos os dados necessários.";
+}
 
 header('Location: ../index.php');
 die();
