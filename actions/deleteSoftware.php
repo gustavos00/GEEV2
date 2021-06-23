@@ -5,11 +5,13 @@ require_once '../dao/softwaresDaoMS.php';
 if(isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
     $software = new softwaresDAOMS($pdo);
 
-    $newSoftware = new softwares();
-    $newSoftware->setId($_GET['id']);
+    $softwareModel = new softwares();
+    $softwareModel->setId($_GET['id']);
 
-    $software->deleteSoftware($newSoftware);
+    $software->deleteSoftware($softwareModel);
     $_SESSION['successMessage'] = "O software " . $_GET['id'] . " foi apagado com sucesso.";
+} else {
+    $_SESSION['indexErrorMessage'] = "Não foram inseridos todos os dados necessários.";
 }
 
 header('Location: ../index.php');

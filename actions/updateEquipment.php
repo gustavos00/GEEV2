@@ -18,7 +18,7 @@ $providerId = $providers->getIdByName($_POST['provider']);
 $stateId = $states->getIdByName($_POST['state']);
 $brandId = $brands->getIdByName($_POST['brand']);
 
-if(isset($_POST['brand']) && isset($_POST['model']) && isset($_POST['type']) && isset($_POST['model'])) {
+if(isset($_POST['brand']) && isset($_POST['provider']) && isset($_POST['model']) && isset($_POST['type']) && isset($_POST['model'])) {
     if (filter_var($_POST['ipAdress'], FILTER_VALIDATE_IP) && isset($_POST['ipAdress'])) {
         $updatedEquipment = new equipments();
         

@@ -166,6 +166,19 @@ $allLentProcess = $lent->getAll();
                 }
             ?>
 
+            <?php
+                if (isset($_SESSION['indexErrorMessage'])) {
+                    echo '
+                    <div class="alert">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            ' . $_SESSION['indexErrorMessage'] . '
+                            <button type="button" class="btn-close unsetSessionVariable" data-session-name="indexErrorMessage" data-bs-dismiss="alert"></button>
+                        </div>
+                    </div>
+                    ';
+                }
+            ?>
+
             <div class="dataContainer equipments">
                 <h3>Equipamentos</h3>
 

@@ -17,6 +17,8 @@ if(isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
     $_SESSION['successMessage'] = "O processo de emprestimo do equipamento "  .  $internalCode . " foi criado com sucesso.";
     header('Location: ../index.php');
     die();
+} else {
+    $_SESSION['indexErrorMessage'] = "Não foram inseridos todos os dados necessários.";
 }
 
 header('Location: ../index.php');

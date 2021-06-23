@@ -18,8 +18,11 @@ if($isLent) {
 
         $lentDao->returnEquipment($lent);
     } else {
-        echo 'a';
+        $_SESSION['indexErrorMessage'] = "A data inserida não é valida.";
     }
 } else {
-    echo 'b';
+    $_SESSION['indexErrorMessage'] = "O equipamento selecionado não está emprestado.";
 }
+
+header('Location: ../index.php');
+die();

@@ -6,12 +6,14 @@ session_start();
 if(isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
     $assistances = new assistanceDAOMS($pdo);
 
-    $newAssistance = new assistance();
-    $newAssistance->setId($_GET['id']);
+    $assistanceModel = new assistance();
+    $assistanceModel->setId($_GET['id']);
 
-    $assistances->deleteAssistance($newAssistance);
+    $assistances->deleteAssistance($assistanceModel);
     $_SESSION['successMessage'] = "A assistência " . $stateContent . " foi criada com sucesso.";
-}    
+} else {
+    $_SESSION['indexErrorMessage'] = "Não foram inseridos todos os dados necessários.";
+}
 
 header('Location: ../index.php');
 die();

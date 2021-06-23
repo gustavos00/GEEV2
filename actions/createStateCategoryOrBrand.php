@@ -24,8 +24,7 @@ if(checkInput($data->content)) {
                 $brand->createBrand($newBrand);
     
                 $_SESSION['successMessage'] = "A marca " . $brandContent . " foi criada com sucesso.";
-                echo 'brand ';
-    
+                break;    
             case 'state':
                 $state = new statesDAOMS($pdo);
                 $stateContent = $data->content;
@@ -35,7 +34,7 @@ if(checkInput($data->content)) {
                 $state->createState($newState);
     
                 $_SESSION['successMessage'] = "O estado " . $stateContent . " foi criada com sucesso.";
-                echo 'state ';
+                break;
         };
     } else if ((count((array)$data)) == 3) {
         $category = new categorysDAOMS($pdo);

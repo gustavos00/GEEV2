@@ -42,3 +42,6 @@ if(checkFullDate($_POST['dateMalfunction'])) {
 } else {
     $_SESSION['createMalfunctionError'] = 'Aparentemente a data inserida não é válida.';
 }
+
+header('Location: ../pages/updateMalfunction.php');
+die();

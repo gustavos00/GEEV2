@@ -39,7 +39,7 @@ if(checkFullDate($_POST['initialDate']) && checkFullDate($_POST['finalDate']) &&
             $softwares->insertSoftware($newSoftware);
 
             unset($_SESSION['createSoftwareError']);
-            $_SESSION['successMessage'] = "O software" . $_POST['type'] . " ( " . $_POST['version'] . " ) foi criada com sucesso.";
+            $_SESSION['successMessage'] = "O software " . $_POST['type'] . "( " . $_POST['version'] . " ) foi criada com sucesso.";
             
 
             header('Location: ../index.php');
@@ -55,5 +55,5 @@ if(checkFullDate($_POST['initialDate']) && checkFullDate($_POST['finalDate']) &&
     $_SESSION['createSoftwareError'] = 'Algum dos dados inseridos não são validos.';
 }
 
-header('Location: ../pages/createEquipment.php');
+header('Location: ../pages/createSoftware.php');
 die();

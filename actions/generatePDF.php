@@ -112,8 +112,6 @@ function generateSoftware($pdo) {
     return $data;
 }
 
-var_dump($_POST);
-
 switch ($_POST['category']) {
     case 'Assistências':
         echo ' <title> Relatorio assistências - GEE</title>';
