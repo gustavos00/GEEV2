@@ -17,20 +17,20 @@ class providersDAOMS implements providersDAO
         $sql = $this->pdo->prepare("SELECT * FROM prestadorservicos");
         $sql->execute();
 
-        if ($sql->rowCount() > 0) {
+        if($sql->rowCount() > 0) {
             $data = $sql->fetchAll(\PDO::FETCH_ASSOC);
 
-            foreach ($data as $item) {
+            foreach($data as $item) {
                 $p = new provider();
 
-                $p->setId($item['idprestadorServico']);
                 $p->setName($item['nome']);
                 $p->setObs($item['observacoes']);
+                $p->setId($item['idprestadorServico']);
 
-                $providerData[] =  $p;
-            }
+                $providerData[] = $p;
+            }   
+            return $providerData;
         }
-        return $providerData;
     }
 
     public function getSpecific($id) {
@@ -64,6 +64,31 @@ class providersDAOMS implements providersDAO
             return $data['idprestadorServico'];
         }
         return;
+    }
+
+    public function getSpecificProviderContacts($id) {
+        $contactData = [];
+
+        $sql = $this->pdo->prepare("SELECT prestadorservicos_has_contactos.*, contactos.*, tipocontacto.* FROM ((prestadorservicos_has_contactos
+        INNER JOIN contactos ON prestadorservicos_has_contactos.contactos_idcontactos = contactos.idcontactos)
+        INNER JOIN tipocontacto ON contactos.tipoContacto_idtipoContacto = tipocontacto.idtipoContacto)
+        WHERE prestadorservicos_has_contactos.prestadorservicos_idprestadorServico = :id");
+        $sql->bindValue(':id', $id);
+        $sql->execute();
+
+        if($sql->rowCount() > 0) {
+            $data = $sql->fetchAll(\PDO::FETCH_ASSOC);
+
+            foreach($data as $item) {
+                $p = new provider();
+
+                $p->setContact($item['contacto']);
+                $p->setContactType($item['tipo']);
+
+                $contactData[] = $p;
+            }
+        }
+        return $contactData;
     }
 
     public function getAllContactsType() {

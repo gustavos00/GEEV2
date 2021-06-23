@@ -350,16 +350,24 @@ $allLentProcess = $lent->getAll();
                             <thead>
                                 <tr>
                                     <th scope="col">Nome</th>
-                                    <th scope="col">Obsservações final</th>
+                                    <th scope="col">Observações</th>
                                     <th scope="col">Contactos</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach($allAssistances as $assistance) :  ?>
+                                <?php foreach($allProviders as $provider) :  ?>
                                     <tr>
-                                        <td><?= $assistance->getInitialDate(); ?></td>
-                                        <td><?= $assistance->getFinalDate(); ?></td>
-                                        <td><?= $assistance->getTechnical(); ?></td>
+                                        <td><?= $provider->getName(); ?></td>
+                                        <td><?= $provider->getObs(); ?></td>
+                                        <td>
+                                            <?php
+                                                $contactData = $providers->getSpecificProviderContacts($provider->getId()); 
+
+                                                foreach($contactData as $contact) {
+                                                    echo $contact->getContact() . ' (' . $contact->getContactType() . ' ) <br>';
+                                                }
+                                            ?>                                        
+                                        </td>
                                     </tr>
                                 <?php endforeach ?>
                             </tbody>
