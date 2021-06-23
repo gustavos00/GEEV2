@@ -77,13 +77,13 @@ class provider
 interface providersDao
 {
     public function getAll();
+    public function getSpecific($id);
     public function getSpecificProviderContacts($id);
-    
-    public function getSpecific($id);    
     public function getIdByName($n);
+    public function getAllContactsType();
 
     public function createContact(provider $p);
     public function linkProviderToContacts($providerId, $contactsId);
 
-    public function getAllContactsType();
+    public function updateProvider(provider $p);
 }

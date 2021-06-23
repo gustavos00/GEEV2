@@ -43,12 +43,11 @@ class providersDAOMS implements providersDAO
 
             $p = new provider();
 
-            $p->setId($data['idprestadorservico']);
+            $p->setId($data['idprestadorServico']);
             $p->setName($data['nome']);
             $p->setObs($data['observacoes']);
 
-            return $p;
-            
+            return $p;  
         }
         return;
     }
@@ -137,9 +136,7 @@ class providersDAOMS implements providersDAO
                 $data .= "({$providerId}, {$contactsIds[$i]}); ";
             }
         }
-
-
-        echo $data;
+        
         $sql = $this->pdo->prepare($data);
         $sql->execute();
         
@@ -156,5 +153,13 @@ class providersDAOMS implements providersDAO
             return $item['idtipoContacto'];
         }
         return;
+    }
+
+    public function updateProvider(provider $p) {
+        $sql = $this->pdo->prepare("UPDATE prestadorservicos SET nome = :name, observacoes = :obs WHERE idprestadorServico = :id");
+        $sql->bindValue(':name', $p->getName());
+        $sql->bindValue(':obs', $p->getObs());
+        $sql->bindValue(':id', $p->getId());
+        $sql->execute();
     }
 }

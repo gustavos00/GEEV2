@@ -144,7 +144,10 @@ $allProviders = $providers->getAll();
                 </label>
             </div>
         </nav>
-                    <?php
+        <div class="contentWrap">       
+            <div class="container">
+                <h1>Atualizar avaria</h1>
+                <?php
                     if (isset($_SESSION['createMalfunctionError'])) {
                         echo '
                         <div class="alert">
@@ -159,7 +162,7 @@ $allProviders = $providers->getAll();
 
                 <form id="form" data-cookieName="__geecreatemalfunction" action="<?php getUrl('/actions/createMalfunction.php'); ?>" method="post">
                     <div class="dataContainer">
-                        <input class="input" type="date" name="dateMalfunction" id="dateMalfunction">
+                        <input class="input" value=<?php echo ($malfunctionData->getDate());?> type="date" name="dateMalfunction" id="dateMalfunction">
 
                         <textarea class="textarea" value=<?php echo ($malfunctionData->getObs());?> placeholder="Insira uma descrição..." name="description" id="description" cols="30" rows="10"></textarea>
 
