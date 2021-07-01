@@ -5,12 +5,26 @@ const form = document.getElementById('form');
 
 let contactsData = [];
 let providerData = []
-let actionFile;
+let actionFile = 'createProvider';
+let id = 0;
 
-if (form.dataset.cookieName = '__geeupdateprovider') {
+if (document.getElementById('id')) {
+    id = document.getElementById('id').value
+
+    const trElements = document.querySelectorAll('table tbody tr');
+    
+    trElements.forEach(element => {
+        const contact = element.cells[0].innerHTML;
+        const contactType = element.cells[1].innerHTML;
+
+        const oneContactData = {
+            contact: contact,
+            type: contactType
+        }
+        contactsData.push(oneContactData);
+    });
+
     actionFile = 'updateProvider';
-} else {
-    actionFile = 'createProvider';
 }
 
 function generateTable(contactsArray) {
@@ -39,7 +53,6 @@ function request(providerData) {
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             console.log(this.responseText);
-            window.location.href = "../index.php";
         }
     };
 
@@ -64,11 +77,6 @@ document.getElementById('createProviderContact').addEventListener('click', (e) =
 
 document.getElementById('createProviderBtn').addEventListener('click', (e) => {
     e.preventDefault();
-    let id = 0;
-
-    if (document.getElementById('id')) {
-        id = document.getElementById('id').value
-    }
 
     if (contactsData.length != 0 || confirm("Tem a certeza que deseja criar um fornecedor sem contactos?")) {
         const providerData = {
@@ -78,7 +86,7 @@ document.getElementById('createProviderBtn').addEventListener('click', (e) => {
 
             contacts: contactsData
         }
-
+        console.log(providerData);
         request(providerData);
     }
 })

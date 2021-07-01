@@ -193,7 +193,7 @@ $allLentProcess = $lent->getAll();
                     </div>
 
                     <div class="tableContainer">
-                        <table id="equipments" class="table table-hover table-striped">
+                        <table class="table table-hover table-striped">
                             <thead>
                                 <tr>
                                     <th scope="col">Código Interno</th>
@@ -205,7 +205,7 @@ $allLentProcess = $lent->getAll();
                                     <th scope="col">Estado</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="equipments" class="tbody">
                                 <?php foreach($allEquipments as $specificEquipment) : ?>
                                     <tr>
                                         <td><?= $specificEquipment->getInternalCode(); ?></td>
@@ -237,7 +237,7 @@ $allLentProcess = $lent->getAll();
                     </div>
 
                     <div class="tableContainer">
-                        <table id="softwares" class="table table-hover table-striped">
+                        <table class="table table-hover table-striped">
                             <thead>
                                 <tr>
                                     <th scope="col">Tipo</th>
@@ -248,7 +248,7 @@ $allLentProcess = $lent->getAll();
                                     <th scope="col">Fornecedor</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="softwares" class="tbody">
                                 <?php foreach($allSoftwares as $specificSoftware) :  ?>
                                     <tr>
                                         <td><?= $specificSoftware->getTypeName(); ?></td>
@@ -279,7 +279,7 @@ $allLentProcess = $lent->getAll();
                     </div>
 
                     <div class="tableContainer">
-                        <table id="malfunctions" class="table table-hover table-striped">
+                        <table class="table table-hover table-striped">
                             <thead>
                                 <tr>
                                     <th scope="col">Data</th>
@@ -288,7 +288,7 @@ $allLentProcess = $lent->getAll();
                                     <th scope="col">Estado</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="malfunctions" class="tbody">
                                 <?php foreach($AllMalfunctions as $malfunctions) : ?>
                                     <tr>
                                         <td><?= $malfunctions->getDate(); ?></td>
@@ -312,12 +312,12 @@ $allLentProcess = $lent->getAll();
                             <a href="#" class="searchBtn">
                                 <i class="fas fa-search"></i>
                             </a>    
-                            <input class="search-input" data-filterName="softwares" type="text" name="filter" placeholder="Pesquise por data inicial, data final, versão, tipo...">
+                            <input class="search-input" data-filterName="assistance" type="text" name="filter" placeholder="Pesquise por data inicial, data final, versão, tipo...">
                         </form>
                     </div>
 
                     <div class="tableContainer">
-                        <table id="softwares" class="table table-hover table-striped">
+                        <table  class="table table-hover table-striped">
                             <thead>
                                 <tr>
                                     <th scope="col">Data início</th>
@@ -328,7 +328,7 @@ $allLentProcess = $lent->getAll();
                                     <th scope="col">Tipo</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="assistance" class="tbody">
                                 <?php foreach($allAssistances as $assistance) :  ?>
                                     <tr>
                                         <td><?= $assistance->getInitialDate(); ?></td>
@@ -354,12 +354,12 @@ $allLentProcess = $lent->getAll();
                             <a href="#" class="searchBtn">
                                 <i class="fas fa-search"></i>
                             </a>    
-                            <input class="search-input" data-filterName="softwares" type="text" name="filter" placeholder="Pesquise por data inicial, data final, versão, tipo...">
+                            <input id="myInput" class="search-input" data-filterName="providers" type="text" name="filter" placeholder="Pesquise por data inicial, data final, versão, tipo...">
                         </form>
                     </div>
 
                     <div class="tableContainer">
-                        <table id="softwares" class="table table-hover table-striped">
+                        <table  class="table table-hover table-striped">
                             <thead>
                                 <tr>
                                     <th scope="col">Nome</th>
@@ -367,7 +367,7 @@ $allLentProcess = $lent->getAll();
                                     <th scope="col">Contactos</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="providers" class="tbody">
                                 <?php foreach($allProviders as $provider) :  ?>
                                     <tr>
                                         <td><?= $provider->getName(); ?></td>
@@ -398,12 +398,12 @@ $allLentProcess = $lent->getAll();
                             <a href="#" class="searchBtn">
                                 <i class="fas fa-search"></i>
                             </a>    
-                            <input class="search-input" data-filterName="softwares" type="text" name="filter" placeholder="Pesquise por data inicial, data final, versão, tipo...">
+                            <input class="search-input" data-filterName="lent" type="text" name="filter" placeholder="Pesquise por data inicial, data final, versão, tipo...">
                         </form>
                     </div>
 
                     <div class="tableContainer">
-                        <table id="softwares" class="table table-hover table-striped">
+                        <table id="lent" class="table table-hover table-striped">
                             <thead>
                                 <tr>
                                     <th scope="col">Responsável</th>
@@ -412,7 +412,7 @@ $allLentProcess = $lent->getAll();
                                     <th scope="col">Equipamento</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="tbody">
                                 <?php foreach($allEquipmentsLent as $equipmentLent) :  ?>
                                     <tr>
                                         <td><?=$equipmentLent->getUser();?></td>
@@ -689,6 +689,8 @@ $allLentProcess = $lent->getAll();
             </div>
         </div>
 
+        <script src="../scripts/jquery-1.4.2.js"></script>
+        <script src="../scripts/tableFilter.js"></script>
         <script src="../scripts/filterSystem.js"></script>
         <script src="../scripts/sidebarSystem.js"></script>
         <script src="../scripts/unsetSessionVariable.js"></script>

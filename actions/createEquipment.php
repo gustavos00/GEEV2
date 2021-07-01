@@ -13,6 +13,7 @@ $providers = new providersDAOMS($pdo);
 $states = new statesDAOMS($pdo);
 $categorys = new categorysDAOMS($pdo);
 
+//Get data
 $categoryId = $categorys->getIdByName($_POST['category']);
 $providerId = $providers->getIdByName($_POST['provider']);
 $stateId = $states->getIdByName($_POST['state']);
@@ -32,9 +33,9 @@ if($_POST['userDate'] == "") {
     $_POST['userDate'] = null;
 }
 
-if(checkInput($_POST['internalCode']) && checkInput($_POST['serieNumber'])) {
-    if(isset($_POST['brand']) && isset($_POST['model']) && isset($_POST['category']) && isset($_POST['model'])) {
-        if (filter_var($_POST['ipAdress'], FILTER_VALIDATE_IP) && isset($_POST['ipAdress'])) {
+if(checkInput($_POST['internalCode']) && checkInput($_POST['serieNumber'])) { //Check if input is just empty spaces
+    if(isset($_POST['brand']) && isset($_POST['model']) && isset($_POST['category']) && isset($_POST['model'])) { //Check if exist some important data
+        if (filter_var($_POST['ipAdress'], FILTER_VALIDATE_IP) && isset($_POST['ipAdress'])) { //Validate IP
             $newEquipment = new equipments();
             
             $newEquipment->setInternalCode($_POST['internalCode']);

@@ -9,6 +9,7 @@ for (let i = 0; i < filterInputs.length; i++) {
 
         if (target.nodeName == "SELECT") {
             const options = target.options;
+            
             if(inputValue !== "") {
                 for (let k = 0; k < options.length; k++) {
                     let e = options[k];
@@ -26,26 +27,6 @@ for (let i = 0; i < filterInputs.length; i++) {
 
                 for (let k = 0; k < options.length; k++) {
                     options[k].style.display = ""
-                }
-            }
-        } else if (target.nodeName == "TABLE") {
-            let tbody = target.getElementsByTagName("tbody")[0];
-            let tr = tbody.getElementsByTagName("tr");
-
-            for (let i = 0; i < tr.length; i++) {
-                let tds = tr[i].getElementsByTagName("td");
-                let flag = false;
-                for (let j = 0; j < tds.length; j++) {
-                    let td = tds[j];
-                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                        flag = true;
-                    }
-                }
-                if (flag) {
-                    tr[i].style.display = "";
-                }
-                else {
-                    tr[i].style.display = "none";
                 }
             }
         }
