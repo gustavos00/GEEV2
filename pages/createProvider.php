@@ -167,7 +167,7 @@ $allLentProcess = $lent->getAll();
                     }
                     ?>
 
-                <form id="form" data-cookieName="__geecreateprovider" action="<?php getUrl('/actions/createMalfunction.php'); ?>" method="post">
+                <form id="form" data-cookieName="__geecreateprovider">
                     <div class="dataContainer">
                         <input class="input" placeholder="Nome" type="text" name="nameProvider" id="nameProvider">
 

@@ -15,7 +15,7 @@ if(isset($_POST['assistance'])) {
     $assistanceId = $_POST['assistanceId'];
 }
 
-if(checkFullDate($_POST['dateMalfunction'])) {
+if(checkFullDate($_POST['dateMalfunction'])) {//Check if date is valid
     if(isset($_POST['provider'])) {
         $malfunction = new malfunctionsDaoMS($pdo);
         $provider = new providersDaoMS($pdo);
