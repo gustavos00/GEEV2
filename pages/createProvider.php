@@ -56,101 +56,103 @@ $allLentProcess = $lent->getAll();
     <title>Criar fornecedor - GEE</title>
 </head>
     <body>
-        <nav class="sidebar">
-            <div class="sidebarBtnContainer">
-                <div class="sidebarBtn"></div>
-            </div>
-
-            <div class="actionsButtonsContainer">
-                <div class="dropdownContainer">
-                    <div class="actionButton equipment">
-                        <i class="fas fa-desktop"></i>
-                        Equipamento
-                        <i id="arrow" class="arrow fas fa-arrow-right"></i>
-                    </div>
-                    <div data-dropdown="equipamento" class="dropdownContent">
-                        <a href="home.php">• Visualizar equipamentos</a>
-                        <a href="createEquipment.php">• Criar equipamento</a>
-                        <a data-doWhat="updateEquipment" class="openModalAction">• Atualizar equipamento</a>
-                        <a data-doWhat="retireEquipment" class="openModalAction">• Abater equipamento</a>
-                        <a data-doWhat="deleteEquipment" class="openModalAction">• Apagar equipamento</a>
-                        <a data-doWhat="lendEquipmentModal" class="openModalAction">• Emprestar equipamento</a>
-                        <a data-doWhat="returnEquipmentModal" class="openModalAction">• Retornar equipamento de emprestimo</a>
-                        <a data-doWhat="deleteLentProcess" class="openModalAction">• Apagar processo de emprestimo</a>
-                    </div>
+        <div class="sidebarWrapper">
+            <nav class="sidebar">
+                <div class="sidebarBtnContainer">
+                    <div class="sidebarBtn"></div>
                 </div>
 
-                <div class="dropdownContainer">
-                    <div class="actionButton softwares">
-                        <i class="far fa-plus-square"></i>
-                        Softwares
-                        <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                <div class="actionsButtonsContainer">
+                    <div class="dropdownContainer">
+                        <div class="actionButton equipment">
+                            <i class="fas fa-desktop"></i>
+                            Equipamento
+                            <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                        </div>
+                        <div data-dropdown="equipamento" class="dropdownContent">
+                            <a href="home.php">• Visualizar equipamentos</a>
+                            <a href="createEquipment.php">• Criar equipamento</a>
+                            <a data-doWhat="updateEquipment" class="openModalAction">• Atualizar equipamento</a>
+                            <a data-doWhat="retireEquipment" class="openModalAction">• Abater equipamento</a>
+                            <a data-doWhat="deleteEquipment" class="openModalAction">• Apagar equipamento</a>
+                            <a data-doWhat="lendEquipmentModal" class="openModalAction">• Emprestar equipamento</a>
+                            <a data-doWhat="returnEquipmentModal" class="openModalAction">• Retornar equipamento de emprestimo</a>
+                            <a data-doWhat="deleteLentProcess" class="openModalAction">• Apagar processo de emprestimo</a>
+                        </div>
                     </div>
-                    <div data-dropdown="softwares" class="dropdownContent">
-                        <a href="home.php#softwaresContainer">• Visualizar softwares</a>
-                        <a href="createSoftware.php">• Criar softwares</a>
-                        <a data-doWhat="updateSoftware" class="openModalAction">• Atualizar softwares</a>
-                        <a data-doWhat="deleteSoftware" class="openModalAction">• Apagar softwares</a>
-                    </div>
-                </div>
 
-                <div class="dropdownContainer">
-                    <div class="actionButton providers">
-                    <i class="fas fa-globe-europe"></i>
-                        Fornecedores
-                        <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                    <div class="dropdownContainer">
+                        <div class="actionButton softwares">
+                            <i class="far fa-plus-square"></i>
+                            Softwares
+                            <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                        </div>
+                        <div data-dropdown="softwares" class="dropdownContent">
+                            <a href="home.php#softwaresContainer">• Visualizar softwares</a>
+                            <a href="createSoftware.php">• Criar softwares</a>
+                            <a data-doWhat="updateSoftware" class="openModalAction">• Atualizar softwares</a>
+                            <a data-doWhat="deleteSoftware" class="openModalAction">• Apagar softwares</a>
+                        </div>
                     </div>
-                    <div data-dropdown="fornecedores" class="dropdownContent">
-                        <a href="home.php">• Visualizar fornecedores</a>
-                        <a href="createProvider.php">• Criar fornecedores</a>
-                        <a data-doWhat="updateProvider" class="openModalAction">• Atualizar fornecedores</a>
-                        <a data-doWhat="deleteProvider" class="openModalAction">• Apagar fornecedores</a>
-                    </div>
-                </div>
 
-                <div class="dropdownContainer">
-                    <div class="actionButton malfunctions">
-                        <i class="fas fa-times"></i>
-                        Avarias
-                        <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                    <div class="dropdownContainer">
+                        <div class="actionButton providers">
+                        <i class="fas fa-globe-europe"></i>
+                            Fornecedores
+                            <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                        </div>
+                        <div data-dropdown="fornecedores" class="dropdownContent">
+                            <a href="home.php">• Visualizar fornecedores</a>
+                            <a href="createProvider.php">• Criar fornecedores</a>
+                            <a data-doWhat="updateProvider" class="openModalAction">• Atualizar fornecedores</a>
+                            <a data-doWhat="deleteProvider" class="openModalAction">• Apagar fornecedores</a>
+                        </div>
                     </div>
-                    <div data-dropdown="avarias" class="dropdownContent">
-                        <a href="home.php#malfunctionsContainer">• Visualizar avarias</a>
-                        <a href="createMalfunction.php">• Criar avaria</a>
-                        <a data-doWhat="updateMalfunction" class="openModalAction">• Atualizar avaria</a>
-                        <a data-doWhat="deleteMalfunction" class="openModalAction">• Apagar avarias</a>
-                    </div>
-                </div>
 
-                <div class="dropdownContainer">
-                    <div class="actionButton malfunctions">
-                        <i class="fas fa-life-ring"></i>
-                        Assistências
-                        <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                    <div class="dropdownContainer">
+                        <div class="actionButton malfunctions">
+                            <i class="fas fa-times"></i>
+                            Avarias
+                            <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                        </div>
+                        <div data-dropdown="avarias" class="dropdownContent">
+                            <a href="home.php#malfunctionsContainer">• Visualizar avarias</a>
+                            <a href="createMalfunction.php">• Criar avaria</a>
+                            <a data-doWhat="updateMalfunction" class="openModalAction">• Atualizar avaria</a>
+                            <a data-doWhat="deleteMalfunction" class="openModalAction">• Apagar avarias</a>
+                        </div>
                     </div>
-                    <div data-dropdown="assistências" class="dropdownContent">
-                        <a href="home.php#malfunctionsContainer">• Visualizar assistência</a>
-                        <a href="createAssistance.php">• Criar assistência</a>
-                        <a data-doWhat="updateAssistance" class="openModalAction">• Atualizar assistência</a>
-                        <a data-doWhat="deleteAssistance" class="openModalAction">• Apagar assistência</a>
-                    </div>
-                </div>
 
-                <div class="dropdownContainer">
-                    <div id="openPdfsModal" class="T pdfs">
-                        <i class="fas fa-life-ring"></i>
-                        Gerar PDF
-                        <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                    <div class="dropdownContainer">
+                        <div class="actionButton malfunctions">
+                            <i class="fas fa-life-ring"></i>
+                            Assistências
+                            <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                        </div>
+                        <div data-dropdown="assistências" class="dropdownContent">
+                            <a href="home.php#malfunctionsContainer">• Visualizar assistência</a>
+                            <a href="createAssistance.php">• Criar assistência</a>
+                            <a data-doWhat="updateAssistance" class="openModalAction">• Atualizar assistência</a>
+                            <a data-doWhat="deleteAssistance" class="openModalAction">• Apagar assistência</a>
+                        </div>
+                    </div>
+
+                    <div class="dropdownContainer">
+                        <div id="openPdfsModal" class="T pdfs">
+                            <i class="fas fa-life-ring"></i>
+                            Gerar PDF
+                            <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="darkmodeSwitchContainer">
-                <label class="darkmodeSwitchContent" for="checkbox">
-                    <input type="checkbox" id="checkbox" />
-                    <div class="slider round"></div>
-                </label>
-            </div>
-        </nav>
+                <div class="darkmodeSwitchContainer">
+                    <label class="darkmodeSwitchContent" for="checkbox">
+                        <input type="checkbox" id="checkbox" />
+                        <div class="slider round"></div>
+                    </label>
+                </div>
+            </nav>
+        </div>
         <div class="contentWrap">
             <div class="container">
                 <h1>Criar fornecedor</h1>

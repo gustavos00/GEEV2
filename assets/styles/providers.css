@@ -80,3 +80,17 @@
     --bs-table-striped-color: #ccc;
     --bs-table-striped-bg: #272829d3;
 }
+
+.dataContainer .tableContainer table tbody tr .trashcanImage {
+    width: 100%;
+    height: 100%;
+    content: '';
+    background-image: url('../img/trashcan.svg');
+}
+
+[data-theme="dark"] .dataContainer .tableContainer table tbody tr .trashcanImage {
+    width: 100%;
+    height: 100%;
+    content: '';
+    background-image: url('../img/trashcan.svg');
+}

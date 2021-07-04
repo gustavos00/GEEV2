@@ -9,10 +9,14 @@ function checkFullDate($date) {
     return checkdate($dateArray[1], $dateArray[2], $dateArray[0]);
 }
 
+function checkInput($i) {
+    return (trim($i) != "");
+}
+
 $lentDao = new lentDAOMS($pdo);
 $isLent = $lentDao->checkIfIsLent($_POST['selectedEquipmentId']);
 
-if(isset($_POST['responsibleUser']) && $_POST['initialDate'] != "" && isset($_POST['selectedEquipmentId'])) {
+if(isset($_POST['responsibleUser']) && checkInput($_POST['initialDate']) && isset($_POST['selectedEquipmentId'])) {
     if(!$isLent) {
         if(checkFullDate($_POST['initialDate'])) { //Se não existir ou se não for válida
             if(!isset($_POST['finalDate'])) {

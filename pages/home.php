@@ -56,7 +56,8 @@ $allLentProcess = $lent->getAll();
 </head>
     <body>
 
-    <nav class="sidebar">
+    <div class="sidebarWrapper">
+        <nav class="sidebar">
             <div class="sidebarBtnContainer">
                 <div class="sidebarBtn"></div>
             </div>
@@ -151,6 +152,8 @@ $allLentProcess = $lent->getAll();
                 </label>
             </div>
         </nav>
+    </div>
+    
         <div class="container">
 
             <?php
