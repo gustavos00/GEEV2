@@ -10,7 +10,7 @@ if(isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
     $assistanceModel->setId($_GET['id']);
 
     $assistances->deleteAssistance($assistanceModel);
-    $_SESSION['successMessage'] = "A assistência " . $stateContent . " foi criada com sucesso.";
+    $_SESSION['successMessage'] = "A assistência " . $stateContent . " foi apagada com sucesso.";
 } else {
     $_SESSION['indexErrorMessage'] = "Não foram inseridos todos os dados necessários.";
 }
