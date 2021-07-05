@@ -56,4 +56,22 @@ class brandsDAOMS implements brandsDAO
         $sql->bindValue(':brandName', $b->getBrandName());
         $sql->execute();
     }
+
+    public function deleteBrand(brand $b)
+    {
+        $sql = $this->pdo->prepare('DELETE FROM marca WHERE nomeMarca = :brandName');
+        $sql->bindValue(':brandName', $b->getBrandName());
+        $sql->execute();
+    }
+
+    public function checkIfExist($n) {
+        $sql = $this->pdo->prepare("SELECT * FROM marca WHERE nomeMarca = :brandName");
+        $sql->bindValue(':brandName', $n);
+        $sql->execute();
+
+        if($sql->rowCount() > 0) {
+            return true;
+        }
+        return false;
+    }
 }

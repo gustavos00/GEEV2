@@ -207,9 +207,9 @@ function getUrl($adress)
                         <input class="input" maxlength="32" required placeholder="Código de série *" type="text" name="serieNumber" id="serieNumber"/>
                         
                         <div class="buttonsContainer">
-                            <button class="btn equipmentsActionButton" data-modalId="createCategory">Criar categoria</button>
-                            <button class="btn equipmentsActionButton" data-modalId="createBrand">Criar marca</button>
-                            <button class="btn equipmentsActionButton" data-modalId="createState">Criar estado</button>
+                            <button class="btn equipmentsActionButton" data-modalId="createCategoryModal">Criar categoria</button>
+                            <button class="btn equipmentsActionButton" data-modalId="createBrandModal">Criar marca</button>
+                            <button class="btn equipmentsActionButton" data-modalId="createStateModal">Criar estado</button>
                         </div>
                     </div>
 
@@ -531,6 +531,122 @@ function getUrl($adress)
                 
                     <input type="submit" data-who="generatePdf" data-select="generatePdfSelect" id="generatePdfActionBtn" value="Gerar" class="btn">
                 </form>
+            </div>
+
+            <!--MODALS TO CURRRENT PAGE -->
+
+            <div data-createbtnclass="brandActions" data-createid="createBrandOption" data-deleteid="deleteBrandOption" data-who="Brand" class="equipmentModal modalContent action" id="createBrandModal"> 
+                <div class="options">
+                    <h2>Selecione uma opção</h2>
+                    <input data-optionid="createBrand" name="type" type="radio" id="createBrandOption">
+                    <label for="createBrandOption">Criar marca</label>
+
+                    <input data-optionid="deleteBrand" name="type" type="radio" id="deleteBrandOption">
+                    <label for="deleteBrandOption">Apagar marca</label>
+                </div>
+                <div id="createBrand" class="createBrand createAction">
+                    <h3>Criar marca</h3>
+
+                    <form>
+                        <input class="input" type="text" placeholder="Nome da marca"/>
+
+                        <button class="btn brandActions" id="createBrandAction" data-action="create" type="submit" >Criar marca</button>
+                    </form>
+                </div>
+
+                <div id="deleteBrand" class="deleteBrand deleteAction">
+                    <h3>Apagar marca</h3>
+
+                    <form>
+                        <select class="select">
+                            <option value="" selected disabled hidden>Selecione uma marca..</option>
+
+                            
+                            <?php foreach ($allBrands as $brand) {
+                                    echo ' <option> ' . $brand->getBrandName() . '</option> ';
+                            } ?>
+                        </select>
+
+                        <button class="btn brandActions" id="deleteBrandAction" data-action="delete" type="submit" >Apagar marca</button>
+                    </form>
+                </div>
+            </div>
+
+
+            
+            <div data-createbtnclass="categoryActions" data-createid="createCategoryOption" data-deleteid="deleteCategoryOption" data-who="Category" class="equipmentModal modalContent action" id="createCategoryModal"> 
+                <div class="options">
+                    <h2>Selecione uma opção</h2>
+                    <input data-optionid="createCategory" name="type" type="radio" id="createCategoryOption">
+                    <label for="createCategoryOption">Criar categoria</label>
+
+                    <input data-optionid="deleteCategory" name="type" type="radio" id="deleteCategoryOption">
+                    <label for="deleteCategoryOption">Apagar categoria</label>
+                </div>
+                <div id="createCategory" class="createCategory createAction">
+                    <h3>Criar categoria</h3>
+
+                    <form>
+                        <input class="input" type="text" placeholder="Nome da categoria"/>
+                        <input class="input" type="text" placeholder="Código da categoria"/>
+
+                        <button class="btn categoryActions" id="createCategoryAction" data-action="create" type="submit" >Criar categoria</button>
+                    </form>
+                </div>
+
+                <div id="deleteCategory" class="deleteCategory deleteAction">
+                    <h3>Apagar categoria</h3>
+
+                    <form>
+                        <select class="select">
+                            <option value="" selected disabled hidden>Selecione uma categoria..</option>
+
+                            <?php foreach ($allCategorys as $category) {
+                                    echo ' <option> ' . $category->getCategoryName() . '</option> ';
+                            } ?>
+                        </select>
+
+                        <button class="btn categoryActions" id="deleteCategoryAction" data-action="delete" type="submit" >Apagar categoria</button>
+                    </form>
+                </div>
+            </div>
+
+            
+            <div data-createbtnclass="stateActions" data-createid="createStateOption" data-deleteid="deleteStateOption" data-who="state" class="equipmentModal modalContent action" id="createStateModal"> 
+                <div class="options">
+                    <h2>Selecione uma opção</h2>
+                    <input data-optionid="createState" name="type" type="radio" id="createStateOption">
+                    <label for="createStateOption">Criar estado</label>
+
+                    <input data-optionid="deleteState" name="type" type="radio" id="deleteStateOption">
+                    <label for="deleteStateOption">Apagar estado</label>
+                </div>
+                <div id="createState" class="createState createAction">
+                    <h3>Criar estado</h3>
+
+                    <form>
+                        <input class="input" type="text" placeholder="Nome do estado"/>
+
+                        <button class="btn stateActions" id="createStateAction" data-action="create" type="submit" >Criar estado</button>
+                    </form>
+                </div>
+
+                <div id="deleteState" class="deleteState deleteAction">
+                    <h3>Apagar estado</h3>
+
+                    <form>
+                        <select class="select">
+                            <option value="" selected disabled hidden>Selecione um estado..</option>
+
+                            
+                            <?php foreach ($allStates as $state) {
+                                    echo ' <option> ' . $state->getState() . '</option> ';
+                            } ?>
+                        </select>
+
+                        <button class="btn stateActions" id="deleteStateAction" data-action="delete" type="submit" >Apagar estado</button>
+                    </form>
+                </div>
             </div>
         </div>
 

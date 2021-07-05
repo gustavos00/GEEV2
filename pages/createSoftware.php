@@ -21,7 +21,6 @@ $AllProviders = $providers->getAll();
 $allEquipments = $equipments->getAll();
 $allSoftwares = $softwares->getAllSoftwares();
 $allSoftwaresType = $softwares->getAllSoftwareTypes();
-$allSoftwaresType = $softwares->getAllSoftwareTypes();
 
 ?>
 
@@ -45,7 +44,8 @@ $allSoftwaresType = $softwares->getAllSoftwareTypes();
     <title>Criar software - GEE</title>
 </head>
     <body>
-    <nav class="sidebar">
+    <div class="sidebarWrapper">
+        <nav class="sidebar">
             <div class="sidebarBtnContainer">
                 <div class="sidebarBtn"></div>
             </div>
@@ -140,6 +140,7 @@ $allSoftwaresType = $softwares->getAllSoftwareTypes();
                 </label>
             </div>
         </nav>
+    </div>
         <div class="contentWrap">
             <div class="container">
                 <h1>Criar software</h1>
@@ -173,7 +174,7 @@ $allSoftwaresType = $softwares->getAllSoftwareTypes();
                             <input class="input" autocomplete="off" data-filterName="type" placeholder="Pesquisar por tipos..." type="text" name="filter">
                         </div>
                         
-                        <button class="btn equipmentsActionButton" data-modalId="createCategory">Criar tipo</button>
+                        <button class="btn softwareActionButton" data-modalId="createTypeModal">Criar tipo</button>
 
                         <div class="filter">
                             <select class="select" id="provider" name="provider">
@@ -455,11 +456,51 @@ $allSoftwaresType = $softwares->getAllSoftwareTypes();
                     <input type="submit" data-who="generatePdf" data-select="generatePdfSelect" id="generatePdfActionBtn" value="Gerar" class="btn">
                 </form>
             </div>
+
+            <!--MODALS TO CURRRENT PAGE -->
+
+            <div data-createbtnclass="typeActions" data-createid="createTypeOption" data-deleteid="deleteTypeOption" data-who="type" class="equipmentModal modalContent action" id="createTypeModal"> 
+                <div class="options">
+                    <h2>Selecione uma opção</h2>
+                    <input data-optionid="createType" name="type" type="radio" id="createTypeOption">
+                    <label for="createTypeOption">Criar tipo</label>
+
+                    <input data-optionid="deleteType" name="type" type="radio" id="deleteTypeOption">
+                    <label for="deleteTypeOption">Apagar tipo</label>
+                </div>
+                <div id="createType" class="createType createAction">
+                    <h3>Criar tipo</h3>
+
+                    <form>
+                        <input class="input" type="text" placeholder="Tipo"/>
+
+                        <button class="btn typeActions" id="createTypeAction" data-action="create" type="submit" >Criar tipo</button>
+                    </form>
+                </div>
+
+                <div id="deleteType" class="deleteType deleteAction">
+                    <h3>Apagar tipo</h3>
+
+                    <form>
+                        <select class="select">
+                            <option value="" selected disabled hidden>Selecione um tipo..</option>
+
+                            <?php foreach ($allSoftwaresType as $type) {
+                                    echo ' <option> ' . $type->getTypeName() . '</option> ';
+                                } ?>
+                        </select>
+
+                        <button class="btn typeActions" id="deleteTypeAction" data-action="delete" type="submit" >Apagar tipo</button>
+                    </form>
+                </div>
+            </div>
+
         </div>
 
         <script src="../scripts/filterSystem.js"></script>
         <script src="../scripts/storeFormData.js"></script>
         <script src="../scripts/sidebarSystem.js"></script>
+        <script src="../scripts/softwareSystem.js"></script>
         <script src="../scripts/unsetSessionVariable.js"></script>
     </body>
 </html>

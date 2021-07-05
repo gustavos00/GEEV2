@@ -56,4 +56,22 @@ class statesDAOMS implements statesDAO
         $sql->bindValue(':state', $s->getState());
         $sql->execute();
     }
+
+    public function deleteState(state $s)
+    {
+        $sql = $this->pdo->prepare("DELETE FROM estados WHERE estado = :state");
+        $sql->bindValue(':state', $s->getState());
+        $sql->execute();
+    }
+
+    public function checkIfExist($n) {
+        $sql = $this->pdo->prepare("SELECT * FROM estados WHERE estado = :stateName");
+        $sql->bindValue(':stateName', $n);
+        $sql->execute();
+
+        if($sql->rowCount() > 0) {
+            return true;
+        }
+        return false;
+    }
 }

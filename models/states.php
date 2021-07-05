@@ -32,4 +32,7 @@ interface statesDAO
     public function getIdByName($n);
 
     public function createState(state $s);
+
+    public function deleteState(state $s);
+    public function checkIfExist($n);
 }
