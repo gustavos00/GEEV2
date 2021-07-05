@@ -182,7 +182,6 @@ $allLentProcess = $lent->getAll();
 
                             <select class="select" name="contactsType" id="contactsType">
                                 <option value="" selected disabled hidden>Selecione um tipo..</option>
-                                allContactsTypes
                                 <?php foreach ($allContactsTypes as $contactType) {
                                     echo ' <option>' . $contactType->getContactType() . '</option> ';
                                 } ?>
@@ -190,7 +189,7 @@ $allLentProcess = $lent->getAll();
 
                             <div class="createActionsContainern">
                                 <button id="createProviderContact" class="btn">Criar contacto</button>
-                                <button id="createProviderContactType" class="btn">Criar tipo de contacto</button>
+                                <button id="createProviderContactType" data-modalid="createcontactTypeModal" class="actionBtn btn">Criar tipo de contacto</button>
                             </div>
                             
 
@@ -475,6 +474,45 @@ $allLentProcess = $lent->getAll();
                 
                     <input type="submit" data-who="generatePdf" data-select="generatePdfSelect" id="generatePdfActionBtn" value="Gerar" class="btn">
                 </form>
+            </div>
+
+            
+            <!--MODALS TO CURRRENT PAGE -->
+
+            <div data-createbtnclass="contactTypeActions" data-createid="createContactTypeOption" data-deleteid="deleteContactTypeOption" data-who="contactType" class="equipmentModal modalContent action" id="createcontactTypeModal"> 
+                <div class="options">
+                    <h2>Selecione uma opção</h2>
+                    <input data-optionid="createContactType" name="type" type="radio" id="createContactTypeOption">
+                    <label for="createContactTypeOption">Criar tipo</label>
+
+                    <input data-optionid="deleteContactType" name="type" type="radio" id="deleteContactTypeOption">
+                    <label for="deleteContactTypeOption">Apagar tipo</label>
+                </div>
+                <div id="createContactType" class="createContactType createAction">
+                    <h3>Criar tipo</h3>
+
+                    <form>
+                        <input class="input" type="text" placeholder="Tipo"/>
+
+                        <button class="btn contactTypeActions" id="createContactTypeAction" data-action="create" type="submit" >Criar tipo</button>
+                    </form>
+                </div>
+
+                <div id="deleteContactType" class="deleteContactType deleteAction">
+                    <h3>Apagar tipo</h3>
+
+                    <form>
+                        <select class="select">
+                            <option value="" selected disabled hidden>Selecione um tipo..</option>
+
+                            <?php foreach ($allContactsTypes as $contactType) {
+                                    echo ' <option>' . $contactType->getContactType() . '</option> ';
+                            } ?>
+                        </select>
+
+                        <button class="btn contactTypeActions" id="deleteContactTypeAction" data-action="delete" type="submit" >Apagar tipo</button>
+                    </form>
+                </div>
             </div>
         </div>
 

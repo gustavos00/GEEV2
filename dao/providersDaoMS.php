@@ -108,6 +108,18 @@ class providersDAOMS implements providersDAO
         }
     }
 
+    public function createContactType($t) {
+        $sql = $this->pdo->prepare("INSERT INTO tipoContacto(tipo) VALUES (:type)");
+        $sql->bindValue(':type', $t);
+        $sql->execute();
+    }
+
+    public function deleteContactType($t) {
+        $sql = $this->pdo->prepare("DELETE FROM tipoContacto WHERE tipo = :type");
+        $sql->bindValue(':type', $t);
+        $sql->execute();
+    }
+
     public function createContact(provider $p) {
         $sql = $this->pdo->prepare("INSERT INTO contactos(contacto, tipoContacto_idtipoContacto) VALUES (:contact, :contactTypeId)");
         $sql->bindValue(':contact', $p->getContact());

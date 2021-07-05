@@ -474,7 +474,7 @@ $allSoftwaresType = $softwares->getAllSoftwareTypes();
                     <form>
                         <input class="input" type="text" placeholder="Tipo"/>
 
-                        <button class="btn typeActions" id="createTypeAction" data-action="create" type="submit" >Criar tipo</button>
+                        <button class="btn typeActions" id="createTypeOption" data-action="create" type="submit" >Criar tipo</button>
                     </form>
                 </div>
 
@@ -490,7 +490,7 @@ $allSoftwaresType = $softwares->getAllSoftwareTypes();
                                 } ?>
                         </select>
 
-                        <button class="btn typeActions" id="deleteTypeAction" data-action="delete" type="submit" >Apagar tipo</button>
+                        <button class="btn typeActions" id="deleteTypeOption" data-action="delete" type="submit" >Apagar tipo</button>
                     </form>
                 </div>
             </div>
