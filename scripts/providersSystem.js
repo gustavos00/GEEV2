@@ -35,14 +35,18 @@ function generateTable(contactsArray) {
         const thContactElement = document.createElement('th');
         const thTypeElement = document.createElement('th');
         const thActionsElement = document.createElement('th');
+        const trashcanImg = document.createElement('div');
 
-        tbodyElement.appendChild(trElement);
-
+        thActionsElement.classList.add('thActionsTable');
+        trashcanImg.classList.add('trashcanImage')
         thContactElement.innerHTML = contactsArray[i].contact;
         thTypeElement.innerHTML = contactsArray[i].type;
 
+        tbodyElement.appendChild(trElement);
+        thActionsElement.appendChild(trashcanImg);
         trElement.appendChild(thContactElement)
         trElement.appendChild(thTypeElement)
+        trElement.appendChild(thActionsElement)
     }
 }
 

@@ -10,6 +10,7 @@ function checkFullDate($date) {
 
 $lentDao = new lentDAOMS($pdo);
 $isLent = $lentDao->checkIfIsLent($_POST['selectedEquipmentId']);
+
 if($isLent) {
     if(checkFullDate($_POST['finalDate'])) {
         $lent = new lent();

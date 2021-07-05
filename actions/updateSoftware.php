@@ -9,11 +9,15 @@ function checkFullDate($date) {
     return checkdate($dateArray[1], $dateArray[2], $dateArray[0]);
 }
 
+function checkInput($i) {
+    return (trim($i) != "");
+}
+
 $softwares = new softwaresDAOMS($pdo);
 $providers = new providersDAOMS($pdo);
 
 if(checkFullDate($_POST['initialDate']) && checkFullDate($_POST['finalDate'])) {
-    if(isset($_POST['type']) && isset($_POST['provider'])) {
+    if(isset($_POST['type']) && isset($_POST['provider']) && checkInput($_POST['type']) && checkInput($_POST['provider'])) {
         $typeId = $softwares->getSoftwareTypeIdByName($_POST['type']);
         $providerId = $providers->getIdByName($_POST['provider']);
         

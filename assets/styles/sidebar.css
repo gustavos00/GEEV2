@@ -1,3 +1,12 @@
+.sidebarWrapper {
+    position: relative;
+    top : 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+}
+
 .sidebar {
     width: 10vw;
     height: 100vh;
@@ -10,11 +19,13 @@
     align-items: center;
     flex-direction: column;
 
-    position: sticky;
+    position: fixed;
     top : 0;
     bottom: 0;
     left: 0;
     right: 0;
+
+    z-index: 10;
     
     transition: all .3s ease-in-out;
 }
