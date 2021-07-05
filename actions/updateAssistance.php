@@ -73,7 +73,7 @@ if (checkInput($_POST['technical']) && checkInput($_POST['objective'])) {
 }
 
 $_SESSION['createAssistanceError'] = 'Aparentemente não foram inseridos todos os dados necessários.';
-header('Location: ../pages/createAssistance.php');
+header('Location: ../pages/createProvider.php?id=');
 exit(0);
 
 
