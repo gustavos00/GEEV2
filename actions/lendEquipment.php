@@ -16,7 +16,7 @@ function checkInput($i) {
 $lentDao = new lentDAOMS($pdo);
 $isLent = $lentDao->checkIfIsLent($_POST['selectedEquipmentId']);
 
-if(isset($_POST['responsibleUser']) && checkInput($_POST['initialDate']) && isset($_POST['selectedEquipmentId'])) {
+if(isset($_POST['responsibleUser']) && checkInput($_POST['initialDate']) && isset($_POST['selectedEquipmentId']) && checkInput($_POST['responsibleUser']) && checkInput($_POST['selectedEquipmentId'])) {
     if(!$isLent) {
         if(checkFullDate($_POST['initialDate'])) { //Se não existir ou se não for válida
             if(!isset($_POST['finalDate'])) {

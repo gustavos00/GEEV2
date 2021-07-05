@@ -9,6 +9,10 @@ function checkFullDate($date) {
     return checkdate($dateArray[1], $dateArray[2], $dateArray[0]);
 }
 
+function checkInput($i) {
+    return (trim($i) != "");
+}
+
 $assistanceId = null;
 
 if(isset($_POST['assistance'])) {
@@ -16,7 +20,7 @@ if(isset($_POST['assistance'])) {
 }
 
 if(checkFullDate($_POST['dateMalfunction'])) {
-    if(isset($_POST['provider'])) {
+    if(isset($_POST['provider']) && checkInput($_POST['provider'])) {
         $malfunction = new malfunctionsDaoMS($pdo);
         $provider = new providersDaoMS($pdo);
 
