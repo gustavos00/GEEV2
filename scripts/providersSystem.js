@@ -1,4 +1,4 @@
-const softwareActionButton = document.getElementsByClassName('softwareActionButton');
+const softwareActionButton = document.getElementsByClassName('actionBtn');
 const contactsInput = document.getElementById('contactsInput');
 const contactsType = document.getElementById('contactsType');
 const tbodyElement = document.getElementById('tbody');
@@ -147,6 +147,7 @@ for (let i = 0; i < softwareActionButton.length; i++) {
 
         for (let k = 0; k < actionBtn.length; k++) {
             let element = actionBtn[k];
+            actionFile = 'createProviderContactType'
 
             element.addEventListener('click', (e) => {
 
@@ -179,6 +180,7 @@ for (let i = 0; i < softwareActionButton.length; i++) {
                     } else {
                         console.log(inputs.length)
                     }
+
                     request(data);
                 } else {
                     alert('Verifique se nenhum campo está vazio.');
