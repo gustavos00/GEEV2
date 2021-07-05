@@ -59,7 +59,7 @@ class brandsDAOMS implements brandsDAO
 
     public function deleteBrand(brand $b)
     {
-        $sql = $this->pdo->prepare('DELETE FROM marca WHERE nomeMarca = :brandName)');
+        $sql = $this->pdo->prepare('DELETE FROM marca WHERE nomeMarca = :brandName');
         $sql->bindValue(':brandName', $b->getBrandName());
         $sql->execute();
     }

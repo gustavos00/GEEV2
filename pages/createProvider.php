@@ -188,7 +188,11 @@ $allLentProcess = $lent->getAll();
                                 } ?>
                             </select>
 
-                            <button id="createProviderContact" class="btn">Criar contacto</button>
+                            <div class="createActionsContainern">
+                                <button id="createProviderContact" class="btn">Criar contacto</button>
+                                <button id="createProviderContactType" class="btn">Criar tipo de contacto</button>
+                            </div>
+                            
 
                         </div>
 

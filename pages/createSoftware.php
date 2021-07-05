@@ -21,7 +21,6 @@ $AllProviders = $providers->getAll();
 $allEquipments = $equipments->getAll();
 $allSoftwares = $softwares->getAllSoftwares();
 $allSoftwaresType = $softwares->getAllSoftwareTypes();
-$allSoftwaresType = $softwares->getAllSoftwareTypes();
 
 ?>
 
@@ -486,10 +485,9 @@ $allSoftwaresType = $softwares->getAllSoftwareTypes();
                         <select class="select">
                             <option value="" selected disabled hidden>Selecione um tipo..</option>
 
-                            
-                            <?php foreach ($allTypes as $Type) {
-                                    echo ' <option> ' . $Type->getTypeName() . '</option> ';
-                            } ?>
+                            <?php foreach ($allSoftwaresType as $type) {
+                                    echo ' <option> ' . $type->getTypeName() . '</option> ';
+                                } ?>
                         </select>
 
                         <button class="btn typeActions" id="deleteTypeAction" data-action="delete" type="submit" >Apagar tipo</button>
@@ -502,7 +500,7 @@ $allSoftwaresType = $softwares->getAllSoftwareTypes();
         <script src="../scripts/filterSystem.js"></script>
         <script src="../scripts/storeFormData.js"></script>
         <script src="../scripts/sidebarSystem.js"></script>
-        <script src="../scripts/assistanceSystem.js"></script>
+        <script src="../scripts/softwareSystem.js"></script>
         <script src="../scripts/unsetSessionVariable.js"></script>
     </body>
 </html>

@@ -140,4 +140,17 @@ class softwaresDAOMS implements sotfwaresDAO
     public function getEquipmentSoftwaresById($id) {
         $sql = $this->pdo->prepare("SELECT softwares.*, prestadorServicos");
     }
+
+    public function createSoftwareType($t) {
+        $sql = $this->pdo->prepare("INSERT INTO tiposoftwares(tipoSoftware) VALUES (:softwareType)");
+        $sql->bindValue(':softwareType', $t);
+        $sql->execute();
+    }
+
+    
+    public function deleteSoftwareType($t) {
+        $sql = $this->pdo->prepare('DELETE FROM tiposoftwares WHERE tipoSoftware = :softwareType');
+        $sql->bindValue(':softwareType', $t);
+        $sql->execute();
+    }
 }
