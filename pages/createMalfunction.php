@@ -47,7 +47,7 @@ $allProviders = $providers->getAll();
     <title>Criar avaria - GEE</title>
 </head>
     <body>
-    <nav class="sidebar">
+        <nav class="sidebar">
             <div class="sidebarBtnContainer">
                 <div class="sidebarBtn"></div>
             </div>

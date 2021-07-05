@@ -6,6 +6,7 @@ class provider
     private $name;
     private $obs;
 
+    private $contact;
     private $contactType;  
     private $contactTypeId;  
     private $contacts;
@@ -43,7 +44,15 @@ class provider
     function getContactTypeId() {
         return $this->contactTypeId;
     } 
- 
+
+    function getContact() {
+        return $this->contact;
+    } 
+
+    function setContact($c) {
+        $this->contact = $c;
+    }
+
     function setContactTypeId($cti) {
         $this->contactTypeId = $cti;
     }

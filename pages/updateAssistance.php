@@ -3,6 +3,8 @@ require_once '../config.php';
 require_once '../dao/softwaresDaoMS.php';
 require_once '../dao/providersDaoMS.php';
 require_once '../dao/equipmentsDaoMS.php';
+require_once '../dao/assistanceDaoMS.php';
+session_start();
 
 function getUrl($adress)
 {
@@ -15,10 +17,20 @@ function getUrl($adress)
 $softwares = new softwaresDaoMS($pdo);
 $equipments = new equipmentsDaoMS($pdo);
 $providers = new providersDaoMS($pdo);
+$assistance = new assistanceDaoMS($pdo);
 
+
+//For the modals
 $allSoftwares = $softwares->getAllSoftwares();
-$allEquipments = $equipments->getAll();
 $allProviders = $providers->getAll();
+
+//For the page
+$assistanceData = $assistance->getSpecific($_GET['id']);
+$allAssistanceTypes = $assistance->getAllAssistanceTypes();
+
+//Both
+$allEquipments = $equipments->getAll();
+
 
 ?>
 
@@ -37,106 +49,177 @@ $allProviders = $providers->getAll();
     <link rel="stylesheet" href="../assets/styles/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/styles/global.css">
     <link rel="stylesheet" href="../assets/styles/sidebar.css">
-    <link rel="stylesheet" href="../assets/styles/equipments.css">
+    <link rel="stylesheet" href="../assets/styles/assistance.css">
 
     <title>Atualizar assistência - GEE</title>
 </head>
     <body>
-    <nav class="sidebar">
-            <div class="sidebarBtnContainer">
-                <div class="sidebarBtn"></div>
+        <div class="sidebarWrapper">
+            <nav class="sidebar">
+                <div class="sidebarBtnContainer">
+                    <div class="sidebarBtn"></div>
+                </div>
+
+                <div class="actionsButtonsContainer">
+                    <div class="dropdownContainer">
+                        <div class="actionButton equipment">
+                            <i class="fas fa-desktop"></i>
+                            Equipamento
+                            <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                        </div>
+                        <div data-dropdown="equipamento" class="dropdownContent">
+                            <a href="home.php">• Visualizar equipamentos</a>
+                            <a href="createEquipment.php">• Criar equipamento</a>
+                            <a data-doWhat="updateEquipment" class="openModalAction">• Atualizar equipamento</a>
+                            <a data-doWhat="retireEquipment" class="openModalAction">• Abater equipamento</a>
+                            <a data-doWhat="deleteEquipment" class="openModalAction">• Apagar equipamento</a>
+                            <a data-doWhat="lendEquipmentModal" class="openModalAction">• Emprestar equipamento</a>
+                            <a data-doWhat="returnEquipmentModal" class="openModalAction">• Retornar equipamento de emprestimo</a>
+                            <a data-doWhat="deleteLentProcess" class="openModalAction">• Apagar processo de emprestimo</a>
+                        </div>
+                    </div>
+
+                    <div class="dropdownContainer">
+                        <div class="actionButton softwares">
+                            <i class="far fa-plus-square"></i>
+                            Softwares
+                            <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                        </div>
+                        <div data-dropdown="softwares" class="dropdownContent">
+                            <a href="home.php#softwaresContainer">• Visualizar softwares</a>
+                            <a href="createSoftware.php">• Criar softwares</a>
+                            <a data-doWhat="updateSoftware" class="openModalAction">• Atualizar softwares</a>
+                            <a data-doWhat="deleteSoftware" class="openModalAction">• Apagar softwares</a>
+                        </div>
+                    </div>
+
+                    <div class="dropdownContainer">
+                        <div class="actionButton providers">
+                        <i class="fas fa-globe-europe"></i>
+                            Fornecedores
+                            <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                        </div>
+                        <div data-dropdown="fornecedores" class="dropdownContent">
+                            <a href="home.php">• Visualizar fornecedores</a>
+                            <a href="createProvider.php">• Criar fornecedores</a>
+                            <a data-doWhat="updateProvider" class="openModalAction">• Atualizar fornecedores</a>
+                            <a data-doWhat="deleteProvider" class="openModalAction">• Apagar fornecedores</a>
+                        </div>
+                    </div>
+
+                    <div class="dropdownContainer">
+                        <div class="actionButton malfunctions">
+                            <i class="fas fa-times"></i>
+                            Avarias
+                            <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                        </div>
+                        <div data-dropdown="avarias" class="dropdownContent">
+                            <a href="home.php#malfunctionsContainer">• Visualizar avarias</a>
+                            <a href="createMalfunction.php">• Criar avaria</a>
+                            <a data-doWhat="updateMalfunction" class="openModalAction">• Atualizar avaria</a>
+                            <a data-doWhat="deleteMalfunction" class="openModalAction">• Apagar avarias</a>
+                        </div>
+                    </div>
+
+                    <div class="dropdownContainer">
+                        <div class="actionButton malfunctions">
+                            <i class="fas fa-life-ring"></i>
+                            Assistências
+                            <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                        </div>
+                        <div data-dropdown="assistências" class="dropdownContent">
+                            <a href="home.php#malfunctionsContainer">• Visualizar assistência</a>
+                            <a href="createAssistance.php">• Criar assistência</a>
+                            <a data-doWhat="updateAssistance" class="openModalAction">• Atualizar assistência</a>
+                            <a data-doWhat="deleteAssistance" class="openModalAction">• Apagar assistência</a>
+                        </div>
+                    </div>
+
+                    <div class="dropdownContainer">
+                        <div id="openPdfsModal" class="T pdfs">
+                            <i class="fas fa-life-ring"></i>
+                            Gerar PDF
+                            <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="darkmodeSwitchContainer">
+                    <label class="darkmodeSwitchContent" for="checkbox">
+                        <input type="checkbox" id="checkbox" />
+                        <div class="slider round"></div>
+                    </label>
+                </div>
+            </nav>
+        </div>
+
+        <div class="contentWrap">
+            <div class="container">
+                <h1>Criar assistência</h1>
+                    <?php
+                    if (isset($_SESSION['updateAssistanceError'])) {
+                        echo '
+                        <div class="alert">
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                ' . $_SESSION['updateAssistanceError'] . '
+                                <button type="button" class="btn-close unsetSessionVariable" data-session-name="updateAssistanceError" data-bs-dismiss="alert"></button>
+                            </div>
+                        </div>
+                        ';
+                    }
+                    ?>
+
+                <form id="form" data-cookieName="__geeupdatemalfunction" action="<?php getUrl('/actions/updateAssistance.php'); ?>" method="post">
+                    <div class="dataContainer">
+                        <input class="input" value=<?php echo($assistanceData->getInitialDate()); ?> type="date" name="initialDateAssistance" id="initialDateAssistance">
+                        <input class="input"  type="date" name="finalDateAssistance" value=<?php echo($assistanceData->getFinalDate()); ?> id="finalDateAssistance">
+
+                        <textarea class="textarea"  placeholder="Insira uma descrição..."  name="description" id="description" cols="30" rows="10"><?php echo($assistanceData->getDescription()); ?></textarea>
+                        <textarea class="textarea"  placeholder="Insira um objetivo..." name="objective" id="objective" cols="30" rows="10"><?php echo($assistanceData->getGoals()); ?></textarea>
+
+                        <div class="frontOfficeContainer">
+                            <label for="frontOffice">FrontOffice</label>
+                            <input type="checkbox" name="frontOffice" id="frontOffice">
+                        </div>
+
+                        <div class="filter">
+                            <select class="select" id="technical" name="technical">
+                                <option value="" selected disabled hidden>Selecione um tecnico..</option>
+                                <?php foreach ($allProviders as $provider) {
+                                    echo ' <option>' . $provider->getName() . '</option> ';
+                                } ?>
+                            </select>
+
+                            <input class="input" autocomplete="off" data-filterName="technical" placeholder="Pesquisar por tecnicos..." type="text" name="filter">
+                        </div>
+
+                        <div class="filter">
+                            <select class="select" id="assistanceType" name="assistanceType">
+                                <option value="" selected disabled hidden>Selecione um tipo de ocorrencia..</option>
+                                <?php foreach ($allAssistanceTypes as $type) {
+                                    echo ' <option>' . $type->getTypeName() . '</option> ';
+                                } ?>
+                            </select>
+
+                            <input class="input" autocomplete="off" data-filterName="assistanceType" placeholder="Pesquisar por tipos..." type="text" name="filter">
+                        </div>
+
+                        <div class="filter">
+                            <select class="select" id="equipments" name="equipments">
+                                <option value="" selected disabled hidden>Selecione um equipamento..</option>
+                                <?php foreach ($allEquipments as $equipment) {
+                                    echo ' <option>' . $equipment->getInternalCode() . ' (' . $equipment->getIpAdress() . ') </option> ';
+                                } ?>
+                            </select>
+
+                            <input class="input" autocomplete="off" data-filterName="equipments" placeholder="Pesquisar por equipamentos..." type="text" name="filter">
+                        </div>
+                        
+                        <input id="actionButton" data-who="createMalfunction" class="btn" type="submit" value="Atualizar avaria">
+                    </div>
+                </form>
             </div>
+        </div>
 
-            <div class="actionsButtonsContainer">
-                <div class="dropdownContainer">
-                    <div class="actionButton equipment">
-                        <i class="fas fa-desktop"></i>
-                        Equipamento
-                        <i id="arrow" class="arrow fas fa-arrow-right"></i>
-                    </div>
-                    <div data-dropdown="equipamento" class="dropdownContent">
-                        <a href="home.php">• Visualizar equipamentos</a>
-                        <a href="createEquipment.php">• Criar equipamento</a>
-                        <a data-doWhat="updateEquipment" class="openModalAction">• Atualizar equipamento</a>
-                        <a data-doWhat="retireEquipment" class="openModalAction">• Abater equipamento</a>
-                        <a data-doWhat="deleteEquipment" class="openModalAction">• Apagar equipamento</a>
-                        <a data-doWhat="lendEquipmentModal" class="openModalAction">• Emprestar equipamento</a>
-                        <a data-doWhat="returnEquipmentModal" class="openModalAction">• Retornar equipamento de emprestimo</a>
-                        <a data-doWhat="deleteLentProcess" class="openModalAction">• Apagar processo de emprestimo</a>
-                    </div>
-                </div>
-
-                <div class="dropdownContainer">
-                    <div class="actionButton softwares">
-                        <i class="far fa-plus-square"></i>
-                        Softwares
-                        <i id="arrow" class="arrow fas fa-arrow-right"></i>
-                    </div>
-                    <div data-dropdown="softwares" class="dropdownContent">
-                        <a href="home.php#softwaresContainer">• Visualizar softwares</a>
-                        <a href="createSoftware.php">• Criar softwares</a>
-                        <a data-doWhat="updateSoftware" class="openModalAction">• Atualizar softwares</a>
-                        <a data-doWhat="deleteSoftware" class="openModalAction">• Apagar softwares</a>
-                    </div>
-                </div>
-
-                <div class="dropdownContainer">
-                    <div class="actionButton providers">
-                    <i class="fas fa-globe-europe"></i>
-                        Fornecedores
-                        <i id="arrow" class="arrow fas fa-arrow-right"></i>
-                    </div>
-                    <div data-dropdown="fornecedores" class="dropdownContent">
-                        <a href="home.php">• Visualizar fornecedores</a>
-                        <a href="createProvider.php">• Criar fornecedores</a>
-                        <a data-doWhat="updateProvider" class="openModalAction">• Atualizar fornecedores</a>
-                        <a data-doWhat="deleteProvider" class="openModalAction">• Apagar fornecedores</a>
-                    </div>
-                </div>
-
-                <div class="dropdownContainer">
-                    <div class="actionButton malfunctions">
-                        <i class="fas fa-times"></i>
-                        Avarias
-                        <i id="arrow" class="arrow fas fa-arrow-right"></i>
-                    </div>
-                    <div data-dropdown="avarias" class="dropdownContent">
-                        <a href="home.php#malfunctionsContainer">• Visualizar avarias</a>
-                        <a href="createMalfunction.php">• Criar avaria</a>
-                        <a data-doWhat="updateMalfunction" class="openModalAction">• Atualizar avaria</a>
-                        <a data-doWhat="deleteMalfunction" class="openModalAction">• Apagar avarias</a>
-                    </div>
-                </div>
-
-                <div class="dropdownContainer">
-                    <div class="actionButton malfunctions">
-                        <i class="fas fa-life-ring"></i>
-                        Assistências
-                        <i id="arrow" class="arrow fas fa-arrow-right"></i>
-                    </div>
-                    <div data-dropdown="assistências" class="dropdownContent">
-                        <a href="home.php#malfunctionsContainer">• Visualizar assistência</a>
-                        <a href="createAssistance.php">• Criar assistência</a>
-                        <a data-doWhat="updateAssistance" class="openModalAction">• Atualizar assistência</a>
-                        <a data-doWhat="deleteAssistance" class="openModalAction">• Apagar assistência</a>
-                    </div>
-                </div>
-
-                <div class="dropdownContainer">
-                    <div id="openPdfsModal" class="T pdfs">
-                        <i class="fas fa-life-ring"></i>
-                        Gerar PDF
-                        <i id="arrow" class="arrow fas fa-arrow-right"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="darkmodeSwitchContainer">
-                <label class="darkmodeSwitchContent" for="checkbox">
-                    <input type="checkbox" id="checkbox" />
-                    <div class="slider round"></div>
-                </label>
-            </div>
-        </nav>
         <div class="modalFilter" id="modalFilter">
             <!--MODALS TO SIDEBAR -->
             <div data-actionBtn="updateEquipmentBtnAction" id="updateEquipment" class="equipmentModal modalContent updateEquipment">
@@ -400,6 +483,7 @@ $allProviders = $providers->getAll();
 
         <script src="../scripts/filterSystem.js"></script>
         <script src="../scripts/sidebarSystem.js"></script>
+        <script src="../scripts/storeFormData.js"></script>
         <script src="../scripts/unsetSessionVariable.js"></script>
     </body>
 </html>
