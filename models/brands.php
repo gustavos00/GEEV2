@@ -30,5 +30,9 @@ interface brandsDAO
 {
     public function getAll();
     public function getIdByName($n);
+
     public function createBrand(brand $b);
+
+    public function deleteBrand(brand $b);
+    public function checkIfExist($n);
 }

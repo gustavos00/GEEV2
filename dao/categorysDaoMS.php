@@ -70,4 +70,21 @@ class categorysDAOMS implements categorysDAO
         }
         return ;
     }
+
+    public function deleteCategory(category $c) {
+        $sql = $this->pdo->prepare("DELETE FROM categoria WHERE nomeCategoria = :categoryName");
+        $sql->bindValue(':categoryName', $c->getName());
+        $sql->execute();
+    }
+
+    public function checkIfExist($n) {
+        $sql = $this->pdo->prepare("SELECT * FROM categoria WHERE nomeCategoria = :categoryName");
+        $sql->bindValue(':categoryName', $n);
+        $sql->execute();
+
+        if($sql->rowCount() > 0) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -131,6 +131,7 @@ class assistance
 interface assistanceDAO
 {
     public function createAssistance(assistance $a);
+    public function createAssistanceType(assistance $a);
     
     public function getAll();
 

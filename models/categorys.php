@@ -43,4 +43,7 @@ interface categorysDAO
     public function getIdByName($n);
 
     public function createCategory(category $c);
+
+    public function deleteCategory(category $c);
+    public function checkIfExist($n);
 }
