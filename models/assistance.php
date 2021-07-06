@@ -8,14 +8,18 @@ class assistance
     private $duration;
 
     private $description;
-    private $technical;
 
     private $goals;
     private $frontOffice;
 
     private $typeId;
     private $typeName;
+
     private $equipmentId;
+    private $equipmentName;
+
+    private $technicalId;
+    private $technicalName;
 
     function getId()
     {
@@ -67,14 +71,24 @@ class assistance
         return $this->description;
     }
 
-    function setTechnical($t)
+    function setTechnicalId($t)
     {
-        $this->technical = $t;
+        $this->technicalId = $t;
     }
 
-    function getTechnical()
+    function getTechnicalId()
     {
-        return $this->technical;
+        return $this->technicalId;
+    }
+
+    function setTechnicalName($t)
+    {
+        $this->technicalName = $t;
+    }
+
+    function getTechnicalName()
+    {
+        return $this->technicalName;
     }
 
     function setGoals($g)
@@ -125,6 +139,16 @@ class assistance
     function getEquipmentId()
     {
         return $this->equipmentId;
+    }
+
+    function setEquipmentName($eName)
+    {
+        $this->equipmentName = $eName;
+    }
+
+    function getEquipmentName()
+    {
+        return $this->equipmentName;
     }
 }
 

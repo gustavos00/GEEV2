@@ -53,7 +53,9 @@ function getUrl($adress)
     <title>Criar equipamento - GEE</title>
 </head>
     <body>
-    <nav class="sidebar">
+    
+    <div class="sidebarWrapper">
+        <nav class="sidebar">
             <div class="sidebarBtnContainer">
                 <div class="sidebarBtn"></div>
             </div>
@@ -148,6 +150,7 @@ function getUrl($adress)
                 </label>
             </div>
         </nav>
+    </div>
         <div class="contentWrap">
             <div class="container">
             <h1>Criar equipamento</h1>
@@ -267,10 +270,11 @@ function getUrl($adress)
                             <input class="input" autocomplete="off" data-filterName="softwares" placeholder="Pesquisar por softwares.." type="text" name="filter">
                         </div>
                     </div>
+                    <div class="submitContainer">
+                        <button type="submit" form="form" class="btn">Criar equipamento</button>
+                    </div>
                 </form>
-                <div class="submitContainer">
-                    <button type="submit" form="form" class="btn">Criar equipamento</button>
-                </div>
+
             </div>
         </div>
         <div class="modalFilter" id="modalFilter">

@@ -357,7 +357,7 @@ $allLentProcess = $lent->getAll();
                             <a href="#" class="searchBtn">
                                 <i class="fas fa-search"></i>
                             </a>    
-                            <input id="myInput" class="search-input" data-filterName="providers" type="text" name="filter" placeholder="Pesquise por data inicial, data final, versão, tipo...">
+                            <input class="search-input" data-filterName="providers" type="text" name="filter" placeholder="Pesquise por data inicial, data final, versão, tipo...">
                         </form>
                     </div>
 
@@ -692,7 +692,7 @@ $allLentProcess = $lent->getAll();
             </div>
         </div>
 
-        <script src="../scripts/jquery-1.4.2.js"></script>
+        <script src="../scripts/jquery-3.6.0.min.js"></script>
         <script src="../scripts/tableFilter.js"></script>
         <script src="../scripts/filterSystem.js"></script>
         <script src="../scripts/sidebarSystem.js"></script>

@@ -283,8 +283,7 @@ body::-webkit-scrollbar-thumb,
     margin-top: 2rem;
 
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(4, auto);
+
     grid-gap: 2rem;
 
     border-radius: 15px;

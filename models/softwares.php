@@ -116,7 +116,7 @@ interface sotfwaresDao
 
     public function getAllSoftwareTypes();
     public function getSpecificSoftwareById($id);
-    public function getEquipmentSoftwaresById($id);
+    public function checkIfSoftwareTypeExists($n);
 
 
 }

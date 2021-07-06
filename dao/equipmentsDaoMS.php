@@ -255,7 +255,7 @@ class equipmentsDAOMS implements equipmentsDAO
     } 
 
     public function getIdByInternalCode($ic) {
-        $sql = $this->pdo->prepare("SELECT idEquipamentos FROM equipamentos WHERE codInterno = 'tE123'");
+        $sql = $this->pdo->prepare("SELECT idEquipamentos FROM equipamentos WHERE codInterno = :ci");
         $sql->bindValue(':ci', $ic);
         $sql->execute();
 

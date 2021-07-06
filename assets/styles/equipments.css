@@ -1,5 +1,8 @@
 /* CREATE EQUIPMENT */
-
+.container form {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(4, auto);
+}
 
 .container form .dataContainer .buttonsContainer {
     display: grid;

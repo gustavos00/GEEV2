@@ -1,5 +1,5 @@
 .container form {
-    width: 100%;
+    grid-template-columns: 1fr 1fr;
 }
 
 .container form .inputsContainer {
