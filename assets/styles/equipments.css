@@ -1,0 +1,36 @@
+/* CREATE EQUIPMENT */
+.container form {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(4, auto);
+}
+
+.container form .dataContainer .buttonsContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+}
+
+.container form .dataContainer .buttonsContainer .btn {
+    width: 100%;
+
+    font-size: 1.4rem;
+}
+
+.submitContainer {
+    height: 100px;
+    display: block;
+    padding-bottom: 2rem;
+}
+
+.submitContainer button {
+    color: var(--text-light)
+}
+
+
+/* CREATE CATEGORY MODAL */
+.createCategory {
+    height: 200px;
+    padding: 1rem 0;
+
+    justify-content: unset;
+}

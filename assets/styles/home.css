@@ -1,0 +1,160 @@
+body {
+    display: grid;
+    grid-template-columns: auto 1fr;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-body);
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.dataContainer {
+    width: 75vw;
+    max-height: 550px;
+    min-height: 510px;
+    margin: 2rem;
+    padding: 0.5rem;
+
+    background-color: var(--background-header);
+    border-radius: 15px;
+    box-shadow: 0px 0px 50px -25px #000000;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.dataContainer h3 {
+    margin-top: 1.5rem;
+
+    font-size: 2.6rem;
+    font-weight: 600;
+    letter-spacing: 0.2rem;
+    color: var(--text-dark);
+}
+
+.dataContainer .dataContent {
+    width: 90%;
+    height: 90%;
+}
+
+.dataContainer .dataContent .filter {
+    width: 500px;
+    margin: 1rem 0;
+
+    background: var(--background-body);
+    border-radius: 5px;
+    font-size: 2.2rem;
+}
+
+.dataContainer .dataContent .filter form {
+    height: 40px;
+
+    display:flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: all .5s ease-in-out;
+}
+
+.dataContainer .dataContent .filter a {
+    margin: 0 1rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--secondary-background-content-body);
+    text-decoration: none;
+    font-size: 2.5rem;
+}
+
+.dataContainer .dataContent .filter input {
+    margin-top: .5rem;
+    width: 450px;
+
+    background: none;
+    outline: none;
+    box-shadow: none;
+    border: none;
+
+    color: var(--text-dark);
+    transition: all .5s ease-in-out;
+}
+
+.dataContainer .dataContent .filter input::placeholder {
+    color: var(--text-dark);
+    opacity: .5;
+}
+
+
+.dataContainer .dataContent .tableContainer {
+    width: 100%;
+    height: 80%;
+    margin-top: 2rem;
+
+    border-radius: 5px;
+
+    position: relative;
+    overflow: auto;
+}
+
+.dataContainer .dataContent .tableContainer::-webkit-scrollbar-track
+{
+	background-color: var(--background-body);
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.dataContainer .dataContent .tableContainer::-webkit-scrollbar
+{
+	width: 7px;
+	background-color: none;
+}
+
+.dataContainer .dataContent .tableContainer::-webkit-scrollbar-thumb
+{
+	border-radius: 7px;
+	background-color: var(--secondary-background-content-body);
+}
+
+[data-theme="dark"] .dataContainer .dataContent .tableContainer table {
+    --bs-table-hover-bg: #434344d3;
+    --bs-table-hover-color: #ffffff;
+}
+
+.dataContainer .dataContent .tableContainer table > * {
+    font-size: 4rem;
+    color: var(--text-dark);    
+}
+
+.dataContainer .dataContent .tableContainer table thead th{
+    padding: .6rem;
+    color: var(--text-dark);
+
+    background-color: var(--secondary-background-content-body);
+
+    text-align: center;
+
+    position: sticky;
+    top: 0;    
+}
+
+.dataContainer .dataContent .tableContainer table thead th:first-child{
+    border-top-left-radius: 5px;
+}
+
+.dataContainer .dataContent .tableContainer table tbody tr {
+    cursor: pointer;
+}
+
+[data-theme="dark"] .dataContainer .dataContent .tableContainer .table-striped>tbody>tr:nth-of-type(odd) {
+    --bs-table-striped-color: #ccc;
+    --bs-table-striped-bg: #272829d3;
+}
+
