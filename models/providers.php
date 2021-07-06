@@ -6,6 +6,7 @@ class provider
     private $name;
     private $obs;
 
+    private $contactId;
     private $contact;
     private $contactType;  
     private $contactTypeId;  
@@ -41,9 +42,13 @@ class provider
         $this->obs = $o;
     }
 
-    function getContactTypeId() {
-        return $this->contactTypeId;
+    function getContactId() {
+        return $this->contactId;
     } 
+
+    function setContactId($c) {
+        $this->contactId = $c;
+    }
 
     function getContact() {
         return $this->contact;
@@ -56,6 +61,10 @@ class provider
     function setContactTypeId($cti) {
         $this->contactTypeId = $cti;
     }
+    
+    function getContactTypeId() {
+        return $this->contactTypeId;
+    } 
 
     function getContactType() {
         return $this->contactType;
@@ -84,7 +93,11 @@ interface providersDao
 
     public function createContact(provider $p);
     public function createContactType($t);
-    public function linkProviderToContacts($providerId, $contactsId);
 
     public function updateProvider(provider $p);
+
+    public function deleteAllProviderContacts(provider $p);
+    public function deleteProvider($id);
+    
+    public function linkProviderToContacts($providerId, $contactsId);
 }
