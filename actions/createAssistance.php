@@ -2,7 +2,6 @@
 require '../config.php';
 require '../dao/assistanceDaoMS.php';
 require '../dao/equipmentsDaoMS.php';
-require '../dao/providersDaoMS.php';
 session_start();
 
 function validateDate($date, $format = 'Y-m-dH:i')
@@ -18,28 +17,25 @@ function checkInput($i) {
 if (checkInput($_POST['technical']) && checkInput($_POST['objective'])) {
     $assistance = new assistanceDAOMS($pdo);
     $equipments = new equipmentsDAOMS($pdo);
-    $providers = new providersDAOMS($pdo);
     $newAssistance = new assistance();
 
-    $equipmentId = $equipments->getIdByInternalCode(explode(' (', $_POST['equipments'])[0]);
+    $equipmentId = $equipments->getIdByInternalCode(explode(' - ', $_POST['equipments'])[0]);
+
     $typeId = $assistance->getAssistanceTypeIdBYName($_POST['assistanceType']);
-    $technicalId = $providers->getIdByName($_POST['technical']);
 
     $initialDateAssistance = null;
     $frontOffice = null;
 
     //DATA INICIAL
-    if(!isset($_POST['initialDateAssistance']) || !validateDate($_POST['initialDateAssistance'])) { //Se não existir ou se não for valida
-        $initialDateAssistance = date("Y-m-d H:i:s"); 
+    if(!isset($_POST['initialDateAssistance'])) { //Se não for valida «
+        $_SESSION['createAssistanceError'] = "A data inicial inserida não é válida.";
     } else {
-        $initialDateAssistance = $_POST['initialDateAssistance'];
+        $initialDateAssistance = date("Y-m-d H:i:s"); 
     }
 
-    //DATA INICIAL
-    if(!isset($_POST['finalDateAssistance']) || !validateDate($_POST['finalDateAssistance'])) { //Se não existir ou se não for valida
-        $finalDateAssistance = date("Y-m-d H:i:s"); 
-    } else {
-        $finalDateAssistance = $_POST['finalDateAssistance'];
+    //DATA FINAL
+    if($_POST['finallDateAssistance'] !== "" && !validateDate($_POST['finallDateAssistance'])) { //Existir mas não for valida
+        $_SESSION['createAssistanceError'] = "A data final inserida não é válida.";
     }
 
     //FrontOffice
@@ -50,24 +46,18 @@ if (checkInput($_POST['technical']) && checkInput($_POST['objective'])) {
     }
 
     $newAssistance->setInitialDate($initialDateAssistance);
-    $newAssistance->setFinalDate($finalDateAssistance);
+    $newAssistance->setFinalDate($_POST['finallDateAssistance']);
     $newAssistance->setDescription($_POST['description']);
+    $newAssistance->setTechnical($_POST['technical']);
     $newAssistance->setGoals($_POST['objective']);
     $newAssistance->setFrontOffice($frontOffice);
-
     $newAssistance->setTypeId($typeId);
-    $newAssistance->setTypeName($_POST['assistanceType']);
-
-    $newAssistance->setTechnicalId($technicalId);
-    $newAssistance->setTechnicalName($_POST['technical']);
-
     $newAssistance->setEquipmentId($equipmentId);
-    $newAssistance->setEquipmentName(explode(' (', $_POST['equipments'])[0]);
 
     $assistance->createAssistance($newAssistance);
 
     $_SESSION['successMessage'] = "A assistência na data " . $initialDateAssistance . " foi criada com sucesso.";
-
+    
     header('Location: ../index.php');
     exit(0);
 }
@@ -75,5 +65,3 @@ if (checkInput($_POST['technical']) && checkInput($_POST['objective'])) {
 $_SESSION['createAssistanceError'] = 'Aparentemente não foram inseridos todos os dados necessários.';
 header('Location: ../pages/createAssistance.php');
 exit(0);
-
-

@@ -5,27 +5,47 @@ const tbodyElement = document.getElementById('tbody');
 const form = document.getElementById('form');
 
 let contactsData = [];
-let providerData = []
+let providerData = [];
+let oldContactData = [];
 let actionFile = 'createProvider';
 let id = 0;
 
-if (document.getElementById('id')) {
-    id = document.getElementById('id').value
-
-    const trElements = document.querySelectorAll('table tbody tr');
-
-    trElements.forEach(element => {
-        const contact = element.cells[0].innerHTML;
-        const contactType = element.cells[1].innerHTML;
-
-        const oneContactData = {
-            contact: contact,
-            type: contactType
+Array.prototype.diff = function (arr2) {
+    var ret = [];
+    this.sort();
+    arr2.sort();
+    for (var i = 0; i < this.length; i += 1) {
+        if (arr2.indexOf(this[i]) > -1) {
+            ret.push(this[i]);
         }
-        contactsData.push(oneContactData);
-    });
+    }
+    return ret;
+};
 
-    actionFile = 'updateProvider';
+async function getAllProviderContacts(id) {
+    fetch("../actions/getAllProviderContacts.php", {
+        method: 'POST',
+        body: JSON.stringify(id),
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8'
+        }
+    })
+        .then(response => response.json())
+        .then(response => {
+            for (let i = 0; i < response.length; i++) {
+                const oneContactData = {
+                    contact: response[i].contact,
+                    type: response[i].contactType,
+                }
+                contactsData.push(oneContactData);
+                oldContactData = contactsData;
+
+                generateTable(contactsData)
+            }
+        })
+        .catch(() => {
+            console.log('error getting provider contacts');
+        })
 }
 
 function generateTable(contactsArray) {
@@ -54,6 +74,17 @@ function generateTable(contactsArray) {
     }
 }
 
+function closeModal() {
+    const modalsContent = modalFilter.querySelectorAll('.modalContent');
+
+    for (let modal of modalsContent) {
+        modal.style.display = 'none';
+    }
+
+    modalFilter.style.display = "none";
+}
+
+//General xhttp request 
 function request(providerData) {
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "../actions/" + actionFile + ".php", true);
@@ -67,10 +98,32 @@ function request(providerData) {
     xhttp.send(JSON.stringify(providerData));
 }
 
+if (document.getElementById('id')) {
+    id = document.getElementById('id').value
+
+    getAllProviderContacts(id)
+
+    const trElements = document.querySelectorAll('table tbody tr');
+
+    trElements.forEach(element => {
+        const contact = element.cells[0].innerHTML;
+        const contactType = element.cells[1].innerHTML;
+
+        const oneContactData = {
+            contact: contact,
+            type: contactType
+        }
+        contactsData.push(oneContactData);
+    });
+
+    actionFile = 'updateProvider';
+}
+
+//Create provider contact click listener
 document.getElementById('createProviderContact').addEventListener('click', (e) => {
     e.preventDefault();
 
-    if (contactsInput.value.replace(/ /g, '').length > 0) {
+    if (!contactsInput.value.replace(/ /g, '') == "") {
         const oneContactData = {
             contact: contactsInput.value,
             type: contactsType.value
@@ -83,20 +136,30 @@ document.getElementById('createProviderContact').addEventListener('click', (e) =
 
 })
 
+//Submit form button click listener 
 document.getElementById('createProviderBtn').addEventListener('click', (e) => {
     e.preventDefault();
 
-    if (contactsData.length != 0 || confirm("Tem a certeza que deseja criar um fornecedor sem contactos?")) {
+    if (contactsData.length != 0 || confirm("Tem a certeza que deseja criar um fornecedor sem contactos?") && !nameProvider.value.replace(/ /g, '') == "") {
+        let contactsDifference = oldContactData.diff(contactsData);
+        console.log(contactsDifference)
+        let status = contactsDifference.length != oldContactData.length ? 'd' : 's';
+
         const providerData = {
             name: nameProvider.value,
             obs: obsProvider.value,
             id: id,
+            status: status,
 
             contacts: contactsData
         }
-        console.log(providerData);
+
+        console.log(actionFile)
         request(providerData);
     }
+
+
+
 })
 
 //CREATE PROVIDER CONTACT TYPE
@@ -188,16 +251,6 @@ for (let i = 0; i < softwareActionButton.length; i++) {
             })
         }
     })
-}
-
-function closeModal() {
-    const modalsContent = modalFilter.querySelectorAll('.modalContent');
-
-    for (let modal of modalsContent) {
-        modal.style.display = 'none';
-    }
-
-    modalFilter.style.display = "none";
 }
 
 window.addEventListener("click", (e) => {

@@ -336,7 +336,7 @@ $allLentProcess = $lent->getAll();
                                     <tr>
                                         <td><?= $assistance->getInitialDate(); ?></td>
                                         <td><?= $assistance->getFinalDate(); ?></td>
-                                        <td><?= $assistance->getTechnicalName(); ?></td>
+                                        <td><?= $assistance->getTechnical(); ?></td>
                                         <td><?= $assistance->getFrontOffice(); ?></td>
                                         <td><?= $assistance->getGoals(); ?></td>
                                         <td><?= $assistance->getTypeName(); ?></td>
@@ -357,7 +357,7 @@ $allLentProcess = $lent->getAll();
                             <a href="#" class="searchBtn">
                                 <i class="fas fa-search"></i>
                             </a>    
-                            <input id="myInput" class="search-input" data-filterName="providers" type="text" name="filter" placeholder="Pesquise por data inicial, data final, versão, tipo...">
+                            <input class="search-input" data-filterName="providers" type="text" name="filter" placeholder="Pesquise por data inicial, data final, versão, tipo...">
                         </form>
                     </div>
 
@@ -645,7 +645,7 @@ $allLentProcess = $lent->getAll();
                     <select class="select" id="updateAssistanceSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione uma assistência..</option>
                         <?php foreach($allAssistances as $assistances) {
-                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnicalName() . ' (' . $assistances->getTypeName() . ') </option> ';
+                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnical() . ' (' . $assistances->getTypeName() . ') </option> ';
                         } ?>
                     </select>
 
@@ -661,7 +661,7 @@ $allLentProcess = $lent->getAll();
                     <select class="select" id="deleteAssistanceSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione uma assistência..</option>
                         <?php foreach($allAssistances as $assistances) {
-                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnicalName() . ' (' . $assistances->getTypeName() . ') </option> ';
+                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnical() . ' (' . $assistances->getTypeName() . ') </option> ';
                         } ?>
                     </select>
 
@@ -692,7 +692,7 @@ $allLentProcess = $lent->getAll();
             </div>
         </div>
 
-        <script src="../scripts/jquery-1.4.2.js"></script>
+        <script src="../scripts/jquery-3.6.0.min.js"></script>
         <script src="../scripts/tableFilter.js"></script>
         <script src="../scripts/filterSystem.js"></script>
         <script src="../scripts/sidebarSystem.js"></script>
