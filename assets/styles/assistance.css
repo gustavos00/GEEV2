@@ -34,6 +34,7 @@
 
 .dataContainer .dataContent h4 {
     font-weight: bold;
+    color: var(--text-dark);
 }
 
 .dataContainer .dataContent h4 span {
