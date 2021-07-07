@@ -34,3 +34,21 @@
     width: 90%;
     height: 40%;
 }
+
+/* VIEW SOFTWARE DATA */
+.dataContainer {
+    width: unset;
+}
+
+.dataContainer h3 {
+    margin-bottom: 1rem; 
+}
+
+.dataContainer .dataContent h4 {
+    font-weight: bold;
+}
+
+.dataContainer .dataContent h4 span {
+    font-weight: normal;
+    font-size: 1.5rem;
+}

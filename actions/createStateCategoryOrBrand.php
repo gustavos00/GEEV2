@@ -10,7 +10,10 @@ function checkInput($i) {
 }
 
 $data = json_decode(file_get_contents("php://input"));
+var_dump($data);
 $who = $data->who;
+
+
 
 if(checkInput($data->content)) {
     if((count((array)$data)) == 3) {

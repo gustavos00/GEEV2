@@ -35,16 +35,16 @@ if(checkFullDate($_POST['dateMalfunction'])) {
 
         $malfunction->createMalfunction($newMalfunction);
 
-        unset($_SESSION['createMalfunctionError']);
+        unset($_SESSION['updateMalfunctionError']);
         $_SESSION['successMessage'] = "O avaria na data " . $_POST['dateMalfunction'] . " foi atualizada com sucesso.";
 
         header('Location: ../index.php');
         die();
     } else {
-        $_SESSION['createMalfunctionError'] = 'Aparentemente o fornecedor selecionado não é válido.';
+        $_SESSION['updateMalfunctionError'] = 'Aparentemente o fornecedor selecionado não é válido.';
     }
 } else {
-    $_SESSION['createMalfunctionError'] = 'Aparentemente a data inserida não é válida.';
+    $_SESSION['updateMalfunctionError'] = 'Aparentemente a data inserida não é válida.';
 }
 
 header('Location: ../pages/updateMalfunction.php');

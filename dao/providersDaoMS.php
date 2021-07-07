@@ -10,6 +10,34 @@ class providersDAOMS implements providersDAO
         $this->pdo = $driver;
     }
 
+    public function checkStatus($id) {
+        $sql = $this->pdo->prepare("
+            SELECT softwares.idsoftwares, equipamentos.idequipamentos, avarias.idavarias FROM ((prestadorServicos
+            LEFT JOIN softwares ON softwares.prestadorServicos_idprestadorServico = prestadorServicos.idprestadorServico)
+            LEFT JOIN equipamentos ON equipamentos.prestadorServicos_idprestadorServico = prestadorServicos.idprestadorServico)
+            LEFT JOIN avarias ON avarias.prestadorServicos_idprestadorServico = prestadorServicos.idprestadorServico
+            WHERE prestadorServicos.idprestadorServico = :id
+        ");
+        $sql->bindValue(':id', $id);
+        $sql->execute();
+
+        if($sql->rowCount() > 0) {
+            return true;
+        }
+        return false; 
+    }
+
+    public function checkContactTypeStatus($id) {
+        $sql = $this->pdo->prepare("SELECT idcontactos FROM contactos WHERE tipoContacto_idtipoContacto = :id ");
+        $sql->bindValue(':id', $id);
+        $sql->execute();
+
+        if($sql->rowCount() > 0) {
+            return true;
+        }
+        return false; 
+    }
+
     public function getAll()
     {
         $providerData = [];

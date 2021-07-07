@@ -265,4 +265,16 @@ class equipmentsDAOMS implements equipmentsDAO
         }
         return;
     }
+
+    public function getIpStatus($ip) {
+        $sql = $this->pdo->prepare("SELECT idEquipamentos from equipamentos WHERE enderecoip = :ip");
+        $sql->bindValue(':ip', $ip);
+        $sql->execute();
+
+        if($sql->rowCount() > 0) {
+            return true;
+        }
+
+        return false;
+    }
 }

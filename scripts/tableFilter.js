@@ -2,9 +2,12 @@ $(document).ready(function () {
     $(".search-input").on("keyup", function () {
 
         let value = $(this).val().toLowerCase();
-        let id = $(this).attr('data-filterName');
+        let id = $(this).attr('data-filtername');
 
-        $(id + "tr").filter(function () {
+        console.log($(id).children());
+
+        $(id).children().filter(() => {
+            console.log('a');
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });

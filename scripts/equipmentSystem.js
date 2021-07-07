@@ -101,6 +101,9 @@ for (let i = 0; i < equipmentsActionButton.length; i++) {
                             action: action,
                             who: who
                         };
+
+                        request(data);
+                        closeModal()
                     } else if (inputs.length == 2) {
                         const categoryCode = inputs[1].value;
 
@@ -111,11 +114,14 @@ for (let i = 0; i < equipmentsActionButton.length; i++) {
                                 action: action,
                                 who: who
                             };
+
+                            request(data);
+                            closeModal()
                         }
                     } else {
                         console.log(inputs.length)
                     }
-                    request(data);
+
                 } else {
                     alert('Verifique se nenhum campo está vazio.');
                 }

@@ -35,3 +35,22 @@ body {
     color: var(--text-dark);
     padding-left: .7rem;
 }
+
+/* VIEW MALFUNCTION DATA */
+.dataContainer {
+    width: unset;
+    min-width: 50vw;
+}
+
+.dataContainer h3 {
+    margin-bottom: 1rem; 
+}
+
+.dataContainer .dataContent h4 {
+    font-weight: bold;
+}
+
+.dataContainer .dataContent h4 span {
+    font-weight: normal;
+    font-size: 1.5rem;
+}
