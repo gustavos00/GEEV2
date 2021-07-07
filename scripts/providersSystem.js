@@ -10,17 +10,12 @@ let oldContactData = [];
 let actionFile = 'createProvider';
 let id = 0;
 
-Array.prototype.diff = function (arr2) {
-    var ret = [];
-    this.sort();
-    arr2.sort();
-    for (var i = 0; i < this.length; i += 1) {
-        if (arr2.indexOf(this[i]) > -1) {
-            ret.push(this[i]);
-        }
-    }
-    return ret;
-};
+function arrayEquals(a, b) {
+    return Array.isArray(a) &&
+      Array.isArray(b) &&
+      a.length === b.length &&
+      a.every((val, index) => val === b[index]);
+}
 
 async function getAllProviderContacts(id) {
     fetch("../actions/getAllProviderContacts.php", {
@@ -141,9 +136,7 @@ document.getElementById('createProviderBtn').addEventListener('click', (e) => {
     e.preventDefault();
 
     if (contactsData.length != 0 || confirm("Tem a certeza que deseja criar um fornecedor sem contactos?") && !nameProvider.value.replace(/ /g, '') == "") {
-        let contactsDifference = oldContactData.diff(contactsData);
-        console.log(contactsDifference)
-        let status = contactsDifference.length != oldContactData.length ? 'd' : 's';
+        let status = 'd';
 
         const providerData = {
             name: nameProvider.value,
@@ -157,8 +150,6 @@ document.getElementById('createProviderBtn').addEventListener('click', (e) => {
         console.log(actionFile)
         request(providerData);
     }
-
-
 
 })
 

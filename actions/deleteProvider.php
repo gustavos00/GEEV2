@@ -4,12 +4,20 @@ require_once '../dao/providersDaoMS.php';
 session_start();
 
 if(isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
+    $contactsIds = [];
     $provider = new providersDAOMS($pdo);
+    $providerData = $provider->getSpecific($_GET['id']);
+    $providerContacts = $provider->getSpecificProviderContacts($_GET['id']);
 
-    $providerModel = new provider;
-    $providerModel->setId($_GET['id']);
+    foreach($providerContacts as $contact) {
+        array_push($contactsIds, $contact->getContactId());
+    }
 
-    $provider->deleteProvider($providerModel);
+    $provider->unlinkProviderToContacts($_GET['id'], $contactsIds);
+    $provider->deleteAllProviderContacts($contactsIds);
+    $provider->deleteProvider($_GET['id']);
+
+
     $_SESSION['successMessage'] = "O fonecedor " . $_GET['id'] . " foi apagado com sucesso.";
 } else {
     $_SESSION['indexErrorMessage'] = "Não foram inseridos todos os dados necessários.";

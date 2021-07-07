@@ -336,7 +336,7 @@ $allLentProcess = $lent->getAll();
                                     <tr>
                                         <td><?= $assistance->getInitialDate(); ?></td>
                                         <td><?= $assistance->getFinalDate(); ?></td>
-                                        <td><?= $assistance->getTechnical(); ?></td>
+                                        <td><?= $assistance->getTechnicalName(); ?></td>
                                         <td><?= $assistance->getFrontOffice(); ?></td>
                                         <td><?= $assistance->getGoals(); ?></td>
                                         <td><?= $assistance->getTypeName(); ?></td>
@@ -645,7 +645,7 @@ $allLentProcess = $lent->getAll();
                     <select class="select" id="updateAssistanceSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione uma assistência..</option>
                         <?php foreach($allAssistances as $assistances) {
-                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnical() . ' (' . $assistances->getTypeName() . ') </option> ';
+                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnicalName() . ' (' . $assistances->getTypeName() . ') </option> ';
                         } ?>
                     </select>
 
@@ -661,7 +661,7 @@ $allLentProcess = $lent->getAll();
                     <select class="select" id="deleteAssistanceSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione uma assistência..</option>
                         <?php foreach($allAssistances as $assistances) {
-                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnical() . ' (' . $assistances->getTypeName() . ') </option> ';
+                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnicalName() . ' (' . $assistances->getTypeName() . ') </option> ';
                         } ?>
                     </select>
 
