@@ -161,8 +161,21 @@ $allLentProcess = $lent->getAll();
                         echo '
                         <div class="alert">
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                ' . $_SESSION['createMalfunctionError'] . '
-                                <button type="button" class="btn-close unsetSessionVariable" data-session-name="createMalfunctionError" data-bs-dismiss="alert"></button>
+                                ' . $_SESSION['createProviderError'] . '
+                                <button type="button" class="btn-close unsetSessionVariable" data-session-name="createProviderError" data-bs-dismiss="alert"></button>
+                            </div>
+                        </div>
+                        ';
+                    }
+                    ?>
+
+                    <?php
+                    if (isset($_SESSION['providerContactError'])) {
+                        echo '
+                        <div class="alert">
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                ' . $_SESSION['providerContactError'] . '
+                                <button type="button" class="btn-close unsetSessionVariable" data-session-name="providerContactError" data-bs-dismiss="alert"></button>
                             </div>
                         </div>
                         ';

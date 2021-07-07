@@ -49,7 +49,7 @@ $allProviders = $providers->getAll();
     <title>Atualizar avaria - GEE</title>
 </head>
     <body>
-    <nav class="sidebar">
+        <nav class="sidebar">
             <div class="sidebarBtnContainer">
                 <div class="sidebarBtn"></div>
             </div>
@@ -148,12 +148,12 @@ $allProviders = $providers->getAll();
             <div class="container">
                 <h1>Atualizar avaria</h1>
                 <?php
-                    if (isset($_SESSION['createMalfunctionError'])) {
+                    if (isset($_SESSION['updateMalfunctionError'])) {
                         echo '
                         <div class="alert">
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                ' . $_SESSION['createMalfunctionError'] . '
-                                <button type="button" class="btn-close unsetSessionVariable" data-session-name="createMalfunctionError" data-bs-dismiss="alert"></button>
+                                ' . $_SESSION['updateMalfunctionError'] . '
+                                <button type="button" class="btn-close unsetSessionVariable" data-session-name="updateMalfunctionError" data-bs-dismiss="alert"></button>
                             </div>
                         </div>
                         ';
@@ -164,7 +164,7 @@ $allProviders = $providers->getAll();
                     <div class="dataContainer">
                         <input class="input" value=<?php echo ($malfunctionData->getDate());?> type="date" name="dateMalfunction" id="dateMalfunction">
 
-                        <textarea class="textarea" value=<?php echo ($malfunctionData->getObs());?> placeholder="Insira uma descrição..." name="description" id="description" cols="30" rows="10"></textarea>
+                        <textarea class="textarea"  placeholder="Insira uma descrição..." name="description" id="description" cols="30" rows="10"><?php echo ($malfunctionData->getDescription());?></textarea>
 
                         <div class="filter">
                             <select class="select" id="provider" name="provider">

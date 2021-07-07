@@ -168,8 +168,8 @@ $allEquipments = $equipments->getAll();
 
                 <form id="form" data-cookieName="__geecreatemalfunction" action="<?php getUrl('/actions/createAssistance.php'); ?>" method="post">
                     <div class="dataContainer">
-                        <input class="input" type="date" name="initialDateAssistance" id="initialDateAssistance">
-                        <input class="input" type="date" name="finalDateAssistance" id="finalDateAssistance">
+                        <input class="input" type="datetime-local" name="initialDateAssistance" id="initialDateAssistance">
+                        <input class="input" type="datetime-local" name="finalDateAssistance" id="finalDateAssistance">
 
                         <textarea class="textarea" placeholder="Insira uma descrição..." name="description" id="description" cols="30" rows="10"></textarea>
                         <textarea class="textarea" placeholder="Insira um objetivo..." name="objective" id="objective" cols="30" rows="10"></textarea>
