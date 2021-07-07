@@ -12,15 +12,17 @@ class assistanceDAOMS implements assistanceDAO
 
     public function createAssistance(assistance $a)
     {
-        $sql = $this->pdo->prepare("INSERT INTO assistencia(dataInicio, dataFim, descricao, objetivo, frontOffice, tipoOcorrencia_idtipoOcorrencia, equipamentos_idEquipamentos, prestadorServicos_idprestadorServico) VALUES (:initialDate, :finalDate, :description, :goals, :frontOffice, :assistanceTypeId, :equipmentId, :technical)");
-        $sql->bindValue(':finalDate', $a->getFinalDate());
+        $sql=$this->pdo->prepare("INSERT INTO assistencia(dataInicio, dataFim, duracao, descricao, objetivo, frontOffice, tipoOcorrencia_idtipoOcorrencia, equipamentos_idequipamentos, prestadorservicos_idprestadorServico) VALUE (:initialDate, :finalDate, :duration, :description, :goals, :frontOffice, :typeId, :equipmentId, :providerId)");
         $sql->bindValue(':initialDate', $a->getInitialDate());
+        $sql->bindValue(':finalDate', $a->getFinalDate());
+        $sql->bindValue(':duration', $a->getDuration());
         $sql->bindValue(':description', $a->getDescription());
         $sql->bindValue(':goals', $a->getGoals());
         $sql->bindValue(':frontOffice', $a->getFrontOffice());
-        $sql->bindValue(':assistanceTypeId', $a->getTypeId());
+
+        $sql->bindValue(':typeId', $a->getTypeId());
         $sql->bindValue(':equipmentId', $a->getEquipmentId());
-        $sql->bindValue(':technical', $a->getTechnicalId());
+        $sql->bindValue(':providerId', $a->getTechnicalId());
         $sql->execute();
     }
 

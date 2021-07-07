@@ -1,8 +1,22 @@
 <?php
 require_once '../config.php';
+require_once '../dao/malfunctionsDaoMS.php';
+
+if(filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
+    $malfunctions = new malfunctionsDAOMS($pdo);
+    $malfunctionData = $malfunctions->getSpecific($_GET['id']);
+    
+    if(is_null($malfunctionData)) {
+        header('Location: home.php');
+        exit(0);
+    } 
+} else {
+    header('Location: home.php');
+    exit(0);
+}
+
 require_once '../dao/equipmentsDaoMS.php';
 require_once '../dao/softwaresDaoMS.php';
-require_once '../dao/malfunctionsDaoMS.php';
 require_once '../dao/providersDaoMS.php';
 require_once '../dao/assistanceDaoMS.php';
 require_once '../dao/lentDaoMS.php';
@@ -13,12 +27,12 @@ function getUrl($adress)
     $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ?
         "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/geev2';
 
-    echo $url . $adress;
+    echo strtoupper($url) . $adress;
 }
 
 $equipments = new equipmentsDAOMS($pdo);
 $softwares = new softwaresDAOMS($pdo);
-$malfunctions = new malfunctionsDAOMS($pdo);
+
 $providers = new providersDAOMS($pdo);
 $assistance = new assistanceDAOMS($pdo);
 $lent = new lentDAOMS($pdo);
@@ -31,6 +45,7 @@ $allAssistances = $assistance->getAll();
 $allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
 $AllNotLentEquipments = $equipments->getAllNotLentEquipments();
 $allLentProcess = $lent->getAll();
+
 
 ?>
 
@@ -49,383 +64,119 @@ $allLentProcess = $lent->getAll();
     <link rel="stylesheet" href="../assets/styles/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/styles/global.css">
     <link rel="stylesheet" href="../assets/styles/sidebar.css">
-    <link rel="stylesheet" href="../assets/styles/home.css">
+    <link rel="stylesheet" href="../assets/styles/malfunction.css">
 
-    <title>Página inicial - GEE</title>
+    <title>Software - GEE</title>
 </head>
     <body>
 
-    <div class="sidebarWrapper">
-        <nav class="sidebar">
-            <div class="sidebarBtnContainer">
-                <div class="sidebarBtn"></div>
-            </div>
-
-            <div class="actionsButtonsContainer">
-                <div class="dropdownContainer">
-                    <div class="actionButton equipment">
-                        <i class="fas fa-desktop"></i>
-                        Equipamento
-                        <i id="arrow" class="arrow fas fa-arrow-right"></i>
-                    </div>
-                    <div data-dropdown="equipamento" class="dropdownContent">
-                        <a href="home.php">• Visualizar equipamentos</a>
-                        <a href="createEquipment.php">• Criar equipamento</a>
-                        <a data-doWhat="updateEquipment" class="openModalAction">• Atualizar equipamento</a>
-                        <a data-doWhat="retireEquipment" class="openModalAction">• Abater equipamento</a>
-                        <a data-doWhat="deleteEquipment" class="openModalAction">• Apagar equipamento</a>
-                        <a data-doWhat="lendEquipmentModal" class="openModalAction">• Emprestar equipamento</a>
-                        <a data-doWhat="returnEquipmentModal" class="openModalAction">• Retornar equipamento de emprestimo</a>
-                        <a data-doWhat="deleteLentProcess" class="openModalAction">• Apagar processo de emprestimo</a>
-                    </div>
+        <div class="sidebarWrapper">
+            <nav class="sidebar">
+                <div class="sidebarBtnContainer">
+                    <div class="sidebarBtn"></div>
                 </div>
 
-                <div class="dropdownContainer">
-                    <div class="actionButton softwares">
-                        <i class="far fa-plus-square"></i>
-                        Softwares
-                        <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                <div class="actionsButtonsContainer">
+                    <div class="dropdownContainer">
+                        <div class="actionButton equipment">
+                            <i class="fas fa-desktop"></i>
+                            Equipamento
+                            <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                        </div>
+                        <div data-dropdown="equipamento" class="dropdownContent">
+                            <a href="home.php">• Visualizar equipamentos</a>
+                            <a href="createEquipment.php">• Criar equipamento</a>
+                            <a data-doWhat="updateEquipment" class="openModalAction">• Atualizar equipamento</a>
+                            <a data-doWhat="retireEquipment" class="openModalAction">• Abater equipamento</a>
+                            <a data-doWhat="deleteEquipment" class="openModalAction">• Apagar equipamento</a>
+                            <a data-doWhat="lendEquipmentModal" class="openModalAction">• Emprestar equipamento</a>
+                            <a data-doWhat="returnEquipmentModal" class="openModalAction">• Retornar equipamento de emprestimo</a>
+                            <a data-doWhat="deleteLentProcess" class="openModalAction">• Apagar processo de emprestimo</a>
+                        </div>
                     </div>
-                    <div data-dropdown="softwares" class="dropdownContent">
-                        <a href="home.php#softwaresContainer">• Visualizar softwares</a>
-                        <a href="createSoftware.php">• Criar softwares</a>
-                        <a data-doWhat="updateSoftware" class="openModalAction">• Atualizar softwares</a>
-                        <a data-doWhat="deleteSoftware" class="openModalAction">• Apagar softwares</a>
-                    </div>
-                </div>
 
-                <div class="dropdownContainer">
-                    <div class="actionButton providers">
-                    <i class="fas fa-globe-europe"></i>
-                        Fornecedores
-                        <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                    <div class="dropdownContainer">
+                        <div class="actionButton softwares">
+                            <i class="far fa-plus-square"></i>
+                            Softwares
+                            <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                        </div>
+                        <div data-dropdown="softwares" class="dropdownContent">
+                            <a href="home.php#softwaresContainer">• Visualizar softwares</a>
+                            <a href="createSoftware.php">• Criar softwares</a>
+                            <a data-doWhat="updateSoftware" class="openModalAction">• Atualizar softwares</a>
+                            <a data-doWhat="deleteSoftware" class="openModalAction">• Apagar softwares</a>
+                        </div>
                     </div>
-                    <div data-dropdown="fornecedores" class="dropdownContent">
-                        <a href="home.php">• Visualizar fornecedores</a>
-                        <a href="createProvider.php">• Criar fornecedores</a>
-                        <a data-doWhat="updateProvider" class="openModalAction">• Atualizar fornecedores</a>
-                        <a data-doWhat="deleteProvider" class="openModalAction">• Apagar fornecedores</a>
-                    </div>
-                </div>
 
-                <div class="dropdownContainer">
-                    <div class="actionButton malfunctions">
-                        <i class="fas fa-times"></i>
-                        Avarias
-                        <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                    <div class="dropdownContainer">
+                        <div class="actionButton providers">
+                        <i class="fas fa-globe-europe"></i>
+                            Fornecedores
+                            <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                        </div>
+                        <div data-dropdown="fornecedores" class="dropdownContent">
+                            <a href="home.php">• Visualizar fornecedores</a>
+                            <a href="createProvider.php">• Criar fornecedores</a>
+                            <a data-doWhat="updateProvider" class="openModalAction">• Atualizar fornecedores</a>
+                            <a data-doWhat="deleteProvider" class="openModalAction">• Apagar fornecedores</a>
+                        </div>
                     </div>
-                    <div data-dropdown="avarias" class="dropdownContent">
-                        <a href="home.php#malfunctionsContainer">• Visualizar avarias</a>
-                        <a href="createMalfunction.php">• Criar avaria</a>
-                        <a data-doWhat="updateMalfunction" class="openModalAction">• Atualizar avaria</a>
-                        <a data-doWhat="deleteMalfunction" class="openModalAction">• Apagar avarias</a>
-                    </div>
-                </div>
 
-                <div class="dropdownContainer">
-                    <div class="actionButton malfunctions">
-                        <i class="fas fa-life-ring"></i>
-                        Assistências
-                        <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                    <div class="dropdownContainer">
+                        <div class="actionButton malfunctions">
+                            <i class="fas fa-times"></i>
+                            Avarias
+                            <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                        </div>
+                        <div data-dropdown="avarias" class="dropdownContent">
+                            <a href="home.php#malfunctionsContainer">• Visualizar avarias</a>
+                            <a href="createMalfunction.php">• Criar avaria</a>
+                            <a data-doWhat="updateMalfunction" class="openModalAction">• Atualizar avaria</a>
+                            <a data-doWhat="deleteMalfunction" class="openModalAction">• Apagar avarias</a>
+                        </div>
                     </div>
-                    <div data-dropdown="assistências" class="dropdownContent">
-                        <a href="home.php#malfunctionsContainer">• Visualizar assistência</a>
-                        <a href="createAssistance.php">• Criar assistência</a>
-                        <a data-doWhat="updateAssistance" class="openModalAction">• Atualizar assistência</a>
-                        <a data-doWhat="deleteAssistance" class="openModalAction">• Apagar assistência</a>
-                    </div>
-                </div>
 
-                <div class="dropdownContainer">
-                    <div id="openPdfsModal" class="T pdfs">
-                        <i class="fas fa-life-ring"></i>
-                        Gerar PDF
-                        <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                    <div class="dropdownContainer">
+                        <div class="actionButton malfunctions">
+                            <i class="fas fa-life-ring"></i>
+                            Assistências
+                            <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                        </div>
+                        <div data-dropdown="assistências" class="dropdownContent">
+                            <a href="home.php#malfunctionsContainer">• Visualizar assistência</a>
+                            <a href="createAssistance.php">• Criar assistência</a>
+                            <a data-doWhat="updateAssistance" class="openModalAction">• Atualizar assistência</a>
+                            <a data-doWhat="deleteAssistance" class="openModalAction">• Apagar assistência</a>
+                        </div>
+                    </div>
+
+                    <div class="dropdownContainer">
+                        <div id="openPdfsModal" class="T pdfs">
+                            <i class="fas fa-life-ring"></i>
+                            Gerar PDF
+                            <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="darkmodeSwitchContainer">
-                <label class="darkmodeSwitchContent" for="checkbox">
-                    <input type="checkbox" id="checkbox" />
-                    <div class="slider round"></div>
-                </label>
-            </div>
-        </nav>
-    </div>
+                <div class="darkmodeSwitchContainer">
+                    <label class="darkmodeSwitchContent" for="checkbox">
+                        <input type="checkbox" id="checkbox" />
+                        <div class="slider round"></div>
+                    </label>
+                </div>
+            </nav>
+        </div>      
     
         <div class="container">
-
-            <?php
-                if (isset($_SESSION['successMessage'])) {
-                    echo '
-                    <div class="alert">
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            ' . $_SESSION['successMessage'] . '
-                            <button type="button" class="btn-close unsetSessionVariable" data-session-name="successMessage" data-bs-dismiss="alert"></button>
-                        </div>
-                    </div>
-                    ';
-                }
-            ?>
-
-            <?php
-                if (isset($_SESSION['indexErrorMessage'])) {
-                    echo '
-                    <div class="alert">
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            ' . $_SESSION['indexErrorMessage'] . '
-                            <button type="button" class="btn-close unsetSessionVariable" data-session-name="indexErrorMessage" data-bs-dismiss="alert"></button>
-                        </div>
-                    </div>
-                    ';
-                }
-            ?>
-
-            <div class="dataContainer equipments">
-                <h3>Equipamentos</h3>
+            <div class="dataContainer">
+                <h3>Avaria Nº<?php echo($malfunctionData->getId());?></h3>
 
                 <div class="dataContent">
-                    <div class="filter">
-                        <form method="POST">
-                            <a href="#" class="searchBtn">
-                                <i class="fas fa-search"></i>
-                            </a>    
-                            <input class="search-input" data-filterName="equipments" type="text" name="filter" placeholder="Pesquise por código interno, endereço IP...">
-                        </form>
-                    </div>
-
-                    <div class="tableContainer">
-                        <table class="table table-hover table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Código Interno</th>
-                                    <th scope="col">Tipo</th>
-                                    <th scope="col">Marca/Modelo</th>
-                                    <th scope="col">Número de Série</th>
-                                    <th scope="col">Endereço IP</th>
-                                    <th scope="col">Tomada de Rede</th>
-                                    <th scope="col">Estado</th>
-                                </tr>
-                            </thead>
-                            <tbody id="equipments" class="tbody">
-                                <?php foreach($allEquipments as $specificEquipment) : ?>
-                                    <tr>
-                                        <td><?= $specificEquipment->getInternalCode(); ?></td>
-                                        <td><?= $specificEquipment->getCategoryName(); ?></td>
-                                        <td><?php echo ($specificEquipment->getBrandName() . ' - ' . $specificEquipment->getModel()); ?></td>
-                                        <td><?= $specificEquipment->getSerieNumber(); ?></td>
-                                        <td><?= $specificEquipment->getIpAdress(); ?></td>
-                                        <td><?= $specificEquipment->getLanPort(); ?></td>
-                                        <td><?= $specificEquipment->getStateName(); ?></td>
-                                    </tr>
-                                <?php endforeach ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div id="softwaresContainer" class="dataContainer softwares">
-                <h3>Softwares</h3>
-
-                <div class="dataContent">
-                    <div class="filter">
-                        <form method="POST">
-                            <a href="#" class="searchBtn">
-                                <i class="fas fa-search"></i>
-                            </a>    
-                            <input class="search-input" data-filterName="softwares" type="text" name="filter" placeholder="Pesquise por data inicial, data final, versão, tipo...">
-                        </form>
-                    </div>
-
-                    <div class="tableContainer">
-                        <table class="table table-hover table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Tipo</th>
-                                    <th scope="col">Chave</th>
-                                    <th scope="col">Versão</th>
-                                    <th scope="col">Data inicial</th>
-                                    <th scope="col">Data Final</th>
-                                    <th scope="col">Fornecedor</th>
-                                </tr>
-                            </thead>
-                            <tbody id="softwares" class="tbody">
-                                <?php foreach($allSoftwares as $specificSoftware) :  ?>
-                                    <tr>
-                                        <td><?= $specificSoftware->getTypeName(); ?></td>
-                                        <td><?= $specificSoftware->getKey(); ?></td>
-                                        <td><?= $specificSoftware->getVersion(); ?></td>
-                                        <td><?= $specificSoftware->getInitialDate(); ?></td>
-                                        <td><?= $specificSoftware->getFinalDate(); ?></td>
-                                        <td><?= $specificSoftware->getProviderName(); ?></td>
-                                    </tr>
-                                <?php endforeach ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div id="malfunctionsContainer" class="dataContainer malfunctions">
-                <h3>Avarias</h3>
-
-                <div class="dataContent">
-                    <div class="filter">
-                        <form method="POST">
-                            <a href="#" class="searchBtn">
-                                <i class="fas fa-search"></i>
-                            </a>    
-                            <input class="search-input" data-filterName="malfunctions" type="text" name="filter" placeholder="Pesquise por data inicial, data final, versão, tipo...">
-                        </form>
-                    </div>
-
-                    <div class="tableContainer">
-                        <table class="table table-hover table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Data</th>
-                                    <th scope="col">Descrição</th>
-                                    <th scope="col">Fornecedor</th>
-                                    <th scope="col">Estado</th>
-                                </tr>
-                            </thead>
-                            <tbody id="malfunctions" class="tbody">
-                                <?php foreach($AllMalfunctions as $malfunctions) : ?>
-                                    <tr>
-                                        <td><?= $malfunctions->getDate(); ?></td>
-                                        <td><?= $malfunctions->getDescription(); ?></td>
-                                        <td><?= $malfunctions->getProviderName(); ?></td>
-                                        <td><?= $malfunctions->getStatus() ?></td>
-                                    </tr>
-                                <?php endforeach ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div id="assistancesContainer" class="dataContainer assistances">
-                <h3>Assistências</h3>
-
-                <div class="dataContent">
-                    <div class="filter">
-                        <form method="POST">
-                            <a href="#" class="searchBtn">
-                                <i class="fas fa-search"></i>
-                            </a>    
-                            <input class="search-input" data-filterName="assistance" type="text" name="filter" placeholder="Pesquise por data inicial, data final, versão, tipo...">
-                        </form>
-                    </div>
-
-                    <div class="tableContainer">
-                        <table  class="table table-hover table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Data início</th>
-                                    <th scope="col">Data final</th>
-                                    <th scope="col">Técnico</th>
-                                    <th scope="col">Front Office</th>
-                                    <th scope="col">Objetivos</th>
-                                    <th scope="col">Tipo</th>
-                                </tr>
-                            </thead>
-                            <tbody id="assistance" class="tbody">
-                                <?php foreach($allAssistances as $assistance) :  ?>
-                                    <tr>
-                                        <td><?= $assistance->getInitialDate(); ?></td>
-                                        <td><?= $assistance->getFinalDate(); ?></td>
-                                        <td><?= $assistance->getTechnicalName(); ?></td>
-                                        <td><?= $assistance->getFrontOffice(); ?></td>
-                                        <td><?= $assistance->getGoals(); ?></td>
-                                        <td><?= $assistance->getTypeName(); ?></td>
-                                    </tr>
-                                <?php endforeach ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div id="assistancesContainer" class="dataContainer assistances">
-                <h3>Fornecedores</h3>
-
-                <div class="dataContent">
-                    <div class="filter">
-                        <form method="POST">
-                            <a href="#" class="searchBtn">
-                                <i class="fas fa-search"></i>
-                            </a>    
-                            <input class="search-input" data-filterName="providers" type="text" name="filter" placeholder="Pesquise por data inicial, data final, versão, tipo...">
-                        </form>
-                    </div>
-
-                    <div class="tableContainer">
-                        <table  class="table table-hover table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Nome</th>
-                                    <th scope="col">Observações</th>
-                                    <th scope="col">Contactos</th>
-                                </tr>
-                            </thead>
-                            <tbody id="providers" class="tbody">
-                                <?php foreach($allProviders as $provider) :  ?>
-                                    <tr>
-                                        <td><?= $provider->getName(); ?></td>
-                                        <td><?= $provider->getObs(); ?></td>
-                                        <td>
-                                            <?php
-                                                $contactData = $providers->getSpecificProviderContacts($provider->getId()); 
-
-                                                foreach($contactData as $contact) {
-                                                    echo $contact->getContact() . ' (' . $contact->getContactType() . ' ) <br>';
-                                                }
-                                            ?>                                        
-                                        </td>
-                                    </tr>
-                                <?php endforeach ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div id="assistancesContainer" class="dataContainer assistances">
-                <h3>Emprestimos</h3>
-
-                <div class="dataContent">
-                    <div class="filter">
-                        <form method="POST">
-                            <a href="#" class="searchBtn">
-                                <i class="fas fa-search"></i>
-                            </a>    
-                            <input class="search-input" data-filterName="lent" type="text" name="filter" placeholder="Pesquise por data inicial, data final, versão, tipo...">
-                        </form>
-                    </div>
-
-                    <div class="tableContainer">
-                        <table id="lent" class="table table-hover table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Responsável</th>
-                                    <th scope="col">Data inicio</th>
-                                    <th scope="col">Contacto</th>
-                                    <th scope="col">Equipamento</th>
-                                </tr>
-                            </thead>
-                            <tbody class="tbody">
-                                <?php foreach($allEquipmentsLent as $equipmentLent) :  ?>
-                                    <tr>
-                                        <td><?=$equipmentLent->getUser();?></td>
-                                        <td><?=$equipmentLent->getInitialDate();?></td>
-                                        <td><?=$equipmentLent->getContact();?></td>
-                                        <td><?=$equipmentLent->getEquipmentInternalCode();?></td>
-                                    </tr>
-                                <?php endforeach ?>
-                            </tbody>
-                        </table>
-                    </div>
+                    <h4>Data: <span><?php echo($malfunctionData->getDate());?></span></h4>
+                    <textarea readonly class="textarea"><?php echo($malfunctionData->getDescription());?></textarea>
+                    <h4>Status: <span><?php echo($malfunctionData->getStatus());?></span></h4>
+                    <h4>Empresa resposável: <span><?php echo($malfunctionData->getProviderName());?></span></h4>
                 </div>
             </div>
         </div>
@@ -691,10 +442,6 @@ $allLentProcess = $lent->getAll();
             </div>
         </div>
 
-        <script src="../scripts/jquery-3.6.0.min.js"></script>
-        <script src="../scripts/tableFilter.js"></script>
-        <script src="../scripts/filterSystem.js"></script>
         <script src="../scripts/sidebarSystem.js"></script>
-        <script src="../scripts/unsetSessionVariable.js"></script>
     </body>
-</html>
+</html>     

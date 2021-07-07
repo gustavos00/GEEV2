@@ -95,6 +95,34 @@ class softwaresDAOMS implements sotfwaresDAO
         return $softwares;
     }
 
+    public function getSpecificSoftware($id)
+    {
+        $sql = $this->pdo->prepare("SELECT softwares.*, tiposoftwares.tiposoftware, prestadorservicos.* FROM ((softwares
+        LEFT JOIN tiposoftwares ON tiposoftwares.idtiposoftwares = softwares.tiposoftwares_idtiposoftwares)
+        LEFT JOIN prestadorservicos ON prestadorservicos.idprestadorservico = softwares.prestadorservicos_idprestadorservico)
+        WHERE softwares.idsoftwares = :id");
+        $sql->bindValue(':id', $id);
+        $sql->execute();
+
+        if ($sql->rowCount() > 0) {
+            $data = $sql->fetch(\PDO::FETCH_ASSOC);
+
+            $s = new softwares();
+
+            $s->setId($data['idsoftwares']);
+            $s->setKey($data['chave']);
+            $s->setVersion($data['versao']);
+            $s->setInitialDate($data['dataInicio']);
+            $s->setFinalDate($data['dataFinal']);
+            $s->setTypeId($data['tipoSoftwares_idtipoSoftwares']);
+            $s->setTypeName($data['tiposoftware']);
+            $s->setProviderId($data['prestadorServicos_idprestadorServico']);
+            $s->setProviderName($data['nome']);
+
+            return $s;
+        }
+    }
+
     public function getSpecificSoftwareById($id) {
         $sql = $this->pdo->prepare(
             "SELECT softwares.*, tipoSoftwares.tipoSoftware, prestadorServicos.nome FROM ((softwares

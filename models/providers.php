@@ -85,6 +85,8 @@ class provider
 
 interface providersDao
 {
+    public function checkStatus($id);
+    
     public function getAll();
     public function getSpecific($id);
     public function getSpecificProviderContacts($id);

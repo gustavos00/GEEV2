@@ -10,13 +10,6 @@ let oldContactData = [];
 let actionFile = 'createProvider';
 let id = 0;
 
-function arrayEquals(a, b) {
-    return Array.isArray(a) &&
-      Array.isArray(b) &&
-      a.length === b.length &&
-      a.every((val, index) => val === b[index]);
-}
-
 async function getAllProviderContacts(id) {
     fetch("../actions/getAllProviderContacts.php", {
         method: 'POST',
@@ -86,7 +79,7 @@ function request(providerData) {
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText);
+            window.location.href = "/pages/home.php"
         }
     };
 
