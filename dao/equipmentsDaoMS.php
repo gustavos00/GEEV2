@@ -134,6 +134,23 @@ class equipmentsDAOMS implements equipmentsDAO
         return;
     }
 
+    public function equipmentUserData($id) {
+        $sql = $this->pdo->prepare("SELECT dataResponsavel, responsavel FROM equipamentos WHERE idEquipamentos = :id");
+        $sql->bindValue(':id', $id);
+        $sql->execute();
+
+        if($sql->rowCount() > 0) {
+            $data = $sql->fetch(\PDO::FETCH_ASSOC);
+
+            $eq = new equipments();
+            $eq->setUser($data['responsavel']);
+            $eq->setUserDate($data['dataResponsavel']);
+
+            return $eq;
+        }
+        return;
+    }
+
     public function updateEquipment(equipments $e) {
         $sql = $this->pdo->prepare(
         "UPDATE equipamentos 
@@ -266,9 +283,11 @@ class equipmentsDAOMS implements equipmentsDAO
         return;
     }
 
-    public function getIpStatus($ip) {
-        $sql = $this->pdo->prepare("SELECT idEquipamentos from equipamentos WHERE enderecoip = :ip");
+    public function getEquipmentStatus($ip, $ic, $sn) {
+        $sql = $this->pdo->prepare("SELECT idEquipamentos from equipamentos WHERE enderecoip = :ip OR nSerie = :sn OR codInterno = $ic");
         $sql->bindValue(':ip', $ip);
+        $sql->bindValue(':sn', $sn);
+        $sql->bindValue(':ic', $ic);
         $sql->execute();
 
         if($sql->rowCount() > 0) {
@@ -276,5 +295,14 @@ class equipmentsDAOMS implements equipmentsDAO
         }
 
         return false;
+    }
+
+    public function setHistoric($user, $initialDate, $finalDate, $equipmentId) {
+        $sql = $this->pdo->prepare("INSERT INTO historico(entidade, dataInicio, dataFim, equipamentos_idEquipamentos) VALUES (:user, :initialDate, :finalDate, :idEquipment)");
+        $sql->bindValue(':user', $user);
+        $sql->bindValue(':initialDate', $initialDate);
+        $sql->bindValue(':finalDate', $finalDate);
+        $sql->bindValue(':idEquipment', $equipmentId);
+        $sql->execute();
     }
 }

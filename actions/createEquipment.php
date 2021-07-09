@@ -37,9 +37,9 @@ if(checkInput($_POST['internalCode']) && checkInput($_POST['serieNumber'])) { //
     if(isset($_POST['brand']) && isset($_POST['model']) && isset($_POST['category'])) { //Check if exist some important data
         if(filter_var($_POST['ipAdress'], FILTER_VALIDATE_IP) && isset($_POST['ipAdress'])) {
 
-            $ipStatus = $equipments->getIpStatus($_POST['ipAdress']);
+            $equipmentStatus = $equipments->getEquipmentStatus($_POST['ipAdress']);
 
-            if (!$ipStatus) { //Validate IP
+            if (!$equipmentStatus) { //Validate equipment
                 $newEquipment = new equipments();
                 
                 $newEquipment->setInternalCode($_POST['internalCode']);
@@ -81,7 +81,7 @@ if(checkInput($_POST['internalCode']) && checkInput($_POST['serieNumber'])) { //
                 die();
 
             } else {
-                $_SESSION['createEquipmentError'] = "Já existe um equipamento com esse endereço IP."; 
+                $_SESSION['createEquipmentError'] = "Já existe um equipamento com esses dados."; 
             }
         } else {
             $_SESSION['createEquipmentError'] = "O endereço IP inserido não é valido.";
