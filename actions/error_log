@@ -1,0 +1,28 @@
+[12-Jul-2021 12:14:30 UTC] PHP Warning:  require(/home/u116023140/domains/devgustavo.com/public_html/GEEV2/vendor/autoload.php): failed to open stream: No such file or directory in /home/u116023140/domains/devgustavo.com/public_html/GEEV2/config.php on line 3
+[12-Jul-2021 12:14:30 UTC] PHP Fatal error:  require(): Failed opening required '/home/u116023140/domains/devgustavo.com/public_html/GEEV2/vendor/autoload.php' (include_path='.:/opt/alt/php74/usr/share/pear') in /home/u116023140/domains/devgustavo.com/public_html/GEEV2/config.php on line 3
+[12-Jul-2021 12:20:01 UTC] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function equipmentsDAOMS::getEquipmentStatus(), 1 passed in /home/u116023140/domains/devgustavo.com/public_html/GEEV2/actions/createEquipment.php on line 40 and exactly 3 expected in /home/u116023140/domains/devgustavo.com/public_html/GEEV2/dao/equipmentsDaoMS.php:286
+Stack trace:
+#0 /home/u116023140/domains/devgustavo.com/public_html/GEEV2/actions/createEquipment.php(40): equipmentsDAOMS->getEquipmentStatus('192.168.1.1')
+#1 {main}
+  thrown in /home/u116023140/domains/devgustavo.com/public_html/GEEV2/dao/equipmentsDaoMS.php on line 286
+[12-Jul-2021 12:23:24 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY093]: Invalid parameter number: parameter was not defined in /home/u116023140/domains/devgustavo.com/public_html/GEEV2/dao/equipmentsDaoMS.php:290
+Stack trace:
+#0 /home/u116023140/domains/devgustavo.com/public_html/GEEV2/dao/equipmentsDaoMS.php(290): PDOStatement->bindValue(':ic', '123')
+#1 /home/u116023140/domains/devgustavo.com/public_html/GEEV2/actions/createEquipment.php(40): equipmentsDAOMS->getEquipmentStatus('192.168.1.1', '123', '123')
+#2 {main}
+  thrown in /home/u116023140/domains/devgustavo.com/public_html/GEEV2/dao/equipmentsDaoMS.php on line 290
+[12-Jul-2021 13:43:17 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`u116023140_geedb`.`assistencia`, CONSTRAINT `fk_assistencia_equipamentos1` FOREIGN KEY (`equipamentos_idEquipamentos`) REFERENCES `equipamentos` (`idEquipamentos`) ON DELETE NO ACTION ON UPDA) in /home/u116023140/domains/devgustavo.com/public_html/GEEV2/dao/equipmentsDaoMS.php:186
+Stack trace:
+#0 /home/u116023140/domains/devgustavo.com/public_html/GEEV2/dao/equipmentsDaoMS.php(186): PDOStatement->execute()
+#1 /home/u116023140/domains/devgustavo.com/public_html/GEEV2/actions/deleteEquipment.php(12): equipmentsDAOMS->deleteEquipment(Object(equipments))
+#2 {main}
+  thrown in /home/u116023140/domains/devgustavo.com/public_html/GEEV2/dao/equipmentsDaoMS.php on line 186
+[12-Jul-2021 13:53:48 UTC] PHP Notice:  Undefined index: initialDate in /home/u116023140/domains/devgustavo.com/public_html/GEEV2/actions/createSoftware.php on line 20
+[12-Jul-2021 13:53:48 UTC] PHP Notice:  Undefined offset: 1 in /home/u116023140/domains/devgustavo.com/public_html/GEEV2/actions/createSoftware.php on line 9
+[12-Jul-2021 13:53:48 UTC] PHP Notice:  Undefined offset: 2 in /home/u116023140/domains/devgustavo.com/public_html/GEEV2/actions/createSoftware.php on line 9
+[12-Jul-2021 13:53:48 UTC] PHP Warning:  checkdate() expects parameter 3 to be int, string given in /home/u116023140/domains/devgustavo.com/public_html/GEEV2/actions/createSoftware.php on line 9
+[12-Jul-2021 13:56:35 UTC] PHP Notice:  Undefined index: key in /home/u116023140/domains/devgustavo.com/public_html/GEEV2/actions/createSoftware.php on line 20
+[12-Jul-2021 13:57:51 UTC] PHP Parse error:  syntax error, unexpected ';', expecting ')' in /home/u116023140/domains/devgustavo.com/public_html/GEEV2/actions/createSoftware.php on line 19
+[12-Jul-2021 15:19:55 UTC] PHP Notice:  Undefined property: stdClass::$content in /home/u116023140/domains/devgustavo.com/public_html/GEEV2/actions/createProviderContactType.php on line 9
+[12-Jul-2021 15:19:55 UTC] PHP Notice:  Undefined property: stdClass::$action in /home/u116023140/domains/devgustavo.com/public_html/GEEV2/actions/createProviderContactType.php on line 12
+[12-Jul-2021 15:19:55 UTC] PHP Notice:  Undefined property: stdClass::$action in /home/u116023140/domains/devgustavo.com/public_html/GEEV2/actions/createProviderContactType.php on line 14

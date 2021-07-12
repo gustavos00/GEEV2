@@ -10,7 +10,7 @@ session_start();
 function getUrl($adress)
 {
     $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ?
-        "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/geev2';
+        "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/GEEV2';
 
     echo $url . $adress;
 }
@@ -47,7 +47,9 @@ $allProviders = $providers->getAll();
     <title>Criar avaria - GEE</title>
 </head>
     <body>
-    <nav class="sidebar">
+
+    <div class="sidebarWrapper">
+        <nav class="sidebar">
             <div class="sidebarBtnContainer">
                 <div class="sidebarBtn"></div>
             </div>
@@ -142,6 +144,7 @@ $allProviders = $providers->getAll();
                 </label>
             </div>
         </nav>
+    </div>
 
         <div class="contentWrap">
             <div class="container">

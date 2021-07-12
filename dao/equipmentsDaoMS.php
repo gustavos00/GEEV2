@@ -18,7 +18,7 @@ class equipmentsDAOMS implements equipmentsDAO
             LEFT JOIN estados ON equipamentos.estados_idestados = estados.idestados
             LEFT JOIN marca ON equipamentos.marca_idmarca = marca.idmarca
             LEFT JOIN categoria ON equipamentos.categoria_idcategoria = categoria.idcategoria
-            LEFT JOIN prestadorservicos ON equipamentos.prestadorservicos_idprestadorservico = prestadorservicos.idprestadorservico"
+            LEFT JOIN prestadorservicos ON equipamentos.prestadorServicos_idprestadorServico = prestadorservicos.idprestadorservico"
         );
 
         $sql->execute();
@@ -62,7 +62,7 @@ class equipmentsDAOMS implements equipmentsDAO
 
     public function createEquipment(equipments $e) {
         $sql = $this->pdo->prepare("
-        INSERT INTO `equipamentos`(`codInterno`, `modelo`, `nSerie`, `caracteristicas`, `observacoes`, `dataadquisicao`, `codpatrimonial`, `enderecoip`, `tomadaderede`, `responsavel`, `dataresponsavel`, `equipamentoativo`, `localizacao`, `categoria_idCategoria`, `estados_idestados`, `marca_idmarca`, `prestadorservicos_idprestadorservico`) VALUES (:internalCode, :model, :serieNumber, :features, :obs,  :acquisitionDate, :patrimonialCode, :ipAdress, :lanPort, :user, :userDate, :activeEquipment, :location, :idCategory, :idState, :idBrand, :idProvider)");
+        INSERT INTO `equipamentos`(`codInterno`, `modelo`, `nSerie`, `caracteristicas`, `observacoes`, `dataadquisicao`, `codpatrimonial`, `enderecoip`, `tomadaderede`, `responsavel`, `dataresponsavel`, `equipamentoativo`, `localizacao`, `categoria_idCategoria`, `estados_idestados`, `marca_idmarca`, `prestadorServicos_idprestadorServico`) VALUES (:internalCode, :model, :serieNumber, :features, :obs,  :acquisitionDate, :patrimonialCode, :ipAdress, :lanPort, :user, :userDate, :activeEquipment, :location, :idCategory, :idState, :idBrand, :idProvider)");
 
         $sql->bindValue(':internalCode', $e->getInternalCode());
         $sql->bindValue(':model',$e->getModel());
@@ -88,11 +88,11 @@ class equipmentsDAOMS implements equipmentsDAO
 
     public function getSpecificById($id) {
         $sql = $this->pdo->prepare(
-            "SELECT equipamentos.*, prestadorServicos.nome, estados.estado, marca.nomeMarca, categoria.nomeCategoria FROM ((((equipamentos
+            "SELECT equipamentos.*, prestadorservicos.nome, estados.estado, marca.nomeMarca, categoria.nomeCategoria FROM ((((equipamentos
             INNER JOIN estados ON equipamentos.estados_idestados = estados.idestados)
             INNER JOIN marca ON equipamentos.marca_idmarca = marca.idmarca)
             INNER JOIN categoria ON equipamentos.categoria_idcategoria = categoria.idcategoria)
-            INNER JOIN prestadorServicos ON equipamentos.prestadorservicos_idprestadorservico = prestadorServicos.idprestadorServico)
+            INNER JOIN prestadorservicos ON equipamentos.prestadorServicos_idprestadorServico = prestadorservicos.idprestadorservico)
             WHERE idequipamentos = :id"
         );
 
@@ -132,6 +132,20 @@ class equipmentsDAOMS implements equipmentsDAO
             return $eq;
         }
         return;
+    }
+    
+    public function checkDeleteStatus($id) {
+        $sql = $this->pdo->prepare("SELECT equipamentos.codInterno FROM (equipamentos
+            INNER JOIN assistencia ON assistencia.equipamentos_idEquipamentos = equipamentos.idEquipamentos)
+            INNER JOIN emprestimos ON emprestimos.equipamentos_idEquipamentos = equipamentos.idEquipamentos
+            WHERE equipamentos.idEquipamentos = :id");
+        $sql->bindValue(':id', $id);
+        $sql->execute();
+        
+        if($sql->rowCount() > 0) {
+            return true;
+        }
+        return false;
     }
 
     public function equipmentUserData($id) {
@@ -284,7 +298,7 @@ class equipmentsDAOMS implements equipmentsDAO
     }
 
     public function getEquipmentStatus($ip, $ic, $sn) {
-        $sql = $this->pdo->prepare("SELECT idEquipamentos from equipamentos WHERE enderecoip = :ip OR nSerie = :sn OR codInterno = $ic");
+        $sql = $this->pdo->prepare("SELECT idEquipamentos from equipamentos WHERE enderecoip = :ip OR nSerie = :sn OR codInterno = :ic");
         $sql->bindValue(':ip', $ip);
         $sql->bindValue(':sn', $sn);
         $sql->bindValue(':ic', $ic);

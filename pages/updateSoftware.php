@@ -8,7 +8,7 @@ session_start();
 function getUrl($adress)
 {
     $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ?
-        "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/geev2';
+        "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/GEEV2';
 
     echo strtoupper($url) . $adress;
 }
@@ -52,7 +52,9 @@ $specific = $softwares->getSpecificSoftwareById($_GET['id']);
     <title>Atualizar software - GEE</title>
 </head>
     <body>
-    <nav class="sidebar">
+
+    <div class="sidebarWrapper">
+        <nav class="sidebar">
             <div class="sidebarBtnContainer">
                 <div class="sidebarBtn"></div>
             </div>
@@ -147,9 +149,10 @@ $specific = $softwares->getSpecificSoftwareById($_GET['id']);
                 </label>
             </div>
         </nav>
+    </div>
         <div class="contentWrap">
             <div class="container">
-                <h1>Criar software</h1>
+                <h1>Atualizar software</h1>
                     <?php
                     if (isset($_SESSION['updateSoftwareError'])) {
                         echo '
@@ -171,7 +174,7 @@ $specific = $softwares->getSpecificSoftwareById($_GET['id']);
                         <input class="input" value=<?= $specific->getVersion()?> placeholder="Insira uma versão.." type="text" name="version" id="version">
 
                         <div class="filter">
-                            <select value=<?= $specific->getTypeName()?> class="select" id="type" name="type">
+                            <select class="select" id="type" name="type">
                                 <option value="" selected disabled hidden>Selecione um tipo..</option>
                                 <?php foreach ($allSoftwaresType as $type) {
                                     echo ' <option> ' . $type->getTypeName() . '</option> ';
@@ -182,16 +185,16 @@ $specific = $softwares->getSpecificSoftwareById($_GET['id']);
                         </div>
                         
                         <button class="btn equipmentsActionButton" data-modalId="createCategory">Criar tipo</button>
-
+                        
                         <div class="filter">
-                            <select value=<?= $specific->getProviderName()?> class="select" id="provider" name="provider">
+                            <select class="select" id="provider" name="provider">
                                 <option value="" selected disabled hidden>Selecione um fornecedor..</option>
                                 <?php foreach ($AllProviders as $provider) {
                                     echo ' <option> ' . $provider->getName() . '</option> ';
                                 } ?>
                             </select>
 
-                            <input class="input" autocomplete="off" data-filterName="type" placeholder="Pesquisar por tipos..." type="text" name="filter">
+                            <input class="input" autocomplete="off" data-filterName="provider" placeholder="Pesquisar por fornecedores..." type="text" name="filter">
                         </div>
 
                         <input value=<?= $specific->getInitialDate()?> class="input" type="date" name="initialDate" id="initialDate">
