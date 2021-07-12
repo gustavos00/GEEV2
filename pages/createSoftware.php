@@ -8,7 +8,7 @@ session_start();
 function getUrl($adress)
 {
     $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ?
-        "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/geev2';
+        "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/GEEV2';
 
     echo $url . $adress;
 }
@@ -252,8 +252,8 @@ $allSoftwaresType = $softwares->getAllSoftwareTypes();
 
                 <form id="lendEquipmentForm" action="<?php getUrl('/actions/lendEquipment.php'); ?>" method="post">
                     <input type="hidden" name="selectedEquipmentId" id="selectedEquipmentId">
-                    <input class="input" type="date" name="initialDate" id="initialDate">
-                    <input class="input" type="date" name="finalDate" id="finalDate">
+                    <input class="input" required type="date" name="initialDate" id="initialDate">
+                    <input class="input" required type="date" name="finalDate" id="finalDate">
                     
                     <input class="input" required maxlength="50" placeholder="Responsável pelo emprestimo..." type="text" name="responsibleUser" id="responsibleUser">
                     <input class="input" placeholder="Contacto...." type="text" name="contact" id="contact">
@@ -279,7 +279,7 @@ $allSoftwaresType = $softwares->getAllSoftwareTypes();
 
                 <form id="returnEquipmentForm" action="<?php getUrl('/actions/returnEquipment.php'); ?>" method="post">
                     <input type="hidden" name="selectedEquipmentId" id="returnEquipmentId">
-                    <input class="input" type="date" name="finalDate" id="finalDate">
+                    <input class="input" required type="date" name="finalDate" id="finalDate">
                     <select class="select" id="returnEquipmentSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione um equipamento..</option>
                         <?php foreach ($allNotRetiredEquipments as $lentEquipment) {
@@ -411,7 +411,7 @@ $allSoftwaresType = $softwares->getAllSoftwareTypes();
                     <select class="select" id="updateAssistanceSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione uma assistência..</option>
                         <?php foreach($allAssistances as $assistances) {
-                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnical() . ' (' . $assistances->getTypeName() . ') </option> ';
+                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnicalName() . ' (' . $assistances->getTypeName() . ') </option> ';
                         } ?>
                     </select>
 
@@ -427,7 +427,7 @@ $allSoftwaresType = $softwares->getAllSoftwareTypes();
                     <select class="select" id="deleteAssistanceSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione uma assistência..</option>
                         <?php foreach($allAssistances as $assistances) {
-                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnical() . ' (' . $assistances->getTypeName() . ') </option> ';
+                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnicalName() . ' (' . $assistances->getTypeName() . ') </option> ';
                         } ?>
                     </select>
 
@@ -456,45 +456,6 @@ $allSoftwaresType = $softwares->getAllSoftwareTypes();
                     <input type="submit" data-who="generatePdf" data-select="generatePdfSelect" id="generatePdfActionBtn" value="Gerar" class="btn">
                 </form>
             </div>
-
-            <!--MODALS TO CURRRENT PAGE -->
-
-            <div data-createbtnclass="typeActions" data-createid="createTypeOption" data-deleteid="deleteTypeOption" data-who="type" class="equipmentModal modalContent action" id="createTypeModal"> 
-                <div class="options">
-                    <h2>Selecione uma opção</h2>
-                    <input data-optionid="createType" name="type" type="radio" id="createTypeOption">
-                    <label for="createTypeOption">Criar tipo</label>
-
-                    <input data-optionid="deleteType" name="type" type="radio" id="deleteTypeOption">
-                    <label for="deleteTypeOption">Apagar tipo</label>
-                </div>
-                <div id="createType" class="createType createAction">
-                    <h3>Criar tipo</h3>
-
-                    <form>
-                        <input class="input" type="text" placeholder="Tipo"/>
-
-                        <button class="btn typeActions" id="createTypeOption" data-action="create" type="submit" >Criar tipo</button>
-                    </form>
-                </div>
-
-                <div id="deleteType" class="deleteType deleteAction">
-                    <h3>Apagar tipo</h3>
-
-                    <form>
-                        <select class="select">
-                            <option value="" selected disabled hidden>Selecione um tipo..</option>
-
-                            <?php foreach ($allSoftwaresType as $type) {
-                                    echo ' <option> ' . $type->getTypeName() . '</option> ';
-                                } ?>
-                        </select>
-
-                        <button class="btn typeActions" id="deleteTypeOption" data-action="delete" type="submit" >Apagar tipo</button>
-                    </form>
-                </div>
-            </div>
-
         </div>
 
         <script src="../scripts/filterSystem.js"></script>

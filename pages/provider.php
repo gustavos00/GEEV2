@@ -1,12 +1,13 @@
-<?php
+<?php 
 require_once '../config.php';
-require_once '../dao/softwaresDaoMS.php';
+require_once '../dao/providersDaoMS.php';
 
 if(filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
-    $softwares = new softwaresDAOMS($pdo);
-    $softwareData = $softwares->getSpecificSoftware($_GET['id']);
+    $providers = new providersDAOMS($pdo);
+    $providerData = $providers->getSpecific($_GET['id']);
+    $providerContactsData = $providers->getSpecificProviderContacts($_GET['id']);
     
-    if(is_null($softwareData)) {
+    if(is_null($providerData)) {
         header('Location: home.php');
         exit(0);
     } 
@@ -16,22 +17,16 @@ if(filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
 }
 
 require_once '../dao/equipmentsDaoMS.php';
+require_once '../dao/assistanceDaoMS.php';
+require_once '../dao/softwaresDaoMS.php';
 require_once '../dao/malfunctionsDaoMS.php';
 require_once '../dao/providersDaoMS.php';
-require_once '../dao/assistanceDaoMS.php';
 require_once '../dao/lentDaoMS.php';
 session_start();
-
-function getUrl($adress)
-{
-    $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ?
-        "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/GEEV2';
-
-    echo strtoupper($url) . $adress;
-}
-
 $equipments = new equipmentsDAOMS($pdo);
+$softwares = new softwaresDAOMS($pdo);
 $malfunctions = new malfunctionsDAOMS($pdo);
+
 $providers = new providersDAOMS($pdo);
 $assistance = new assistanceDAOMS($pdo);
 $lent = new lentDAOMS($pdo);
@@ -44,6 +39,7 @@ $allAssistances = $assistance->getAll();
 $allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
 $AllNotLentEquipments = $equipments->getAllNotLentEquipments();
 $allLentProcess = $lent->getAll();
+
 
 ?>
 
@@ -62,7 +58,7 @@ $allLentProcess = $lent->getAll();
     <link rel="stylesheet" href="../assets/styles/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/styles/global.css">
     <link rel="stylesheet" href="../assets/styles/sidebar.css">
-    <link rel="stylesheet" href="../assets/styles/softwares.css">
+    <link rel="stylesheet" href="../assets/styles/malfunction.css">
 
     <title>Software - GEE</title>
 </head>
@@ -168,15 +164,29 @@ $allLentProcess = $lent->getAll();
     
         <div class="container">
             <div class="dataContainer">
-                <h3><?php echo($softwareData->getTypeName() . ' - ' . $softwareData->getVersion());?></h3>
+                <h3>Fornecedor <?php echo($providerData->getName())?>></h3>
 
                 <div class="dataContent">
-                    <h4>Chave: <span><?php echo($softwareData->getKey());?></span></h4>
-                    <h4>Versão: <span><?php echo($softwareData->getVersion());?></span></h4>
-                    <h4>Data Inicial: <span><?php echo($softwareData->getInitialDate());?></span></h4>
-                    <h4>Data Final: <span><?php echo($softwareData->getFinalDate());?></span></h4>
-                    <h4>Tipo: <span><?php echo($softwareData->getTypeName());?></span></h4>
-                    <h4>Fornecedor: <span><?php echo($softwareData->getProviderName());?></span></h4>
+                    <textarea readonly class="textarea"><?php echo($providerData->getObs());?></textarea>
+
+                    <div class="tableContainer">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Contacto</th>
+                                    <th scope="col">Tipo</th>
+                                </tr>
+                            </thead>
+                            <tbody id="softwares" class="tbody">
+                                <?php foreach($providerContactsData as $contacts) :  ?>
+                                    <tr>
+                                        <td><?= $contacts->getContact()?></td>
+                                        <td><?= $contacts->getContactType()?></td>
+                                    </tr>
+                                <?php endforeach ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -444,4 +454,4 @@ $allLentProcess = $lent->getAll();
 
         <script src="../scripts/sidebarSystem.js"></script>
     </body>
-</html>
+</html>     

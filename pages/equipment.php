@@ -1,12 +1,12 @@
-<?php
+<?php 
 require_once '../config.php';
-require_once '../dao/softwaresDaoMS.php';
+require_once '../dao/equipmentsDaoMS.php';
 
 if(filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
-    $softwares = new softwaresDAOMS($pdo);
-    $softwareData = $softwares->getSpecificSoftware($_GET['id']);
+    $equipments = new equipmentsDAOMS($pdo);
+    $equipmentData = $equipments->getSpecificById($_GET['id']);
     
-    if(is_null($softwareData)) {
+    if(is_null($equipmentData)) {
         header('Location: home.php');
         exit(0);
     } 
@@ -15,10 +15,10 @@ if(filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
     exit(0);
 }
 
-require_once '../dao/equipmentsDaoMS.php';
+require_once '../dao/assistanceDaoMS.php';
+require_once '../dao/softwaresDaoMS.php';
 require_once '../dao/malfunctionsDaoMS.php';
 require_once '../dao/providersDaoMS.php';
-require_once '../dao/assistanceDaoMS.php';
 require_once '../dao/lentDaoMS.php';
 session_start();
 
@@ -30,10 +30,10 @@ function getUrl($adress)
     echo strtoupper($url) . $adress;
 }
 
-$equipments = new equipmentsDAOMS($pdo);
-$malfunctions = new malfunctionsDAOMS($pdo);
-$providers = new providersDAOMS($pdo);
 $assistance = new assistanceDAOMS($pdo);
+$malfunctions = new malfunctionsDAOMS($pdo);
+$softwares = new softwaresDAOMS($pdo);
+$providers = new providersDAOMS($pdo);
 $lent = new lentDAOMS($pdo);
 
 $AllMalfunctions = $malfunctions->getAll();
@@ -62,9 +62,9 @@ $allLentProcess = $lent->getAll();
     <link rel="stylesheet" href="../assets/styles/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/styles/global.css">
     <link rel="stylesheet" href="../assets/styles/sidebar.css">
-    <link rel="stylesheet" href="../assets/styles/softwares.css">
+    <link rel="stylesheet" href="../assets/styles/equipments.css">
 
-    <title>Software - GEE</title>
+    <title>Equipamento - GEE</title>
 </head>
     <body>
 
@@ -166,22 +166,61 @@ $allLentProcess = $lent->getAll();
             </nav>
         </div>      
     
-        <div class="container">
-            <div class="dataContainer">
-                <h3><?php echo($softwareData->getTypeName() . ' - ' . $softwareData->getVersion());?></h3>
+        <div class="container viewData">
+            <div class="dataContainer">                
+                <h3>Descrição</h3>
 
                 <div class="dataContent">
-                    <h4>Chave: <span><?php echo($softwareData->getKey());?></span></h4>
-                    <h4>Versão: <span><?php echo($softwareData->getVersion());?></span></h4>
-                    <h4>Data Inicial: <span><?php echo($softwareData->getInitialDate());?></span></h4>
-                    <h4>Data Final: <span><?php echo($softwareData->getFinalDate());?></span></h4>
-                    <h4>Tipo: <span><?php echo($softwareData->getTypeName());?></span></h4>
-                    <h4>Fornecedor: <span><?php echo($softwareData->getProviderName());?></span></h4>
+                    <h4>Código interno: <span><?= $equipmentData->getInternalCode(); ?></span></h4>
+                    <h4>Categoria: <span><?= $equipmentData->getCategoryName(); ?></span></h4>
+                    <h4>Marca: <span><?= $equipmentData->getBrandName(); ?></span></h4>
+                    <h4>Estado: <span><?= $equipmentData->getStateName(); ?></span></h4>
+                    <h4>Modelo: <span><?= $equipmentData->getModel(); ?></span></h4>
+                    <h4>Número de série: <span><?= $equipmentData->getSerieNumber(); ?></span></h4>
                 </div>
             </div>
-        </div>
 
-        <div class="modalFilter" id="modalFilter">
+            <div class="dataContainer">
+                <h3>Caracterização</h3>
+
+                <div class="dataContent">
+                    <textarea class="textarea" readonly cols="30" rows="10"><?= $equipmentData->getFeatures()?></textarea>
+                    <textarea class="textarea" readonly cols="30" rows="10"><?= $equipmentData->getFeatures()?></textarea>
+                    <h4>Data aquisição: <span><?= $equipmentData->getAcquisitionDate(); ?></span></h4>
+                    <h4>Código Patrimonial: <span><?= $equipmentData->getPatrimonialCode(); ?></span></h4>
+                </div>
+            </div>
+
+            <div class="dataContainer">
+                <h3>Localização</h3>
+
+                <div class="dataContent">
+                    <h4>Utilizador: <span><?= $equipmentData->getUser(); ?></span></h4>
+                    <h4>Localização: <span><?= $equipmentData->getLocation(); ?></span></h4>
+                    <h4>Data com o utilizador: <span><?= $equipmentData->getUserDate(); ?></span></h4>
+                </div>
+            </div>
+
+            <div class="dataContainer">
+                <h3>Informações de Rede</h3>
+
+                <div class="dataContent">
+                    <h4>Porta: <span><?= $equipmentData->getLanPort(); ?></span></h4>
+                    <h4>Equipamento ativo: <span><?= $equipmentData->getActiveEquipment(); ?></span></h4>
+                    <h4>Endereço IP: <span><?= $equipmentData->getIpAdress(); ?></span></h4>
+                </div>
+
+           
+            </div> 
+            <div class="dataContainer">
+                <h3>Fornecedor</h3>
+
+                <div class="dataContent">
+                    <h4>Nome: <span><?= $equipmentData->getProviderName() ?></span></h4>
+                </div>
+            </div>
+
+            <div class="modalFilter" id="modalFilter">
             <!--MODALS TO SIDEBAR -->
             <div data-actionBtn="updateEquipmentBtnAction" id="updateEquipment" class="equipmentModal modalContent updateEquipment">
                 <h3>Olá, qual equipamento você quer atualizar?</h3>
