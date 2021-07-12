@@ -26,4 +26,3 @@ foreach($data->contacts as $contact) {
 }
 
 $provider->linkProviderToContacts($providerId, $contactsIds);
-$_SESSION['successMessage'] = "O fornecedor " . $data->name . " foi criado com sucesso.";

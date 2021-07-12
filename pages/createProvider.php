@@ -11,7 +11,7 @@ session_start();
 function getUrl($adress)
 {
     $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ?
-        "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/GEEV2';
+        "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/geev2';
 
     echo strtoupper($url) . $adress;
 }
@@ -487,11 +487,11 @@ $allLentProcess = $lent->getAll();
                 
                     <input type="submit" data-who="generatePdf" data-select="generatePdfSelect" id="generatePdfActionBtn" value="Gerar" class="btn">
                 </form>
-            </div>
+            </div> 
             
-             <!--MODALS TO CURRRENT PAGE -->
+            <!--MODALS TO CURRRENT PAGE -->
 
-             <div data-createbtnclass="contactTypeActions" data-createid="createContactTypeOption" data-deleteid="deleteContactTypeOption" data-who="contactType" class="equipmentModal modalContent action" id="createcontactTypeModal"> 
+            <div data-createbtnclass="contactTypeActions" data-createid="createContactTypeOption" data-deleteid="deleteContactTypeOption" data-who="contactType" class="equipmentModal modalContent action" id="createcontactTypeModal"> 
                 <div class="options">
                     <h2>Selecione uma opção</h2>
                     <input data-optionid="createContactType" name="type" type="radio" id="createContactTypeOption">
@@ -527,7 +527,7 @@ $allLentProcess = $lent->getAll();
                 </div>
             </div>
         </div>
-        
+
         <script src="../scripts/filterSystem.js"></script>
         <script src="../scripts/providersSystem.js"></script>
         <script src="../scripts/sidebarSystem.js"></script>

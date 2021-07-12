@@ -79,15 +79,12 @@ function request(providerData) {
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            let loc = window.location.pathname;
-            let dir = loc.substring(0, loc.lastIndexOf('/'));
-            window.location.href = dir + '/home.php';
+            window.location.href = "/pages/home.php"
         }
     };
 
     xhttp.send(JSON.stringify(providerData));
 }
-
 
 if (document.getElementById('id')) {
     id = document.getElementById('id').value

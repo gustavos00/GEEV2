@@ -13,7 +13,7 @@ class assistanceDAOMS implements assistanceDAO
     public function createAssistance(assistance $a)
     {
         $sql=$this->pdo->prepare("INSERT INTO assistencia(dataInicio, dataFim, duracao, descricao, objetivo, frontOffice, tipoOcorrencia_idtipoOcorrencia, equipamentos_idequipamentos, prestadorservicos_idprestadorServico) VALUE (:initialDate, :finalDate, :duration, :description, :goals, :frontOffice, :typeId, :equipmentId, :providerId)");
-        $sql->bindValue(':initialDate', $a->getInitialDate());  
+        $sql->bindValue(':initialDate', $a->getInitialDate());
         $sql->bindValue(':finalDate', $a->getFinalDate());
         $sql->bindValue(':duration', $a->getDuration());
         $sql->bindValue(':description', $a->getDescription());
@@ -35,7 +35,7 @@ class assistanceDAOMS implements assistanceDAO
     public function getAll() {
         $assistanceData = [];
 
-        $sql = $this->pdo->prepare("SELECT * FROM ((assistencia INNER JOIN tipoocorrencia ON assistencia.tipoocorrencia_idtipoocorrencia = tipoocorrencia.idtipoocorrencia) INNER JOIN equipamentos ON assistencia.equipamentos_idEquipamentos = equipamentos.idEquipamentos) INNER JOIN prestadorservicos ON assistencia.prestadorservicos_idprestadorServico = prestadorservicos.idprestadorServico");
+        $sql = $this->pdo->prepare("SELECT * FROM ((assistencia INNER JOIN tipoocorrencia ON assistencia.tipoocorrencia_idtipoocorrencia = tipoocorrencia.idtipoocorrencia) INNER JOIN equipamentos ON assistencia.equipamentos_idEquipamentos = equipamentos.idEquipamentos) INNER JOIN prestadorServicos ON assistencia.prestadorservicos_idprestadorServico = prestadorServicos.idprestadorServico");
         $sql->execute();
 
         if($sql->rowCount() > 0) {
@@ -65,7 +65,7 @@ class assistanceDAOMS implements assistanceDAO
     }
 
     public function getSpecific($id) {
-        $sql = $this->pdo->prepare("SELECT * FROM ((assistencia INNER JOIN tipoocorrencia ON assistencia.tipoocorrencia_idtipoocorrencia = tipoocorrencia.idtipoocorrencia) INNER JOIN equipamentos ON assistencia.equipamentos_idEquipamentos = equipamentos.idEquipamentos) INNER JOIN prestadorservicos ON assistencia.prestadorservicos_idprestadorServico = prestadorservicos.idprestadorServico WHERE assistencia.idassistencia = :id");
+        $sql = $this->pdo->prepare("SELECT * FROM ((assistencia INNER JOIN tipoocorrencia ON assistencia.tipoocorrencia_idtipoocorrencia = tipoocorrencia.idtipoocorrencia) INNER JOIN equipamentos ON assistencia.equipamentos_idEquipamentos = equipamentos.idEquipamentos) INNER JOIN prestadorServicos ON assistencia.prestadorservicos_idprestadorServico = prestadorServicos.idprestadorServico WHERE assistencia.idassistencia = :id");
         $sql->bindValue(':id',$id);
         $sql->execute();
 
@@ -92,7 +92,7 @@ class assistanceDAOMS implements assistanceDAO
     }
 
     public function getAssistanceByEquipmentId($eid) {
-        $sql = $this->pdo->prepare("SELECT * FROM ((assistencia INNER JOIN tipoocorrencia ON assistencia.tipoocorrencia_idtipoocorrencia = tipoocorrencia.idtipoocorrencia) INNER JOIN equipamentos ON assistencia.equipamentos_idEquipamentos = equipamentos.idEquipamentos) INNER JOIN prestadorservicos ON assistencia.prestadorservicos_idprestadorServico = prestadorservicos.idprestadorServico WHERE assistencia.equipamentos_idEquipamentos = :eid");
+        $sql = $this->pdo->prepare("SELECT * FROM ((assistencia INNER JOIN tipoocorrencia ON assistencia.tipoocorrencia_idtipoocorrencia = tipoocorrencia.idtipoocorrencia) INNER JOIN equipamentos ON assistencia.equipamentos_idEquipamentos = equipamentos.idEquipamentos) INNER JOIN prestadorServicos ON assistencia.prestadorservicos_idprestadorServico = prestadorServicos.idprestadorServico WHERE assistencia.equipamentos_idEquipamentos = :eid");
         $sql->bindValue(':eid', $eid);
         $sql->execute();
 

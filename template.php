@@ -3,9 +3,6 @@ require_once '../config.php';
 require_once '../dao/softwaresDaoMS.php';
 require_once '../dao/providersDaoMS.php';
 require_once '../dao/equipmentsDaoMS.php';
-require_once '../dao/assistanceDaoMS.php';
-require_once '../dao/malfunctionsDaoMS.php';
-session_start();
 
 function getUrl($adress)
 {
@@ -18,11 +15,7 @@ function getUrl($adress)
 $softwares = new softwaresDaoMS($pdo);
 $equipments = new equipmentsDaoMS($pdo);
 $providers = new providersDaoMS($pdo);
-$assistance = new assistanceDAOMS($pdo);
-$malfunction = new malfunctionsDAOMS($pdo);
 
-$malfunctionData = $malfunction->getSpecific($_GET['id']);
-$allAssistances = $assistance->getAll();
 $allSoftwares = $softwares->getAllSoftwares();
 $allEquipments = $equipments->getAll();
 $allProviders = $providers->getAll();
@@ -44,12 +37,12 @@ $allProviders = $providers->getAll();
     <link rel="stylesheet" href="../assets/styles/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/styles/global.css">
     <link rel="stylesheet" href="../assets/styles/sidebar.css">
-    <link rel="stylesheet" href="../assets/styles/malfunction.css">
+    <link rel="stylesheet" href="../assets/styles/equipments.css">
 
-    <title>Atualizar avaria - GEE</title>
+    <title>Criar avaria - GEE</title>
 </head>
     <body>
-        <nav class="sidebar">
+    <nav class="sidebar">
             <div class="sidebarBtnContainer">
                 <div class="sidebarBtn"></div>
             </div>
@@ -62,14 +55,13 @@ $allProviders = $providers->getAll();
                         <i id="arrow" class="arrow fas fa-arrow-right"></i>
                     </div>
                     <div data-dropdown="equipamento" class="dropdownContent">
-                        <a href="home.php">• Visualizar equipamentos</a>
                         <a href="createEquipment.php">• Criar equipamento</a>
                         <a data-doWhat="updateEquipment" class="openModalAction">• Atualizar equipamento</a>
+                        <a href="home.php">• Visualizar equipamentos</a>
                         <a data-doWhat="retireEquipment" class="openModalAction">• Abater equipamento</a>
                         <a data-doWhat="deleteEquipment" class="openModalAction">• Apagar equipamento</a>
                         <a data-doWhat="lendEquipmentModal" class="openModalAction">• Emprestar equipamento</a>
                         <a data-doWhat="returnEquipmentModal" class="openModalAction">• Retornar equipamento de emprestimo</a>
-                        <a data-doWhat="deleteLentProcess" class="openModalAction">• Apagar processo de emprestimo</a>
                     </div>
                 </div>
 
@@ -80,9 +72,9 @@ $allProviders = $providers->getAll();
                         <i id="arrow" class="arrow fas fa-arrow-right"></i>
                     </div>
                     <div data-dropdown="softwares" class="dropdownContent">
-                        <a href="home.php#softwaresContainer">• Visualizar softwares</a>
                         <a href="createSoftware.php">• Criar softwares</a>
                         <a data-doWhat="updateSoftware" class="openModalAction">• Atualizar softwares</a>
+                        <a href="home.php#softwaresContainer">• Visualizar softwares</a>
                         <a data-doWhat="deleteSoftware" class="openModalAction">• Apagar softwares</a>
                     </div>
                 </div>
@@ -94,9 +86,9 @@ $allProviders = $providers->getAll();
                         <i id="arrow" class="arrow fas fa-arrow-right"></i>
                     </div>
                     <div data-dropdown="fornecedores" class="dropdownContent">
-                        <a href="home.php">• Visualizar fornecedores</a>
                         <a href="createProvider.php">• Criar fornecedores</a>
                         <a data-doWhat="updateProvider" class="openModalAction">• Atualizar fornecedores</a>
+                        <a href="home.php">• Visualizar fornecedores</a>
                         <a data-doWhat="deleteProvider" class="openModalAction">• Apagar fornecedores</a>
                     </div>
                 </div>
@@ -108,9 +100,9 @@ $allProviders = $providers->getAll();
                         <i id="arrow" class="arrow fas fa-arrow-right"></i>
                     </div>
                     <div data-dropdown="avarias" class="dropdownContent">
-                        <a href="home.php#malfunctionsContainer">• Visualizar avarias</a>
                         <a href="createMalfunction.php">• Criar avaria</a>
                         <a data-doWhat="updateMalfunction" class="openModalAction">• Atualizar avaria</a>
+                        <a href="home.php#malfunctionsContainer">• Visualizar avarias</a>
                         <a data-doWhat="deleteMalfunction" class="openModalAction">• Apagar avarias</a>
                     </div>
                 </div>
@@ -122,18 +114,10 @@ $allProviders = $providers->getAll();
                         <i id="arrow" class="arrow fas fa-arrow-right"></i>
                     </div>
                     <div data-dropdown="assistências" class="dropdownContent">
-                        <a href="home.php#malfunctionsContainer">• Visualizar assistência</a>
                         <a href="createAssistance.php">• Criar assistência</a>
                         <a data-doWhat="updateAssistance" class="openModalAction">• Atualizar assistência</a>
+                        <a href="home.php#malfunctionsContainer">• Visualizar assistência</a>
                         <a data-doWhat="deleteAssistance" class="openModalAction">• Apagar assistência</a>
-                    </div>
-                </div>
-
-                <div class="dropdownContainer">
-                    <div id="openPdfsModal" class="T pdfs">
-                        <i class="fas fa-life-ring"></i>
-                        Gerar PDF
-                        <i id="arrow" class="arrow fas fa-arrow-right"></i>
                     </div>
                 </div>
             </div>
@@ -144,62 +128,6 @@ $allProviders = $providers->getAll();
                 </label>
             </div>
         </nav>
-        <div class="contentWrap">       
-            <div class="container">
-                <h1>Atualizar avaria</h1>
-                <?php
-                    if (isset($_SESSION['updateMalfunctionError'])) {
-                        echo '
-                        <div class="alert">
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                ' . $_SESSION['updateMalfunctionError'] . '
-                                <button type="button" class="btn-close unsetSessionVariable" data-session-name="updateMalfunctionError" data-bs-dismiss="alert"></button>
-                            </div>
-                        </div>
-                        ';
-                    }
-                    ?>
-
-                <form id="form" data-cookieName="__geecreatemalfunction" action="<?php getUrl('/actions/createMalfunction.php'); ?>" method="post">
-                    <div class="dataContainer">
-                        <input class="input" value=<?php echo ($malfunctionData->getDate());?> type="date" name="dateMalfunction" id="dateMalfunction">
-
-                        <textarea class="textarea"  placeholder="Insira uma descrição..." name="description" id="description" cols="30" rows="10"><?php echo ($malfunctionData->getDescription());?></textarea>
-
-                        <div class="filter">
-                            <select class="select" id="provider" name="provider">
-                                <option value="" selected disabled hidden>Selecione um fornecedor..</option>
-                                <?php foreach ($allProviders as $provider) {
-                                    echo ' <option>' . $provider->getName() . '</option> ';
-                                } ?>
-                            </select>
-
-                            <input class="input" autocomplete="off" data-filterName="provider" placeholder="Pesquisar por tipos..." type="text" name="filter">
-                        </div>
-
-
-                        <div class="filterContainer">
-                            <p>Caso já esteja uma assistência criada para esta avaria, escolha-a abaixo.</p>
-                            <input id="assistanceId" type="hidden" name="assistanceId">
-
-                            <div class="filter">
-                                <select class="select" id="assistance" name="assistance">
-                                    <option value="" selected disabled hidden>Selecione uma assistência..</option>
-                                    <?php foreach($allAssistances as $assistance) {  
-                                        echo ' <option data-id=' . $assistance->getId() . '>' . $assistance->getTypeName() . '(' . $assistance->getInitialDate() . ' / ' . $assistance->getFinalDate() . ') </option> ';
-                                    } ?>
-                                </select>
-
-                                <input class="input" autocomplete="off" data-filterName="assistance" placeholder="Pesquisar por assistências..." type="text" name="filter">
-                            </div>
-                        </div>
-                        
-                        <input id="actionButton" data-who="createMalfunction" class="btn" type="submit" value="Criar avaria">
-                    </div>
-                </form>
-            </div>
-        </div>
-
         <div class="modalFilter" id="modalFilter">
             <!--MODALS TO SIDEBAR -->
             <div data-actionBtn="updateEquipmentBtnAction" id="updateEquipment" class="equipmentModal modalContent updateEquipment">
@@ -224,7 +152,7 @@ $allProviders = $providers->getAll();
                 <form>
                     <select class="select" id="retireEquipmentsSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione um equipamento..</option>
-                        <?php foreach ($allNotRetiredEquipments as $equipment) {
+                        <?php foreach ($allEquipments as $equipment) {
                             echo ' <option data-id="' . $equipment->getId() . '"> ' . $equipment->getInternalCode() . ' - ' . $equipment->getCategoryName() . ' (' . $equipment->getIpAdress() . ')' . '</option> ';
                         } ?>
                     </select>
@@ -253,12 +181,11 @@ $allProviders = $providers->getAll();
             <div data-actionBtn="lendEquipmentBtnAction" id="lendEquipmentModal" class="equipmentModal modalContent lendEquipmentModal">
                 <h3>Olá, qual equipamento você quer emprestar?</h3>
 
-                <form id="lendEquipmentForm" action="<?php getUrl('/actions/lendEquipment.php'); ?>" method="post">
-                    <input type="hidden" name="selectedEquipmentId" id="selectedEquipmentId">
+                <form>
                     <input class="input" type="date" name="initialDate" id="initialDate">
                     <input class="input" type="date" name="finalDate" id="finalDate">
                     
-                    <input class="input" required maxlength="50" placeholder="Responsável pelo emprestimo..." type="text" name="responsibleUser" id="responsibleUser">
+                    <input class="input" placeholder="Responsável pelo emprestimo..." type="text" name="responsibleUser" id="responsibleUser">
                     <input class="input" placeholder="Contacto...." type="text" name="contact" id="contact">
 
                     <textarea class="textarea" placeholder="Observações..." name="obs" id="obs" cols="30" rows="10"></textarea>
@@ -266,49 +193,32 @@ $allProviders = $providers->getAll();
                     <div class="filter">
                         <select class="select" id="lendEquipmentSelect" name="equipments">
                             <option value="" selected disabled hidden>Selecione um equipamento..</option>
-                            <?php foreach ($AllNotLentEquipments as $notLentEquipment) {
-                                echo ' <option data-id="' . $notLentEquipment->getId() . '"> ' . $notLentEquipment->getInternalCode() . ' - ' . $notLentEquipment->getCategoryName() . ' (' . $notLentEquipment->getIpAdress() . ')' . '</option> ';
+                            <?php foreach ($allEquipments as $equipment) {
+                                echo ' <option data-id="' . $equipment->getId() . '"> ' . $equipment->getInternalCode() . ' - ' . $equipment->getCategoryName() . ' (' . $equipment->getIpAdress() . ')' . '</option> ';
                             } ?>
                         </select>
 
                         <input class="input" autocomplete="off" data-filtername="lendEquipmentSelect" placeholder="Pesquisar por equipamentos..." type="text" name="filter">
                     </div>
                 </form>
-                <input type="submit" form="lendEquipmentForm" data-hiddenInput="selectedEquipmentId" data-who="lendEquipment" data-select="lendEquipmentSelect" id="lendEquipmentBtnAction" value="Emprestar" class="btn"/>
+                
+                <button data-who="lendEquipment" data-select="lendEquipmentSelect" id="lendEquipmentBtnAction" class="btn">Atualizar</button>
             </div>
             
-            <div data-actionBtn="returnEquipmentBtnAction" id="returnEquipmentModal" class="equipmentModal modalContent returnEquipment">
+            <div data-actionBtn="returnEquipmentBtnAction" id="returnEquipmentModal" class="equipmentModal modalContent returnEquipmentBtnAction">
                 <h3>Olá, qual equipamento você quer retornar?</h3>
 
-                <form id="returnEquipmentForm" action="<?php getUrl('/actions/returnEquipment.php'); ?>" method="post">
-                    <input type="hidden" name="selectedEquipmentId" id="returnEquipmentId">
-                    <input class="input" type="date" name="finalDate" id="finalDate">
+                <form>
                     <select class="select" id="returnEquipmentSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione um equipamento..</option>
-                        <?php foreach ($allNotRetiredEquipments as $lentEquipment) {
-                            echo ' <option data-id="' . $lentEquipment->getId() . '"> ' . $lentEquipment->getInternalCode() . ' - ' . $lentEquipment->getCategoryName() . ' (' . $lentEquipment->getIpAdress() . ')' . '</option> ';
+                        <?php foreach ($allEquipments as $equipment) {
+                            echo ' <option data-id="' . $equipment->getId() . '"> ' . $equipment->getInternalCode() . ' - ' . $equipment->getCategoryName() . ' (' . $equipment->getIpAdress() . ')' . '</option> ';
                         } ?>
                     </select>
 
-                    <input class="input" autocomplete="off" data-filtername="returnEquipmentSelect" placeholder="Pesquisar por avarias..." type="text" name="filter">
+                    <input class="input" autocomplete="off" data-filtername="returnEquipmentSelect" placeholder="Pesquisar por equipamentos..." type="text" name="filter">
                 </form>
-                <input type="submit" form="returnEquipmentForm" data-hiddenInput="returnEquipmentId" data-who="returnEquipment" data-select="returnEquipmentSelect" id="returnEquipmentBtnAction" value="Retornar" class="btn"/>
-            </div>
-
-            <div data-actionBtn="deleteLentProcessBtnAction" id="deleteLentProcess" class="equipmentModal modalContent deleteLentProcess">
-                <h3>Olá, qual processo de emprestimo você quer apagar?</h3>
-
-                <form>
-                    <select class="select" id="deleteLentProcessSelect" name="equipments">
-                        <option value="" selected disabled hidden>Selecione um processo de emprestimo..</option>
-                        <?php foreach($allLentProcess as $lentProcess) {
-                            echo ' <option data-id="' . $lentProcess->getId() . '"> ' . $lentProcess->getInitialDate() . ' - ' . $lentProcess->getFinalDate() . ' (' . $lentProcess->getEquipmentInternalCode() . ')' . '</option> ';
-                        } ?>
-                    </select>
-
-                    <input class="input" autocomplete="off" data-filtername="deleteLentProcessSelect" placeholder="Pesquisar por assistências..." type="text" name="filter">
-                </form>
-                < <button data-who="deleteLentProcess" data-select="deleteLentProcessSelect" id="deleteLentProcessBtnAction" class="btn">Apagar</button>
+                <button data-who="returnEquipment" data-select="returnEquipmentSelect" id="returnEquipmentBtnAction" class="btn">Retornar</button>
             </div>
 
             <div data-actionBtn="updateSoftwareBtnAction" class="softwareModal updateSoftware modalContent" id="updateSoftware">
@@ -340,10 +250,10 @@ $allProviders = $providers->getAll();
 
                     <input class="input" autocomplete="off" data-filtername="deleteSoftwareSelect" placeholder="Pesquisar por softwares..." type="text" name="filter">
                 </form>
-                <button data-who="deleteSoftware" data-select="deleteSoftwareSelect" id="deleteSoftwareBtnAction" class="btn">Apgar</button>
+                <button data-who="deleteSoftware" data-select="deleteSoftwareSelect" id="deleteSoftwareBtnAction" class="btn">Atualizar</button>
             </div>
 
-            <div data-actionBtn="updateProviderBtnAction" class="providerModal updateProvider modalContent" id="updateProvider">
+            <div data-actionBtn="updateProviderBtnAction" class="ProviderModal updateProvider modalContent" id="updateProvider">
                 <h3>Olá, qual fornecedor você quer atualizar?</h3>
 
                 <form>
@@ -375,95 +285,40 @@ $allProviders = $providers->getAll();
                 <button data-who="deleteProvider" data-select="deleteProviderSelect" id="deleteProviderBtnAction" class="btn">Apagar</button>
             </div>
 
-            <div data-actionBtn="updateMalfunctionBtnAction" id="updateMalfunction" class="malfunctionModal modalContent updateMalfunction">
-                <h3>Olá, qual avaria você quer atualizar?</h3>
+            <div data-actionBtn="updateMalfunctionBtnAction" id="updateMalfunction" class="equipmentModal modalContent updateMalfunction">
+                <h3>Olá, qual equipamento você quer atualizar?</h3>
 
                 <form>
                     <select class="select" id="updateMalfunctionSelect" name="equipments">
-                        <option value="" selected disabled hidden>Selecione uma avaria..</option>
-                        <?php foreach($AllMalfunctions as $malfunctions) {
-                            echo '<option data-id=' . $malfunctions->getId() . '> ' . $malfunctions->getDate() . ' - ' . $malfunctions->getProviderName() . ' (' . $malfunctions->getStatus() . ') </option> ';
+                        <option value="" selected disabled hidden>Selecione um equipamento..</option>
+                        <?php foreach ($allEquipments as $equipment) {
+                            echo ' <option data-id="' . $equipment->getId() . '"> ' . $equipment->getInternalCode() . ' - ' . $equipment->getCategoryName() . ' (' . $equipment->getIpAdress() . ')' . '</option> ';
                         } ?>
                     </select>
 
-                    <input class="input" autocomplete="off" data-filtername="updateMalfunctionSelect" placeholder="Pesquisar por avarias..." type="text" name="filter">
+                    <input class="input" autocomplete="off" data-filtername="updateMalfunctionSelect" placeholder="Pesquisar por equipamentos..." type="text" name="filter">
                 </form>
-                <button data-who="updateMalfunction" data-select="updateMalfunctionSelect" id="updateMalfunctionBtnAction" class="btn">Atualizar</button>
+                <button data-who="updateMalfunction" data-select="updateMalfunctionSelect" id="updateMalfunctionBtnAction" class="btn">Apagar</button>
             </div>
 
-            <div data-actionBtn="deleteMalfunctionBtnAction" id="deleteMalfunction" class="malfunctionModal modalContent deleteMalfunction">
-                <h3>Olá, qual avaria você quer apagar?</h3>
+            <div data-actionBtn="deleteMalfunctionBtnAction" id="deleteMalfunction" class="equipmentModal modalContent deleteMalfunction">
+                <h3>Olá, qual equipamento você quer atualizar?</h3>
 
                 <form>
                     <select class="select" id="deleteMalfunctionSelect" name="equipments">
-                        <option value="" selected disabled hidden>Selecione uma avaria..</option>
-                        <?php foreach($AllMalfunctions as $malfunctions) {
-                            echo '<option data-id=' . $malfunctions->getId() . '> ' . $malfunctions->getDate() . ' - ' . $malfunctions->getProviderName() . ' (' . $malfunctions->getStatus() . ') </option> ';
+                        <option value="" selected disabled hidden>Selecione um equipamento..</option>
+                        <?php foreach ($allEquipments as $equipment) {
+                            echo ' <option data-id="' . $equipment->getId() . '"> ' . $equipment->getInternalCode() . ' - ' . $equipment->getCategoryName() . ' (' . $equipment->getIpAdress() . ')' . '</option> ';
                         } ?>
                     </select>
 
-                    <input class="input" autocomplete="off" data-filtername="deleteMalfunctionSelect" placeholder="Pesquisar por avarias..." type="text" name="filter">
+                    <input class="input" autocomplete="off" data-filtername="deleteMalfunctionSelect" placeholder="Pesquisar por equipamentos..." type="text" name="filter">
                 </form>
-                < <button data-who="deleteMalfunction" data-select="deleteMalfunctionSelect" id="deleteMalfunctionBtnAction" class="btn">Apagar</button>
-            </div>
-
-            <div data-actionBtn="updateAssistanceBtnAction" id="updateAssistance" class="malfunctionModal modalContent updateAssistance">
-                <h3>Olá, qual avaria você quer atualizar?</h3>
-
-                <form>
-                    <select class="select" id="updateAssistanceSelect" name="equipments">
-                        <option value="" selected disabled hidden>Selecione uma assistência..</option>
-                        <?php foreach($allAssistances as $assistances) {
-                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnical() . ' (' . $assistances->getTypeName() . ') </option> ';
-                        } ?>
-                    </select>
-
-                    <input class="input" autocomplete="off" data-filtername="updateAssistanceSelect" placeholder="Pesquisar por assistências..." type="text" name="filter">
-                </form>
-                <button data-who="updateAssistance" data-select="updateAssistanceSelect" id="updateAssistanceBtnAction" class="btn">Atualizar</button>
-            </div>
-
-            <div data-actionBtn="deleteAssistanceBtnAction" id="deleteAssistance" class="assistanceModal modalContent deleteAssistance">
-                <h3>Olá, qual assistência você quer apagar?</h3>
-
-                <form>
-                    <select class="select" id="deleteAssistanceSelect" name="equipments">
-                        <option value="" selected disabled hidden>Selecione uma assistência..</option>
-                        <?php foreach($allAssistances as $assistances) {
-                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnical() . ' (' . $assistances->getTypeName() . ') </option> ';
-                        } ?>
-                    </select>
-
-                    <input class="input" autocomplete="off" data-filtername="deleteAssistanceSelect" placeholder="Pesquisar por assistências..." type="text" name="filter">
-                </form>
-                < <button data-who="deleteAssistance" data-select="deleteAssistanceSelect" id="deleteAssistanceBtnAction" class="btn">Apagar</button>
-            </div>
-
-            <div data-actionBtn="generatePdfActionBtn" id="generatePdf" class="equipmentModal modalContent generatePdf">
-                <h3>Olá, qual é o PDF que deseja gerar?</h3>
-
-                <form id="generatePdF" action="<?php getUrl('/actions/generatePDF.php'); ?>" method="post">
-                    <select class="select" id="generatePdfSelect" name="category">
-                        <option value="" selected disabled hidden>Selecione uma categoria..</option>
-                        <option>Equipamentos</option>
-                        <option>Softwares</option>
-                        <option>Avarias</option>
-                        <option>Assistências</option>
-                        <option>Emprestimos</option>
-                    </select>
-
-                    <select class="select" id="generatePdfFilter" name="generatePdfFilter">
-                        <option id="withoutFilterOption" value="" selected>Sem filtro</option>
-                    </select>
-                
-                    <input type="submit" data-who="generatePdf" data-select="generatePdfSelect" id="generatePdfActionBtn" value="Gerar" class="btn">
-                </form>
+                < <button data-who="deleteMalfunction" data-select="deleteMalfunctionSelect" id="deleteMalfunctionBtnAction" class="btn">Atualizar</button>
             </div>
         </div>
 
         <script src="../scripts/filterSystem.js"></script>
-        <script src="../scripts/storeFormData.js"></script>
-        <script src="../scripts/malfunctionSystem.js"></script>
         <script src="../scripts/sidebarSystem.js"></script>
         <script src="../scripts/unsetSessionVariable.js"></script>
     </body>

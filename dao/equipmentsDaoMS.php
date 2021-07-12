@@ -18,7 +18,7 @@ class equipmentsDAOMS implements equipmentsDAO
             LEFT JOIN estados ON equipamentos.estados_idestados = estados.idestados
             LEFT JOIN marca ON equipamentos.marca_idmarca = marca.idmarca
             LEFT JOIN categoria ON equipamentos.categoria_idcategoria = categoria.idcategoria
-            LEFT JOIN prestadorservicos ON equipamentos.prestadorServicos_idprestadorServico = prestadorservicos.idprestadorservico"
+            LEFT JOIN prestadorservicos ON equipamentos.prestadorservicos_idprestadorservico = prestadorservicos.idprestadorservico"
         );
 
         $sql->execute();
@@ -62,7 +62,7 @@ class equipmentsDAOMS implements equipmentsDAO
 
     public function createEquipment(equipments $e) {
         $sql = $this->pdo->prepare("
-        INSERT INTO `equipamentos`(`codInterno`, `modelo`, `nSerie`, `caracteristicas`, `observacoes`, `dataadquisicao`, `codpatrimonial`, `enderecoip`, `tomadaderede`, `responsavel`, `dataresponsavel`, `equipamentoativo`, `localizacao`, `categoria_idCategoria`, `estados_idestados`, `marca_idmarca`, `prestadorServicos_idprestadorServico`) VALUES (:internalCode, :model, :serieNumber, :features, :obs,  :acquisitionDate, :patrimonialCode, :ipAdress, :lanPort, :user, :userDate, :activeEquipment, :location, :idCategory, :idState, :idBrand, :idProvider)");
+        INSERT INTO `equipamentos`(`codInterno`, `modelo`, `nSerie`, `caracteristicas`, `observacoes`, `dataadquisicao`, `codpatrimonial`, `enderecoip`, `tomadaderede`, `responsavel`, `dataresponsavel`, `equipamentoativo`, `localizacao`, `categoria_idCategoria`, `estados_idestados`, `marca_idmarca`, `prestadorservicos_idprestadorservico`) VALUES (:internalCode, :model, :serieNumber, :features, :obs,  :acquisitionDate, :patrimonialCode, :ipAdress, :lanPort, :user, :userDate, :activeEquipment, :location, :idCategory, :idState, :idBrand, :idProvider)");
 
         $sql->bindValue(':internalCode', $e->getInternalCode());
         $sql->bindValue(':model',$e->getModel());
@@ -89,11 +89,11 @@ class equipmentsDAOMS implements equipmentsDAO
 
     public function getSpecificById($id) {
         $sql = $this->pdo->prepare(
-            "SELECT equipamentos.*, prestadorservicos.nome, estados.estado, marca.nomeMarca, categoria.nomeCategoria FROM ((((equipamentos
+            "SELECT equipamentos.*, prestadorServicos.nome, estados.estado, marca.nomeMarca, categoria.nomeCategoria FROM ((((equipamentos
             INNER JOIN estados ON equipamentos.estados_idestados = estados.idestados)
             INNER JOIN marca ON equipamentos.marca_idmarca = marca.idmarca)
             INNER JOIN categoria ON equipamentos.categoria_idcategoria = categoria.idcategoria)
-            INNER JOIN prestadorservicos ON equipamentos.prestadorServicos_idprestadorServico = prestadorservicos.idprestadorservico)
+            INNER JOIN prestadorServicos ON equipamentos.prestadorservicos_idprestadorservico = prestadorServicos.idprestadorServico)
             WHERE idequipamentos = :id"
         );
 
@@ -129,37 +129,6 @@ class equipmentsDAOMS implements equipmentsDAO
             $eq->setStateName(ucwords(strtolower($data['estado'])));
             $eq->setBrandName($data['nomeMarca']);
             $eq->setProviderName(ucwords(strtolower($data['nome'])));
-
-            return $eq;
-        }
-        return;
-    }
-    
-    public function checkDeleteStatus($id) {
-        $sql = $this->pdo->prepare("SELECT equipamentos.codInterno FROM (equipamentos
-            INNER JOIN assistencia ON assistencia.equipamentos_idEquipamentos = equipamentos.idEquipamentos)
-            INNER JOIN emprestimos ON emprestimos.equipamentos_idEquipamentos = equipamentos.idEquipamentos
-            WHERE equipamentos.idEquipamentos = :id");
-        $sql->bindValue(':id', $id);
-        $sql->execute();
-        
-        if($sql->rowCount() > 0) {
-            return true;
-        }
-        return false;
-    }
-
-    public function equipmentUserData($id) {
-        $sql = $this->pdo->prepare("SELECT dataResponsavel, responsavel FROM equipamentos WHERE idEquipamentos = :id");
-        $sql->bindValue(':id', $id);
-        $sql->execute();
-
-        if($sql->rowCount() > 0) {
-            $data = $sql->fetch(\PDO::FETCH_ASSOC);
-
-            $eq = new equipments();
-            $eq->setUser($data['responsavel']);
-            $eq->setUserDate($data['dataResponsavel']);
 
             return $eq;
         }
@@ -311,20 +280,10 @@ class equipmentsDAOMS implements equipmentsDAO
 
         return false;
     }
-
     public function linkSoftwares($softwareId, $equipmentId) {
         $sql = $this->pdo->prepare("INSERT INTO softwares_has_equipamentos(softwares_idsoftwares, equipamentos_idequipamentos) VALUES (:softwareId, :equipmentId)");
         $sql->bindValue(':softwareId', $softwareId);
         $sql->bindValue(':equipmentId', $equipmentId);
-        $sql->execute();
-    }
-
-    public function setHistoric($user, $initialDate, $finalDate, $equipmentId) {
-        $sql = $this->pdo->prepare("INSERT INTO historico(entidade, dataInicio, dataFim, equipamentos_idEquipamentos) VALUES (:user, :initialDate, :finalDate, :idEquipment)");
-        $sql->bindValue(':user', $user);
-        $sql->bindValue(':initialDate', $initialDate);
-        $sql->bindValue(':finalDate', $finalDate);
-        $sql->bindValue(':idEquipment', $equipmentId);
         $sql->execute();
     }
 }

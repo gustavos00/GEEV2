@@ -11,7 +11,7 @@ session_start();
 function getUrl($adress)
 {
     $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ?
-        "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/GEEV2';
+        "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/geev2';
 
     echo strtoupper($url) . $adress;
 }
@@ -478,6 +478,7 @@ $providerData = $providers->getSpecific($_GET['id']);
                     <input type="submit" data-who="generatePdf" data-select="generatePdfSelect" id="generatePdfActionBtn" value="Gerar" class="btn">
                 </form>
             </div>
+
             
             <!--MODALS TO CURRRENT PAGE -->
 

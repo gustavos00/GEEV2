@@ -11,7 +11,7 @@ session_start();
 function getUrl($adress)
 {
     $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ?
-        "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/GEEV2';
+        "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/geev2';
 
     echo $url . $adress;
 }
@@ -504,7 +504,7 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
                     <select class="select" id="updateAssistanceSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione uma assistência..</option>
                         <?php foreach($allAssistances as $assistances) {
-                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnicalName() . ' (' . $assistances->getTypeName() . ') </option> ';
+                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnical() . ' (' . $assistances->getTypeName() . ') </option> ';
                         } ?>
                     </select>
 
@@ -520,7 +520,7 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
                     <select class="select" id="deleteAssistanceSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione uma assistência..</option>
                         <?php foreach($allAssistances as $assistances) {
-                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnicalName() . ' (' . $assistances->getTypeName() . ') </option> ';
+                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnical() . ' (' . $assistances->getTypeName() . ') </option> ';
                         } ?>
                     </select>
 
@@ -549,122 +549,40 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
                     <input type="submit" data-who="generatePdf" data-select="generatePdfSelect" id="generatePdfActionBtn" value="Gerar" class="btn">
                 </form>
             </div>
-        </div>
 
-        <!--MODALS TO CURRRENT PAGE -->
+            <!--MODALS TO CURRRENT PAGE -->
 
-        <div data-createbtnclass="brandActions" data-createid="createBrandOption" data-deleteid="deleteBrandOption" data-who="Brand" class="equipmentModal modalContent action" id="createBrandModal"> 
-                <div class="options">
-                    <h2>Selecione uma opção</h2>
-                    <input data-optionid="createBrand" name="type" type="radio" id="createBrandOption">
-                    <label for="createBrandOption">Criar marca</label>
+            <div data-actionbuttonid="createBrandAction" data-who="brand" class="equipmentModal modalContent createBrand" id="createBrand">
+                <h3>Criar marca</h3>
 
-                    <input data-optionid="deleteBrand" name="type" type="radio" id="deleteBrandOption">
-                    <label for="deleteBrandOption">Apagar marca</label>
-                </div>
-                <div id="createBrand" class="createBrand createAction">
-                    <h3>Criar marca</h3>
+                <form>
+                    <input class="input" type="text" placeholder="Nome da marca"/>
 
-                    <form>
-                        <input class="input" type="text" placeholder="Nome da marca"/>
-
-                        <button class="btn brandActions" id="createBrandAction" data-action="create" type="submit" >Criar marca</button>
-                    </form>
-                </div>
-
-                <div id="deleteBrand" class="deleteBrand deleteAction">
-                    <h3>Apagar marca</h3>
-
-                    <form>
-                        <select class="select">
-                            <option value="" selected disabled hidden>Selecione uma marca..</option>
-
-                            
-                            <?php foreach ($allBrands as $brand) {
-                                    echo ' <option> ' . $brand->getBrandName() . '</option> ';
-                            } ?>
-                        </select>
-
-                        <button class="btn brandActions" id="deleteBrandAction" data-action="delete" type="submit" >Apagar marca</button>
-                    </form>
-                </div>
+                    <button class="btn" id="createBrandAction" type="submit" >Criar marca</button>
+                </form>
             </div>
 
-
             
-            <div data-createbtnclass="categoryActions" data-createid="createCategoryOption" data-deleteid="deleteCategoryOption" data-who="Category" class="equipmentModal modalContent action" id="createCategoryModal"> 
-                <div class="options">
-                    <h2>Selecione uma opção</h2>
-                    <input data-optionid="createCategory" name="type" type="radio" id="createCategoryOption">
-                    <label for="createCategoryOption">Criar categoria</label>
+            <div data-actionbuttonid="createCategoryAction" data-who="category" class="equipmentModal modalContent createCategory" id="createCategory">
+                <h3>Criar categoria</h3>
 
-                    <input data-optionid="deleteCategory" name="type" type="radio" id="deleteCategoryOption">
-                    <label for="deleteCategoryOption">Apagar categoria</label>
-                </div>
-                <div id="createCategory" class="createCategory createAction">
-                    <h3>Criar categoria</h3>
-
-                    <form>
+                <form>
                         <input class="input" type="text" placeholder="Nome da categoria"/>
                         <input class="input" type="text" placeholder="Código da categoria"/>
 
-                        <button class="btn categoryActions" id="createCategoryAction" data-action="create" type="submit" >Criar categoria</button>
-                    </form>
-                </div>
-
-                <div id="deleteCategory" class="deleteCategory deleteAction">
-                    <h3>Apagar categoria</h3>
-
-                    <form>
-                        <select class="select">
-                            <option value="" selected disabled hidden>Selecione uma categoria..</option>
-
-                            <?php foreach ($allCategorys as $category) {
-                                    echo ' <option> ' . $category->getCategoryName() . '</option> ';
-                            } ?>
-                        </select>
-
-                        <button class="btn categoryActions" id="deleteCategoryAction" data-action="delete" type="submit" >Apagar categoria</button>
-                    </form>
-                </div>
+                        <button class="btn" id="createCategoryAction" type="submit" >Criar categoria</button>
+                </form>
             </div>
 
             
-            <div data-createbtnclass="stateActions" data-createid="createStateOption" data-deleteid="deleteStateOption" data-who="state" class="equipmentModal modalContent action" id="createStateModal"> 
-                <div class="options">
-                    <h2>Selecione uma opção</h2>
-                    <input data-optionid="createState" name="type" type="radio" id="createStateOption">
-                    <label for="createStateOption">Criar estado</label>
+            <div data-actionbuttonid="createStateAction" data-who="state" class="equipmentModal modalContent createState" id="createState"> 
+                <h3>Criar estado</h3>
 
-                    <input data-optionid="deleteState" name="type" type="radio" id="deleteStateOption">
-                    <label for="deleteStateOption">Apagar estado</label>
-                </div>
-                <div id="createState" class="createState createAction">
-                    <h3>Criar estado</h3>
+                <form>
+                    <input class="input" type="text" placeholder="Nome do estado"/>
 
-                    <form>
-                        <input class="input" type="text" placeholder="Nome do estado"/>
-
-                        <button class="btn stateActions" id="createStateAction" data-action="create" type="submit" >Criar estado</button>
-                    </form>
-                </div>
-
-                <div id="deleteState" class="deleteState deleteAction">
-                    <h3>Apagar estado</h3>
-
-                    <form>
-                        <select class="select">
-                            <option value="" selected disabled hidden>Selecione um estado..</option>
-
-                            
-                            <?php foreach ($allStates as $state) {
-                                    echo ' <option> ' . $state->getState() . '</option> ';
-                            } ?>
-                        </select>
-
-                        <button class="btn stateActions" id="deleteStateAction" data-action="delete" type="submit" >Apagar estado</button>
-                    </form>
-                </div>
+                    <button class="btn" id="createStateAction" type="submit" >Criar estado</button>
+                </form>
             </div>
         </div>
         

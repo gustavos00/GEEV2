@@ -8,7 +8,7 @@ session_start();
 function getUrl($adress)
 {
     $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ?
-        "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/GEEV2';
+        "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/geev2';
 
     echo strtoupper($url) . $adress;
 }
@@ -52,9 +52,7 @@ $specific = $softwares->getSpecificSoftwareById($_GET['id']);
     <title>Atualizar software - GEE</title>
 </head>
     <body>
-
-    <div class="sidebarWrapper">
-        <nav class="sidebar">
+    <nav class="sidebar">
             <div class="sidebarBtnContainer">
                 <div class="sidebarBtn"></div>
             </div>
@@ -149,10 +147,9 @@ $specific = $softwares->getSpecificSoftwareById($_GET['id']);
                 </label>
             </div>
         </nav>
-    </div>
         <div class="contentWrap">
             <div class="container">
-                <h1>Atualizar software</h1>
+                <h1>Criar software</h1>
                     <?php
                     if (isset($_SESSION['updateSoftwareError'])) {
                         echo '
@@ -174,7 +171,7 @@ $specific = $softwares->getSpecificSoftwareById($_GET['id']);
                         <input class="input" value=<?= $specific->getVersion()?> placeholder="Insira uma versão.." type="text" name="version" id="version">
 
                         <div class="filter">
-                            <select class="select" id="type" name="type">
+                            <select value=<?= $specific->getTypeName()?> class="select" id="type" name="type">
                                 <option value="" selected disabled hidden>Selecione um tipo..</option>
                                 <?php foreach ($allSoftwaresType as $type) {
                                     echo ' <option> ' . $type->getTypeName() . '</option> ';
@@ -185,16 +182,16 @@ $specific = $softwares->getSpecificSoftwareById($_GET['id']);
                         </div>
                         
                         <button class="btn equipmentsActionButton" data-modalId="createCategory">Criar tipo</button>
-                        
+
                         <div class="filter">
-                            <select class="select" id="provider" name="provider">
+                            <select value=<?= $specific->getProviderName()?> class="select" id="provider" name="provider">
                                 <option value="" selected disabled hidden>Selecione um fornecedor..</option>
                                 <?php foreach ($AllProviders as $provider) {
                                     echo ' <option> ' . $provider->getName() . '</option> ';
                                 } ?>
                             </select>
 
-                            <input class="input" autocomplete="off" data-filterName="provider" placeholder="Pesquisar por fornecedores..." type="text" name="filter">
+                            <input class="input" autocomplete="off" data-filterName="type" placeholder="Pesquisar por tipos..." type="text" name="filter">
                         </div>
 
                         <input value=<?= $specific->getInitialDate()?> class="input" type="date" name="initialDate" id="initialDate">
@@ -206,6 +203,7 @@ $specific = $softwares->getSpecificSoftwareById($_GET['id']);
                 </form>
             </div>
         </div>
+
         <div class="modalFilter" id="modalFilter">
             <!--MODALS TO SIDEBAR -->
             <div data-actionBtn="updateEquipmentBtnAction" id="updateEquipment" class="equipmentModal modalContent updateEquipment">
@@ -261,8 +259,8 @@ $specific = $softwares->getSpecificSoftwareById($_GET['id']);
 
                 <form id="lendEquipmentForm" action="<?php getUrl('/actions/lendEquipment.php'); ?>" method="post">
                     <input type="hidden" name="selectedEquipmentId" id="selectedEquipmentId">
-                    <input class="input" required type="date" name="initialDate" id="initialDate">
-                    <input class="input" required type="date" name="finalDate" id="finalDate">
+                    <input class="input" type="date" name="initialDate" id="initialDate">
+                    <input class="input" type="date" name="finalDate" id="finalDate">
                     
                     <input class="input" required maxlength="50" placeholder="Responsável pelo emprestimo..." type="text" name="responsibleUser" id="responsibleUser">
                     <input class="input" placeholder="Contacto...." type="text" name="contact" id="contact">
@@ -288,7 +286,7 @@ $specific = $softwares->getSpecificSoftwareById($_GET['id']);
 
                 <form id="returnEquipmentForm" action="<?php getUrl('/actions/returnEquipment.php'); ?>" method="post">
                     <input type="hidden" name="selectedEquipmentId" id="returnEquipmentId">
-                    <input class="input" required type="date" name="finalDate" id="finalDate">
+                    <input class="input" type="date" name="finalDate" id="finalDate">
                     <select class="select" id="returnEquipmentSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione um equipamento..</option>
                         <?php foreach ($allNotRetiredEquipments as $lentEquipment) {
@@ -420,7 +418,7 @@ $specific = $softwares->getSpecificSoftwareById($_GET['id']);
                     <select class="select" id="updateAssistanceSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione uma assistência..</option>
                         <?php foreach($allAssistances as $assistances) {
-                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnicalName() . ' (' . $assistances->getTypeName() . ') </option> ';
+                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnical() . ' (' . $assistances->getTypeName() . ') </option> ';
                         } ?>
                     </select>
 
@@ -436,7 +434,7 @@ $specific = $softwares->getSpecificSoftwareById($_GET['id']);
                     <select class="select" id="deleteAssistanceSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione uma assistência..</option>
                         <?php foreach($allAssistances as $assistances) {
-                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnicalName() . ' (' . $assistances->getTypeName() . ') </option> ';
+                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnical() . ' (' . $assistances->getTypeName() . ') </option> ';
                         } ?>
                     </select>
 
