@@ -23,3 +23,21 @@
 
 
 /* VIEW ASSISTANCE DATA */
+.dataContainer {
+    width: unset;
+    min-width: 50vw;
+}
+
+.dataContainer h3 {
+    margin-bottom: 1rem; 
+}
+
+.dataContainer .dataContent h4 {
+    font-weight: bold;
+    color: var(--text-dark);
+}
+
+.dataContainer .dataContent h4 span {
+    font-weight: normal;
+    font-size: 1.5rem;
+}

@@ -46,7 +46,7 @@ if(checkInput($data->internalCode) && checkInput($data->serieNumber)) { //Check 
             $equipmentStatus=false;
 
             if (!$equipmentStatus) { //Validate equipment
-                $newEquipment = new equipments();
+                $newEquipment = new equipments();   
                 
                 $newEquipment->setInternalCode($data->internalCode);
                 $newEquipment->setModel($data->model);
@@ -84,9 +84,10 @@ if(checkInput($data->internalCode) && checkInput($data->serieNumber)) { //Check 
                 if(isset($_COOKIE['__geecreateequipment'])) {
                     setcookie("__geecreateequipment", 'DELETED', 1, '/');
                 }
-                
+
+
             } else {
-                $_SESSION['createEquipmentError'] = "Já existe um equipamento com esses dados."; 
+                $_SESSION['createEquipmentError'] = "Já existe um equipamento com esse endereço IP."; 
             }
         } else {
             $_SESSION['createEquipmentError'] = "O endereço IP inserido não é valido.";

@@ -9,7 +9,7 @@ session_start();
 function getUrl($adress)
 {
     $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ?
-        "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/GEEV2';
+        "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/geev2';
 
     echo $url . $adress;
 }
@@ -273,8 +273,8 @@ $allEquipments = $equipments->getAll();
 
                 <form id="lendEquipmentForm" action="<?php getUrl('/actions/lendEquipment.php'); ?>" method="post">
                     <input type="hidden" name="selectedEquipmentId" id="selectedEquipmentId">
-                    <input class="input" required type="date" name="initialDate" id="initialDate">
-                    <input class="input" required type="date" name="finalDate" id="finalDate">
+                    <input class="input" type="date" name="initialDate" id="initialDate">
+                    <input class="input" type="date" name="finalDate" id="finalDate">
                     
                     <input class="input" required maxlength="50" placeholder="Responsável pelo emprestimo..." type="text" name="responsibleUser" id="responsibleUser">
                     <input class="input" placeholder="Contacto...." type="text" name="contact" id="contact">
@@ -300,7 +300,7 @@ $allEquipments = $equipments->getAll();
 
                 <form id="returnEquipmentForm" action="<?php getUrl('/actions/returnEquipment.php'); ?>" method="post">
                     <input type="hidden" name="selectedEquipmentId" id="returnEquipmentId">
-                    <input class="input" required type="date" name="finalDate" id="finalDate">
+                    <input class="input" type="date" name="finalDate" id="finalDate">
                     <select class="select" id="returnEquipmentSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione um equipamento..</option>
                         <?php foreach ($allNotRetiredEquipments as $lentEquipment) {
@@ -432,7 +432,7 @@ $allEquipments = $equipments->getAll();
                     <select class="select" id="updateAssistanceSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione uma assistência..</option>
                         <?php foreach($allAssistances as $assistances) {
-                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnicalName() . ' (' . $assistances->getTypeName() . ') </option> ';
+                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnical() . ' (' . $assistances->getTypeName() . ') </option> ';
                         } ?>
                     </select>
 
@@ -448,7 +448,7 @@ $allEquipments = $equipments->getAll();
                     <select class="select" id="deleteAssistanceSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione uma assistência..</option>
                         <?php foreach($allAssistances as $assistances) {
-                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnicalName() . ' (' . $assistances->getTypeName() . ') </option> ';
+                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnical() . ' (' . $assistances->getTypeName() . ') </option> ';
                         } ?>
                     </select>
 

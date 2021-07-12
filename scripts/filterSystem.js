@@ -9,12 +9,12 @@ for (let i = 0; i < filterInputs.length; i++) {
 
         if (target.nodeName == "SELECT") {
             const options = target.options;
-
-            if (inputValue !== "") {
+            
+            if(inputValue !== "") {
                 for (let k = 0; k < options.length; k++) {
                     let e = options[k];
                     let eValue = e.text.toUpperCase();
-
+    
                     if (eValue.match(inputValue)) {
                         e.style.display = "";
                         e.selected = "selected"
@@ -23,7 +23,7 @@ for (let i = 0; i < filterInputs.length; i++) {
                     }
                 }
             } else {
-                target.selectedIndex = target.querySelector('[disabled]').index //Return disabled option
+                target.selectedIndex = target.querySelector('[disabled]').index //Retorna o placeholder como selected
 
                 for (let k = 0; k < options.length; k++) {
                     options[k].style.display = ""

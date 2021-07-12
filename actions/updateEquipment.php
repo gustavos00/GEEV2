@@ -13,11 +13,10 @@ $providers = new providersDAOMS($pdo);
 $states = new statesDAOMS($pdo);
 $categorys = new categorysDAOMS($pdo);
 
-function validateDate($date, $format = 'Y-m-d')
-{
-    $d = DateTime::createFromFormat($format, $date);
-    return $d && $d->format($format) == $date;
-}
+$categoryId = $categorys->getIdByName($_POST['type']);
+$providerId = $providers->getIdByName($_POST['provider']);
+$stateId = $states->getIdByName($_POST['state']);
+$brandId = $brands->getIdByName($_POST['brand']);
 
 function checkInput($i) {
     return (trim($i) != "");
@@ -25,12 +24,6 @@ function checkInput($i) {
 
 if(isset($_POST['brand']) && isset($_POST['provider']) && isset($_POST['model']) && isset($_POST['type']) && isset($_POST['model']) && checkInput($_POST['brand']) && checkInput($_POST['provider']) && checkInput($_POST['model']) && checkInput($_POST['type']) && checkInput($_POST['model'])) {
     if (filter_var($_POST['ipAdress'], FILTER_VALIDATE_IP) && isset($_POST['ipAdress'])) {
-        $categoryId = $categorys->getIdByName($_POST['type']);
-        $providerId = $providers->getIdByName($_POST['provider']);
-        $stateId = $states->getIdByName($_POST['state']);
-        $brandId = $brands->getIdByName($_POST['brand']);
-        $userData = $equipments->equipmentUserData($_POST['id']);
-
         $updatedEquipment = new equipments();
         
         $updatedEquipment->setId($_POST['id']);
@@ -62,18 +55,7 @@ if(isset($_POST['brand']) && isset($_POST['provider']) && isset($_POST['model'])
 
         $updatedEquipment->setCategoryId($categoryId);
         $updatedEquipment->setCategoryName($_POST['type']);
-                
-        if($userData->getUser() != $_POST['user'] && !is_null($userData->getUser())) {
-            
-            $year = explode('/', $_POST['userDate']);
-            if($year == "0000") { //Se data for igual a default (0000-00-00)
-                $reallyFinalDate = date("Y-m-d");
-            } else {
-                $reallyFinalDate = $_POST['userDate'];
-            }
 
-            $equipments->setHistoric($_POST['user'], $userData->getUserDate(), $reallyFinalDate, $_POST['id']);
-        }
 
         $equipments->updateEquipment($updatedEquipment);
 
@@ -84,7 +66,8 @@ if(isset($_POST['brand']) && isset($_POST['provider']) && isset($_POST['model'])
             setcookie("__geeupdateequipment", 'DELETED', 1, '/');
         }
 
-   
+        header('Location: ../index.php');
+        die();
     } else {
         $_SESSION['updateEquipmentError'] = "O endereço IP inserido não é valido.";
     }
@@ -92,3 +75,5 @@ if(isset($_POST['brand']) && isset($_POST['provider']) && isset($_POST['model'])
     $_SESSION['updateEquipmentError'] = "Não foram introduzidos todos os dados necessários.";
 }
 
+header('Location: ../pages/updateEquipment.php?id=' . $_POST['id']);
+die();

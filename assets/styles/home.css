@@ -14,7 +14,7 @@ body {
 }
 
 .dataContainer {
-    min-width: 50vw;
+    width: 75vw;
     max-height: 550px;
     min-height: 510px;
     margin: 2rem;
@@ -91,3 +91,70 @@ body {
     color: var(--text-dark);
     opacity: .5;
 }
+
+
+.dataContainer .dataContent .tableContainer {
+    width: 100%;
+    height: 80%;
+    margin-top: 2rem;
+
+    border-radius: 5px;
+
+    position: relative;
+    overflow: auto;
+}
+
+.dataContainer .dataContent .tableContainer::-webkit-scrollbar-track
+{
+	background-color: var(--background-body);
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.dataContainer .dataContent .tableContainer::-webkit-scrollbar
+{
+	width: 7px;
+	background-color: none;
+}
+
+.dataContainer .dataContent .tableContainer::-webkit-scrollbar-thumb
+{
+	border-radius: 7px;
+	background-color: var(--secondary-background-content-body);
+}
+
+[data-theme="dark"] .dataContainer .dataContent .tableContainer table {
+    --bs-table-hover-bg: #434344d3;
+    --bs-table-hover-color: #ffffff;
+}
+
+.dataContainer .dataContent .tableContainer table > * {
+    font-size: 4rem;
+    color: var(--text-dark);    
+}
+
+.dataContainer .dataContent .tableContainer table thead th{
+    padding: .6rem;
+    color: var(--text-dark);
+
+    background-color: var(--secondary-background-content-body);
+
+    text-align: center;
+
+    position: sticky;
+    top: 0;    
+}
+
+.dataContainer .dataContent .tableContainer table thead th:first-child{
+    border-top-left-radius: 5px;
+}
+
+.dataContainer .dataContent .tableContainer table tbody tr {
+    cursor: pointer;
+}
+
+[data-theme="dark"] .dataContainer .dataContent .tableContainer .table-striped>tbody>tr:nth-of-type(odd) {
+    --bs-table-striped-color: #ccc;
+    --bs-table-striped-bg: #272829d3;
+}
+

@@ -16,11 +16,8 @@ function checkInput($i) {
 $softwares = new softwaresDAOMS($pdo);
 $providers = new providersDAOMS($pdo);
 
-var_dump(checkInput($_POST['key']));
-var_dump(checkInput($_POST['version']));
 
-
-if(checkInput($_POST['key']) && checkInput($_POST['version'])) {
+if(checkFullDate($_POST['initialDate']) && checkFullDate($_POST['finalDate']) && checkInput($_POST['key']) && checkInput($_POST['version'])) {
     if(isset($_POST['type']) && isset($_POST['provider']) && checkInput($_POST['type']) && checkInput($_POST['provider'])) {
         $typeId = $softwares->getSoftwareTypeIdByName($_POST['type']);
         $providerId = $providers->getIdByName($_POST['provider']);
@@ -42,7 +39,7 @@ if(checkInput($_POST['key']) && checkInput($_POST['version'])) {
             $softwares->insertSoftware($newSoftware);
 
             unset($_SESSION['createSoftwareError']);
-            $_SESSION['successMessage'] = "O software " . $_POST['type'] . " (" . $_POST['version'] . ") foi criada com sucesso.";
+            $_SESSION['successMessage'] = "O software " . $_POST['type'] . "( " . $_POST['version'] . " ) foi criada com sucesso.";
             
 
             header('Location: ../index.php');
@@ -57,3 +54,6 @@ if(checkInput($_POST['key']) && checkInput($_POST['version'])) {
 } else {
     $_SESSION['createSoftwareError'] = 'Algum dos dados inseridos não são validos.';
 }
+
+header('Location: ../pages/createSoftware.php');
+die();
