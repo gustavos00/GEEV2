@@ -478,7 +478,6 @@ $providerData = $providers->getSpecific($_GET['id']);
                     <input type="submit" data-who="generatePdf" data-select="generatePdfSelect" id="generatePdfActionBtn" value="Gerar" class="btn">
                 </form>
             </div>
-
             
             <!--MODALS TO CURRRENT PAGE -->
 

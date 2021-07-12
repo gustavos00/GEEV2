@@ -220,7 +220,7 @@ $allLentProcess = $lent->getAll();
                 </div>
             </div>
 
-        <div class="modalFilter" id="modalFilter">
+            <div class="modalFilter" id="modalFilter">
             <!--MODALS TO SIDEBAR -->
             <div data-actionBtn="updateEquipmentBtnAction" id="updateEquipment" class="equipmentModal modalContent updateEquipment">
                 <h3>Olá, qual equipamento você quer atualizar?</h3>
