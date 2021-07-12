@@ -37,7 +37,7 @@ if(checkInput($_POST['internalCode']) && checkInput($_POST['serieNumber'])) { //
     if(isset($_POST['brand']) && isset($_POST['model']) && isset($_POST['category'])) { //Check if exist some important data
         if(filter_var($_POST['ipAdress'], FILTER_VALIDATE_IP) && isset($_POST['ipAdress'])) {
 
-            $equipmentStatus = $equipments->getEquipmentStatus($_POST['ipAdress']);
+            $equipmentStatus = $equipments->getEquipmentStatus($_POST['ipAdress'], $_POST['internalCode'], $_POST['serieNumber']);
 
             if (!$equipmentStatus) { //Validate equipment
                 $newEquipment = new equipments();
