@@ -375,9 +375,15 @@ height: 150px;
     width: 85%;
 }
 
+<<<<<<< HEAD
+
+
+.dataContainer .tableContainer {
+=======
 /* TABLE */
 
  .dataContent .tableContainer {
+>>>>>>> 16100771d29d37c0dc5ef16607ddc65339aa93e2
     width: 100%;
     height: 80%;
     margin-top: 2rem;
@@ -387,23 +393,51 @@ height: 150px;
     position: relative;
     overflow: auto;
 }
+<<<<<<< HEAD
+
+.dataContainer .tableContainer::-webkit-scrollbar-track
+=======
  .dataContent .tableContainer::-webkit-scrollbar-track
+>>>>>>> 16100771d29d37c0dc5ef16607ddc65339aa93e2
 {
 	background-color: var(--background-body);
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
 }
+<<<<<<< HEAD
+
+.dataContainer .tableContainer::-webkit-scrollbar
+=======
  .dataContent .tableContainer::-webkit-scrollbar
+>>>>>>> 16100771d29d37c0dc5ef16607ddc65339aa93e2
 {
 	width: 7px;
 	background-color: none;
 }
+<<<<<<< HEAD
+
+.dataContainer .tableContainer::-webkit-scrollbar-thumb
+=======
  .dataContent .tableContainer::-webkit-scrollbar-thumb
+>>>>>>> 16100771d29d37c0dc5ef16607ddc65339aa93e2
 {
 	border-radius: 7px;
 	background-color: var(--secondary-background-content-body);
 }
 
+<<<<<<< HEAD
+[data-theme="dark"] .dataContainer .tableContainer table {
+    --bs-table-hover-bg: #434344d3;
+    --bs-table-hover-color: #ffffff;
+}
+
+.dataContainer .tableContainer table > * {
+    font-size: 4rem;
+    color: var(--text-dark);    
+}
+
+.dataContainer .tableContainer table thead th{
+=======
 [data-theme="dark"] .dataContent .tableContainer table {
     --bs-table-hover-bg: #434344d3;
     --bs-table-hover-color: #ffffff;
@@ -413,6 +447,7 @@ height: 150px;
     color: var(--text-dark);    
 }
  .dataContent .tableContainer table thead th{
+>>>>>>> 16100771d29d37c0dc5ef16607ddc65339aa93e2
     padding: .6rem;
     color: var(--text-dark);
 
@@ -423,6 +458,18 @@ height: 150px;
     position: sticky;
     top: 0;    
 }
+<<<<<<< HEAD
+
+.dataContainer .tableContainer table thead th:first-child{
+    border-top-left-radius: 5px;
+}
+
+.dataContainer .tableContainer table tbody tr {
+    cursor: pointer;
+}
+
+[data-theme="dark"] .dataContainer .tableContainer .table-striped>tbody>tr:nth-of-type(odd) {
+=======
  .dataContent .tableContainer table thead th:first-child{
     border-top-left-radius: 5px;
 }
@@ -431,10 +478,25 @@ height: 150px;
 }
 
 [data-theme="dark"] .dataContent .tableContainer .table-striped>tbody>tr:nth-of-type(odd) {
+>>>>>>> 16100771d29d37c0dc5ef16607ddc65339aa93e2
     --bs-table-striped-color: #ccc;
     --bs-table-striped-bg: #272829d3;
 }
 
+<<<<<<< HEAD
+.dataContainer .tableContainer table tbody tr .trashcanImage {
+    width: 100%;
+    height: 100%;
+    content: '';
+    background-image: url('../img/trashcan.svg');
+}
+
+[data-theme="dark"] .dataContainer .tableContainer table tbody tr .trashcanImage {
+    width: 100%;
+    height: 100%;
+    content: '';
+    background-image: url('../img/trashcan.svg');
+=======
 .dataContainer h3 {
     margin-bottom: 1rem; 
 }
@@ -448,4 +510,5 @@ height: 150px;
 .dataContainer .dataContent h4 span {
     font-weight: normal;
     font-size: 1.5rem;
+>>>>>>> 16100771d29d37c0dc5ef16607ddc65339aa93e2
 }

@@ -30,6 +30,8 @@ $allProviders = $providers->getAll();
 $allAssistances = $assistance->getAll();
 $allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
 $AllNotLentEquipments = $equipments->getAllNotLentEquipments();
+$allEquipmentsLent = $equipments->getAllLentEquipments();
+
 $allLentProcess = $lent->getAll();
 
 ?>

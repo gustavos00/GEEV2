@@ -210,9 +210,9 @@ function getUrl($adress)
                         <input class="input" maxlength="32" required placeholder="Código de série *" type="text" name="serieNumber" id="serieNumber"/>
                         
                         <div class="buttonsContainer">
-                            <button class="btn equipmentsActionButton" data-modalId="createCategoryModal">Criar categoria</button>
-                            <button class="btn equipmentsActionButton" data-modalId="createBrandModal">Criar marca</button>
-                            <button class="btn equipmentsActionButton" data-modalId="createStateModal">Criar estado</button>
+                            <button class="btn smallBtn equipmentsActionButton" data-modalId="createCategoryModal">Criar categoria</button>
+                            <button class="btn smallBtn equipmentsActionButton" data-modalId="createBrandModal">Criar marca</button>
+                            <button class="btn smallBtn equipmentsActionButton" data-modalId="createStateModal">Criar estado</button>
                         </div>
                     </div>
 
@@ -222,7 +222,7 @@ function getUrl($adress)
 
                         <textarea class="textarea" placeholder="Observações" id="obs" name="obs"></textarea>
 
-                        <input class="input" type="date" name="acquisitionDate">
+                        <input class="input" type="date" id="acquisitionDate" name="acquisitionDate">
 
                         <input maxlength="45" class="input" placeholder="Código patrimonial" type="text" name="patrimonialCode" id="patrimonialCode">
                     </div>
@@ -233,7 +233,7 @@ function getUrl($adress)
 
                         <input maxlength="100" class="input" placeholder="Localização" type="text" name="location" id="location">
 
-                        <input class="input" type="date" name="userDate">
+                        <input id="userDate" class="input" type="date" name="userDate">
                     </div>
 
                     <div class="lanInformation dataContainer">
@@ -263,15 +263,31 @@ function getUrl($adress)
                             <select class="select" id="softwares" name="softwares">
                             <option value="" selected disabled hidden>Selecione um software..</option>
                                 <?php foreach ($allSoftwares as $s) {
-                                    echo ' <option> ' . $s->getTypeName() . ' - ' . $s->getVersion() . '</option> ';
+                                    echo ' <option data-id="' . $s->getId() . '"> ' . $s->getTypeName() . ' - ' . $s->getVersion() . '</option> ';
                                 } ?>
                             </select>
 
                             <input class="input" autocomplete="off" data-filterName="softwares" placeholder="Pesquisar por softwares.." type="text" name="filter">
                         </div>
+
+                        <button class="btn smallBtn" id="addSoftwareBtn">Adicionar software</button>
+
+                        <div class="tableContainer">
+                            <table class="table table-hover table-striped" id="providerContacts">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Software</th>
+                                        <th scope="col">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody">
+                                    
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <div class="submitContainer">
-                        <button type="submit" form="form" class="btn">Criar equipamento</button>
+                        <button type="submit" form="form" id="submitFormBtn" class="btn">Criar equipamento</button>
                     </div>
                 </form>
 

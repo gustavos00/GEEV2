@@ -84,6 +84,7 @@ class equipmentsDAOMS implements equipmentsDAO
         $sql->bindValue(':idProvider',$e->getProviderId());
 
         $sql->execute();
+        return $sql->lastInsertId();
     }
 
     public function getSpecificById($id) {
@@ -309,6 +310,13 @@ class equipmentsDAOMS implements equipmentsDAO
         }
 
         return false;
+    }
+
+    public function linkSoftwares($softwareId, $equipmentId) {
+        $sql = $this->pdo->prepare("INSERT INTO softwares_has_equipamentos(softwares_idsoftwares, equipamentos_idequipamentos) VALUES (:softwareId, :equipmentId)");
+        $sql->bindValue(':softwareId', $softwareId);
+        $sql->bindValue(':equipmentId', $equipmentId);
+        $sql->execute();
     }
 
     public function setHistoric($user, $initialDate, $finalDate, $equipmentId) {

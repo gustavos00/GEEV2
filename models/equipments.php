@@ -263,4 +263,6 @@ interface equipmentsDAO
     public function getSpecificById($id);
     public function setEquipmentAsRetired(equipments $e, $categoryId);
     public function getIdByInternalCode($ic);
+
+    public function linkSoftwares($softwareId, $equipmentId);
 }
