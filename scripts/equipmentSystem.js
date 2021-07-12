@@ -1,5 +1,7 @@
 //CREATE TYPE, BRAND OR STATE MODAL
 const equipmentsActionButton = document.getElementsByClassName('equipmentsActionButton');
+const tbodyElement = document.getElementById('tbody');
+let softwareData = []
 
 
 function request(data) {
@@ -145,3 +147,110 @@ window.addEventListener("click", (e) => {
         closeModal();
     }
 });
+
+
+//TABLE SYSTEM CREATE / UPDATE EQUIPMENT
+
+if(document.getElementById('id')) {
+    actionFile = 'updateEquipment'
+} else {
+    actionFile = 'createEquipment'
+}
+
+//General xhttp request 
+function request(data) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "../actions/" + actionFile + ".php", true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText);
+        }
+    };
+
+    xhttp.send(JSON.stringify(data));
+}
+
+function generateTable(softwareData) {
+    tbodyElement.innerHTML = '';
+
+    for (let i = 0; i < softwareData.length; i++) {
+        const trElement = document.createElement('tr');
+        const thSoftware = document.createElement('th');
+        const thActionsElement = document.createElement('th');
+
+        trElement.setAttribute('data-index', i);
+        thActionsElement.innerHTML = 'Apagar'
+        thSoftware.innerHTML = softwareData[i].name;
+
+        tbodyElement.appendChild(trElement);
+        trElement.appendChild(thSoftware)
+        trElement.appendChild(thActionsElement)
+
+        thActionsElement.addEventListener('click', (e) => {
+            softwareData.splice(thActionsElement.dataset.index, 1);
+            generateTable(softwareData);
+        })
+    }
+}
+
+const addSoftwareBtn = document.getElementById('addSoftwareBtn');
+addSoftwareBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    const softwareSelect = document.getElementById('softwares')
+    const selectedSoftware = softwareSelect.options[softwareSelect.selectedIndex];
+
+    if(!selectedSoftware.hasAttribute('disabled')) {
+        const value = {
+            name: selectedSoftware.text,
+            id: selectedSoftware.dataset.id
+        }
+        softwareData.push(value);
+
+        generateTable(softwareData)
+
+    } else {
+        alert('O opção selecionada não é valida.')
+    }
+})
+
+const submitFormBtn = document.getElementById('submitFormBtn')
+submitFormBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const provider = document.getElementById('provider')
+    const brand = document.getElementById('brand');
+    const state = document.getElementById('state');
+    const category = document.getElementById('category');
+    const status = 'd';
+
+    const providerData = {
+        internalCode: document.getElementById('internalCode').value,
+        category: document.getElementById('category').value,
+        brand: brand.options[brand.selectedIndex].text,
+        state: state.options[state.selectedIndex].text,
+        category: category.options[category.selectedIndex].text,
+        model: document.getElementById('model').value,
+        serieNumber: document.getElementById('serieNumber').value,
+
+        features: document.getElementById('features').value,
+        obs: document.getElementById('obs').value,
+        acquisitionDate: document.getElementById('acquisitionDate').value,
+        patrimonialCode: document.getElementById('patrimonialCode').value,
+
+        user: document.getElementById('user').value,
+        location: document.getElementById('location').value,
+        userDate: document.getElementById('userDate').value,
+
+        lanPort: document.getElementById('lanPort').value,
+        activeEquipment: document.getElementById('activeEquipment').value,
+        ipAdress: document.getElementById('ipAdress').value,
+
+        provider: provider.options[provider.selectedIndex].text,
+        softwares: softwareData,
+
+        status: status,
+    }
+
+    request(providerData);
+})

@@ -10,10 +10,14 @@
     grid-gap: 10px;
 }
 
-.container form .dataContainer .buttonsContainer .btn {
+.smallBtn {
     width: 100%;
 
     font-size: 1.4rem;
+}
+
+.smallBtn:hover {
+    width: 100%;
 }
 
 .submitContainer {

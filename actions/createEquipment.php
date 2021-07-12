@@ -3,6 +3,7 @@ require_once '../config.php';
 require_once '../dao/equipmentsDaoMS.php';
 require_once '../dao/brandsDaoMS.php';
 require_once '../dao/providersDaoMS.php';
+require_once '../dao/softwaresDaoMS.php';
 require_once '../dao/statesDaoMS.php';
 require_once '../dao/categorysDaoMS.php';
 session_start();
@@ -10,75 +11,80 @@ session_start();
 $equipments = new equipmentsDAOMS($pdo);
 $brands = new brandsDAOMS($pdo);
 $providers = new providersDAOMS($pdo);
+$softwares = new softwaresDAOMS($pdo);
 $states = new statesDAOMS($pdo);
 $categorys = new categorysDAOMS($pdo);
 
 //Get data
-$categoryId = $categorys->getIdByName($_POST['category']);
-$providerId = $providers->getIdByName($_POST['provider']);
-$stateId = $states->getIdByName($_POST['state']);
-$brandId = $brands->getIdByName($_POST['brand']);
+$data = json_decode(file_get_contents("php://input"));
+$categoryId = $categorys->getIdByName($data->category);
+$providerId = $providers->getIdByName($data->provider);
+$stateId = $states->getIdByName($data->state);
+$brandId = $brands->getIdByName($data->brand);
+
+$softwaresData = $data->softwares;
 
 function checkInput($i) {
     return (trim($i) != "");
 }
 
-if(!isset($_POST['dataAdquisicao'])) {
+if(!isset($data->dataAdquisicao)) {
     $date = date("Y-m-d");
 } else {
-    $date = $_POST['dataAdquisicao'];
+    $date = $data->dataAdquisicao;
 }
 
-if($_POST['userDate'] == "") {
-    $_POST['userDate'] = null;
+if($data->userDate == "") {
+    $data->userDate = null;
 }
 
-if(checkInput($_POST['internalCode']) && checkInput($_POST['serieNumber'])) { //Check if input is just empty spaces
-    if(isset($_POST['brand']) && isset($_POST['model']) && isset($_POST['category'])) { //Check if exist some important data
-        if(filter_var($_POST['ipAdress'], FILTER_VALIDATE_IP) && isset($_POST['ipAdress'])) {
+if(checkInput($data->internalCode) && checkInput($data->serieNumber)) { //Check if input is just empty spaces
+    if(isset($data->brand) && isset($data->model) && isset($data->category)) { //Check if exist some important data
+        if(filter_var($data->ipAdress, FILTER_VALIDATE_IP) && isset($data->ipAdress)) {
 
-            $ipStatus = $equipments->getIpStatus($_POST['ipAdress']);
+            $equipmentStatus = $equipments->getEquipmentStatus($data->ipAdress, $data->internalCode, $data->serieNumber);
+            $equipmentStatus=false;
 
-            if (!$ipStatus) { //Validate IP
-                $newEquipment = new equipments();
+            if (!$equipmentStatus) { //Validate equipment
+                $newEquipment = new equipments();   
                 
-                $newEquipment->setInternalCode($_POST['internalCode']);
-                $newEquipment->setModel($_POST['model']);
-                $newEquipment->setSerieNumber($_POST['serieNumber']);
-                $newEquipment->setFeatures($_POST['features']);
-                $newEquipment->setObs($_POST['obs']);
+                $newEquipment->setInternalCode($data->internalCode);
+                $newEquipment->setModel($data->model);
+                $newEquipment->setSerieNumber($data->serieNumber);
+                $newEquipment->setFeatures($data->features);
+                $newEquipment->setObs($data->obs);
                 $newEquipment->setAcquisitionDate($date);
-                $newEquipment->setPatrimonialCode($_POST['patrimonialCode']);
-                $newEquipment->setUser($_POST['user']);
-                $newEquipment->setLocation($_POST['location']);
-                $newEquipment->setUserDate($_POST['userDate']);
-                $newEquipment->setLanPort($_POST['lanPort']);
-                $newEquipment->setActiveEquipment($_POST['activeEquipment']);
-                $newEquipment->setIpAdress($_POST['ipAdress']);
+                $newEquipment->setPatrimonialCode($data->patrimonialCode);
+                $newEquipment->setUser($data->user);
+                $newEquipment->setLocation($data->location);
+                $newEquipment->setUserDate($data->userDate);
+                $newEquipment->setLanPort($data->lanPort);
+                $newEquipment->setActiveEquipment($data->activeEquipment);
+                $newEquipment->setIpAdress($data->ipAdress);
 
                 $newEquipment->setProviderId($providerId);
-                $newEquipment->setProviderName($_POST['provider']);
+                $newEquipment->setProviderName($data->provider);
 
                 $newEquipment->setBrandId($brandId);
-                $newEquipment->setBrandName($_POST['brand']);
+                $newEquipment->setBrandName($data->brand);
 
                 $newEquipment->setStateId($stateId);
-                $newEquipment->setStateName($_POST['state']);
+                $newEquipment->setStateName($data->state);
 
                 $newEquipment->setCategoryId($categoryId);
-                $newEquipment->setCategoryName($_POST['category']);
+                $newEquipment->setCategoryName($data->category);
 
-                $equipments->createEquipment($newEquipment);
+                foreach ($softwaresData as $software) {
+                    $equipments->linkSoftwares($software->id, 19);
+                }
 
                 unset($_SESSION['createEquipmentError']);
-                $_SESSION['successMessage'] = "O equipmento " . $_POST['internalCode'] . " foi criado com sucesso.";
+                $_SESSION['successMessage'] = "O equipmento " . $data->internalCode . " foi criado com sucesso.";
                 
                 if(isset($_COOKIE['__geecreateequipment'])) {
                     setcookie("__geecreateequipment", 'DELETED', 1, '/');
                 }
 
-                header('Location: ../index.php');
-                die();
 
             } else {
                 $_SESSION['createEquipmentError'] = "Já existe um equipamento com esse endereço IP."; 
@@ -92,6 +98,3 @@ if(checkInput($_POST['internalCode']) && checkInput($_POST['serieNumber'])) { //
 } else {
     $_SESSION['createEquipmentError'] = "Algum dos dados inseridos não é valido.";
 }
-
-header('Location: ../pages/createEquipment.php');
-die();

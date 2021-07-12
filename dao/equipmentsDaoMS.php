@@ -84,6 +84,7 @@ class equipmentsDAOMS implements equipmentsDAO
         $sql->bindValue(':idProvider',$e->getProviderId());
 
         $sql->execute();
+        return $sql->lastInsertId();
     }
 
     public function getSpecificById($id) {
@@ -266,9 +267,11 @@ class equipmentsDAOMS implements equipmentsDAO
         return;
     }
 
-    public function getIpStatus($ip) {
-        $sql = $this->pdo->prepare("SELECT idEquipamentos from equipamentos WHERE enderecoip = :ip");
+    public function getEquipmentStatus($ip, $ic, $sn) {
+        $sql = $this->pdo->prepare("SELECT idEquipamentos from equipamentos WHERE enderecoip = :ip OR nSerie = :sn OR codInterno = :ic");
         $sql->bindValue(':ip', $ip);
+        $sql->bindValue(':sn', $sn);
+        $sql->bindValue(':ic', $ic);
         $sql->execute();
 
         if($sql->rowCount() > 0) {
@@ -276,5 +279,11 @@ class equipmentsDAOMS implements equipmentsDAO
         }
 
         return false;
+    }
+    public function linkSoftwares($softwareId, $equipmentId) {
+        $sql = $this->pdo->prepare("INSERT INTO softwares_has_equipamentos(softwares_idsoftwares, equipamentos_idequipamentos) VALUES (:softwareId, :equipmentId)");
+        $sql->bindValue(':softwareId', $softwareId);
+        $sql->bindValue(':equipmentId', $equipmentId);
+        $sql->execute();
     }
 }

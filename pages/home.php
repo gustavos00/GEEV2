@@ -32,8 +32,6 @@ $allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
 $AllNotLentEquipments = $equipments->getAllNotLentEquipments();
 $allEquipmentsLent = $equipments->getAllLentEquipments();
 
-echo 'aaaaaaaaaaaa' . gettype($allEquipmentsLent);
-
 $allLentProcess = $lent->getAll();
 
 ?>
