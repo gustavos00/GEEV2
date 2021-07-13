@@ -35,9 +35,12 @@ function generateAssistance($pdo, $data) {
 function generateEquipment($pdo) {
     $equipment = new equipmentsDAOMS($pdo);
     $allEquipments = $equipment->getAll();
+
     $data = '';
 
     foreach($allEquipments as $equipmentData) {
+        $historicData = $equipment->getHistoric($equipmentData->getId());
+
         $data .= generateHeader('Equipamento', $equipmentData->getId());
         $data .= generateSubheader('Descrição');
         $data .= '<p><strong>Código Interno: </strong>' . $equipmentData->getInternalCode() . '</p>';
@@ -64,6 +67,13 @@ function generateEquipment($pdo) {
         $data .= '<p><strong>Equipamento ativo: </strong>' . $equipmentData->getActiveEquipment() . '</p>';
         $data .= '<p><strong>Endereço IP </strong>' . $equipmentData->getIpAdress() . '</p>';
         $data .= '<br>';
+
+        $data .= generateSubheader('Historico');
+        foreach($historicData as $historic) {
+            $data .= '<p><strong>Utilizador: </strong>' . $historic->getUser() . '</p>';
+            $data .= '<p><strong>Data inicio: </strong>' . $historic->getInitialDate() . '</p>';
+            $data .= '<p><strong>Data fim: </strong>' . $historic->getFinalDate() . '</p>';
+        }
     }
     return $data;
 }
@@ -88,7 +98,6 @@ function generateMalfuncion($pdo) {
     }
     return $data;
 }
-
 
 function generateSoftware($pdo) {
     $softwares = new softwaresDAOMS($pdo);
