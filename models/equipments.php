@@ -23,6 +23,9 @@ class equipments
 
     private $model;
 
+    private $initialDate;
+    private $finalDate;
+
     private $categoryName; //
     private $stateName; //
     private $brandName; //
@@ -66,6 +69,26 @@ class equipments
     function setFeatures($f)
     {
         $this->features = $f;
+    }
+
+    function getInitialDate()
+    {
+        return $this->initialDate;
+    }
+
+    function setInitialDate($f)
+    {
+        $this->initialDate = $f;
+    }
+
+    function getFinalDate()
+    {
+        return $this->finalDate;
+    }
+
+    function setFinalDate($f)
+    {
+        $this->finalDate = $f;
     }
 
     function getObs()

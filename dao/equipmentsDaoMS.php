@@ -280,10 +280,33 @@ class equipmentsDAOMS implements equipmentsDAO
 
         return false;
     }
+
     public function linkSoftwares($softwareId, $equipmentId) {
         $sql = $this->pdo->prepare("INSERT INTO softwares_has_equipamentos(softwares_idsoftwares, equipamentos_idequipamentos) VALUES (:softwareId, :equipmentId)");
         $sql->bindValue(':softwareId', $softwareId);
         $sql->bindValue(':equipmentId', $equipmentId);
         $sql->execute();
+    }
+
+    public function getHistoric($id) {
+        $equipmentData = [];
+        $sql = $this->pdo->prepare("SELECT * FROM historico WHERE equipamentos_idEquipamentos = :id");
+        $sql->bindValue(':id', $id);
+        $sql->execute();
+
+        if($sql->rowCount() > 0 ) {
+            $data = $sql->fetchAll(\PDO::FETCH_ASSOC);
+
+            foreach ($data as $item) {
+                $eq = new equipments();
+
+                $eq->setUser($item['entidade']);
+                $eq->setInitialDate($item['dataInicio']);
+                $eq->setFinalDate($item['dataFim']);
+
+                $equipmentData[] =  $eq;
+            }
+        }
+        return $equipmentData;
     }
 }
