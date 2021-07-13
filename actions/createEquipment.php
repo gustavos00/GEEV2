@@ -93,7 +93,6 @@ if(checkInput($data->internalCode)) { //Check if input is just empty spaces
                 setcookie("__geecreateequipment", 'DELETED', 1, '/');
             } 
 
-            
             http_response_code(200);
 
         } else {
