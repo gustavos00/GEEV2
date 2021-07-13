@@ -126,8 +126,8 @@ class softwaresDAOMS implements sotfwaresDAO
     public function getSpecificSoftwareById($id) {
         $sql = $this->pdo->prepare(
             "SELECT softwares.*, tiposoftwares.tipoSoftware, prestadorservicos.nome FROM ((softwares
-            INNER JOIN tiposoftwares ON tiposoftwares.idtipoSoftwares = softwares.tipoSoftwares_idtipoSoftwares)
-            INNER JOIn prestadorservicos ON prestadorservicos.idprestadorServico = softwares.tipoSoftwares_idtipoSoftwares) 
+            LEFT JOIN tiposoftwares ON tiposoftwares.idtipoSoftwares = softwares.tipoSoftwares_idtipoSoftwares)
+            LEFT JOIn prestadorservicos ON prestadorservicos.idprestadorServico = softwares.tipoSoftwares_idtipoSoftwares) 
             WHERE idsoftwares = :id");
         $sql->bindValue(':id', $id);
         $sql->execute();
@@ -148,7 +148,7 @@ class softwaresDAOMS implements sotfwaresDAO
             $s->setProviderName($data['nome']);
 
             return $s;
-            
+            var_dump($item);
         }
         return ;
     }
