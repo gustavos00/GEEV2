@@ -153,15 +153,15 @@ class assistanceDAOMS implements assistanceDAO
     }
 
     public function updateAssistance(assistance $a) {
-        $sql = $this->pdo->prepare('UPDATE assistencia SET "dataInicio" = :initialDate, "dataFim" = :finalDate, "descricao" = :description, "objetivo" = :goals , "frontOffice" = :frontOffice , "tipoOcorrencia_idtipoOcorrencia"= :typeId , "equipamentos_idEquipamentos"= :equipmentId ,"prestadorservicos_idprestadorServico"=  :providerId ');
-        $sql->bindValue(':initialDate',$a-getInitialDate());
-        $sql->bindValue(':finalDate',$a-getFinalDate());
-        $sql->bindValue(':description',$a-getDescription());
-        $sql->bindValue(':goals',$a-getGoals());
-        $sql->bindValue(':frontOffice',$a-getFrontOffice());
-        $sql->bindValue(':typeId',$a-getTypeId());
-        $sql->bindValue(':equipmentId',$a-getEquipmentId());
-        $sql->bindValue(':providerId',$a-getProviderId());
+        $sql = $this->pdo->prepare('UPDATE assistencia SET dataInicio = :initialDate, dataFim = :finalDate, descricao = :description, objetivo = :goals, frontOffice = :frontOffice, tipoOcorrencia_idtipoOcorrencia = :typeId, equipamentos_idEquipamentos = :equipmentId, prestadorservicos_idprestadorServico = :providerId');
+        $sql->bindValue(':initialDate',$a->getInitialDate());
+        $sql->bindValue(':finalDate',$a->getFinalDate());
+        $sql->bindValue(':description',$a->getDescription());
+        $sql->bindValue(':goals',$a->getGoals());
+        $sql->bindValue(':frontOffice',$a->getFrontOffice());
+        $sql->bindValue(':typeId',$a->getTypeId());
+        $sql->bindValue(':equipmentId',$a->getEquipmentId());
+        $sql->bindValue(':providerId',$a->getTechnicalId());
         $sql->execute();
     }
 }
