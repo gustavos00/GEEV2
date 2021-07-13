@@ -22,58 +22,76 @@ function checkInput($i) {
     return (trim($i) != "");
 }
 
-if(isset($_POST['brand']) && isset($_POST['provider']) && isset($_POST['model']) && isset($_POST['type']) && isset($_POST['model']) && checkInput($_POST['brand']) && checkInput($_POST['provider']) && checkInput($_POST['model']) && checkInput($_POST['type']) && checkInput($_POST['model'])) {
-    if (filter_var($_POST['ipAdress'], FILTER_VALIDATE_IP) && isset($_POST['ipAdress'])) {
-        $updatedEquipment = new equipments();
-        
-        $updatedEquipment->setId($_POST['id']);
-        $updatedEquipment->setInternalCode($_POST['internalCode']);
-        $updatedEquipment->setCategoryId($categoryId);
-        $updatedEquipment->setCategoryName($_POST['type']);
-        $updatedEquipment->setModel($_POST['model']);
-        $updatedEquipment->setBrandName($_POST['brand']);
-        $updatedEquipment->setSerieNumber($_POST['serieNumber']);
-        $updatedEquipment->setFeatures($_POST['features']);
-        $updatedEquipment->setObs($_POST['obs']);
-        $updatedEquipment->setAcquisitionDate($_POST['acquisitionDate']);
-        $updatedEquipment->setPatrimonialCode($_POST['patrimonialCode']);
-        $updatedEquipment->setUser($_POST['user']);
-        $updatedEquipment->setLocation($_POST['location']);
-        $updatedEquipment->setUserDate($_POST['userDate']);
-        $updatedEquipment->setLanPort($_POST['lanPort']);
-        $updatedEquipment->setActiveEquipment($_POST['activeEquipment']);
-        $updatedEquipment->setIpAdress($_POST['ipAdress']);
+if(checkInput($data->internalCode)) { //Check if input is just empty spaces
+    if(isset($data->brand) && isset($data->model) && isset($data->category)) { //Check if exist some important data
+        if(checkInput($data->ipAdress)) {
+            if(!filter_var($data->ipAdress, FILTER_VALIDATE_IP)) {
+                $_SESSION['updateEquipmentError'] = "O endereço IP inserido não é valido.";
+                
+                header('Location: ../index.php');
+                die();
+            } 
+        } 
 
-        $updatedEquipment->setProviderId($providerId);
-        $updatedEquipment->setProviderName($_POST['provider']);
+        $equipmentStatus = $equipments->getEquipmentStatus($data->ipAdress, $data->internalCode, $data->serieNumber);
 
-        $updatedEquipment->setBrandId($brandId);
-        $updatedEquipment->setBrandName($_POST['brand']);
+        if (!$equipmentStatus) { //Validate equipment
+            $updatedEquipment = new equipments();
+            
+            $updatedEquipment->setId($data->id);
+            $updatedEquipment->setInternalCode($data->internalCode);
+            $updatedEquipment->setCategoryId($categoryId);
+            $updatedEquipment->setCategoryName($data->type);
+            $updatedEquipment->setModel($data->model);
+            $updatedEquipment->setBrandName($data->brand);
+            $updatedEquipment->setSerieNumber($data->serieNumber);
+            $updatedEquipment->setFeatures($data->features);
+            $updatedEquipment->setObs($data->obs);
+            $updatedEquipment->setAcquisitionDate($data->acquisitionDate);
+            $updatedEquipment->setPatrimonialCode($data->patrimonialCode);
+            $updatedEquipment->setUser($data->user);
+            $updatedEquipment->setLocation($data->location);
+            $updatedEquipment->setUserDate($data->userDate);
+            $updatedEquipment->setLanPort($data->lanPort);
+            $updatedEquipment->setActiveEquipment($data->activeEquipment);
+            $updatedEquipment->setIpAdress($data->ipAdress);
 
-        $updatedEquipment->setStateId($stateId);
-        $updatedEquipment->setStateName($_POST['state']);
+            $updatedEquipment->setProviderId($providerId);
+            $updatedEquipment->setProviderName($data->provider);
 
-        $updatedEquipment->setCategoryId($categoryId);
-        $updatedEquipment->setCategoryName($_POST['type']);
+            $updatedEquipment->setBrandId($brandId);
+            $updatedEquipment->setBrandName($data->brand);
+
+            $updatedEquipment->setStateId($stateId);
+            $updatedEquipment->setStateName($data->state);
+
+            $updatedEquipment->setCategoryId($categoryId);
+            $updatedEquipment->setCategoryName($data->type);
 
 
-        $equipments->updateEquipment($updatedEquipment);
+            $equipments->updateEquipment($updatedEquipment);
 
-        unset($_SESSION['updateEquipmentError']);
-        $_SESSION['successMessage'] = "O equipmento " . $_POST['internalCode'] . " foi atualizado com sucesso.";
-        
-        if(isset($_COOKIE['__geeupdateequipment'])) {
-            setcookie("__geeupdateequipment", 'DELETED', 1, '/');
+            unset($_SESSION['updateEquipmentError']);
+            $_SESSION['successMessage'] = "O equipmento " . $_POST['internalCode'] . " foi atualizado com sucesso.";
+            
+            if(isset($_COOKIE['__geeupdateequipment'])) {
+                setcookie("__geeupdateequipment", 'DELETED', 1, '/');
+            }
+            echo 'SUCESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS';
+
+            header('Location: ../index.php');
+            die();
+        } else {
+            $_SESSION['updateEquipmentError'] = "Já existe um equipamento com esse endereço IP."; 
         }
-
-        header('Location: ../index.php');
-        die();
     } else {
-        $_SESSION['updateEquipmentError'] = "O endereço IP inserido não é valido.";
+        $_SESSION['updateEquipmentError'] = "Não foram introduzidos todos os dados necessários.";
     }
 } else {
-    $_SESSION['updateEquipmentError'] = "Não foram introduzidos todos os dados necessários.";
+    $_SESSION['updateEquipmentError'] = "Algum dos dados inseridos não é valido.";
 }
 
-header('Location: ../pages/updateEquipment.php?id=' . $_POST['id']);
+header('Location: ../pages/updateEquipment.php?id=' .  $_POST['id']);
 die();
+
+echo 'FAILEDDDDDDDDDDDDDDDDDDDDDD';

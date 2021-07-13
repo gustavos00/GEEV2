@@ -84,7 +84,7 @@ class equipmentsDAOMS implements equipmentsDAO
         $sql->bindValue(':idProvider',$e->getProviderId());
 
         $sql->execute();
-        return $sql->lastInsertId();
+        return $this->pdo->lastInsertId();
     }
 
     public function getSpecificById($id) {
@@ -277,7 +277,7 @@ class equipmentsDAOMS implements equipmentsDAO
         if($sql->rowCount() > 0) {
             return true;
         }
-
+        
         return false;
     }
 
