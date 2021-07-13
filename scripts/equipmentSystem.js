@@ -4,7 +4,7 @@ const tbodyElement = document.getElementById('tbody');
 let softwareData = []
 
 
-function request(data) {
+function stateCategoryBrandRequest(data) {
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "../actions/createStateCategoryOrBrand.php", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
@@ -92,7 +92,7 @@ for (let i = 0; i < equipmentsActionButton.length; i++) {
                         who: who
                     };
 
-                    request(data);
+                    stateCategoryBrandRequest(data);
                 } else if (action === 'create') {
                     const inputs = modal.querySelectorAll('input[type=text]');
                     const content = inputs[0].value;
@@ -104,7 +104,7 @@ for (let i = 0; i < equipmentsActionButton.length; i++) {
                             who: who
                         };
 
-                        request(data);
+                        stateCategoryBrandRequest(data);
                         closeModal()
                     } else if (inputs.length == 2) {
                         const categoryCode = inputs[1].value;
@@ -117,7 +117,7 @@ for (let i = 0; i < equipmentsActionButton.length; i++) {
                                 who: who
                             };
 
-                            request(data);
+                            stateCategoryBrandRequest(data);
                             closeModal()
                         }
                     } else {
@@ -150,22 +150,27 @@ window.addEventListener("click", (e) => {
 
 
 //TABLE SYSTEM CREATE / UPDATE EQUIPMENT
-
 if(document.getElementById('id')) {
     actionFile = 'updateEquipment'
 } else {
     actionFile = 'createEquipment'
 }
 
+const RELATIVE_PATH = window.location.pathname; 
+
+
 //General xhttp request 
 function request(data) {
+    console.log(actionFile);
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "../actions/" + actionFile + ".php", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText);
-            
+            window.location.href = 'home.php';
+        } 
+        if (this.readyState == 4 && this.status == 400) {
+            alert(this.response);
         }
     };
 

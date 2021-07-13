@@ -179,20 +179,20 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
                     }
                 ?>
                 <form id="form" data-cookieName="__geeupdateequipment" action="<?php getUrl('/actions/updateEquipment.php?id=' . $id); ?>" method="post">
-                    <input type="hidden" value="<?php echo $_GET['id'] ?>"name="id">
+                    <input type="hidden" id="id" value="<?php echo $_GET['id'] ?>"name="id">
                     <div class="description dataContainer">
                         <h3>Descrição</h3>
                         <input class="input" required maxlength="20" value="<?php echo($equipmentData->getInternalCode());?>" placeholder="Código interno" type="text" name="internalCode" id="internalCode">
 
                         <div class="filter">
-                            <select class="select required" id="type" name="type">
+                            <select class="select required" id="category" name="category">
                                 <option value="" selected disabled hidden>Selecione um tipo..</option>
                                 <?php foreach ($allCategorys as $category) {
                                     echo ' <option> ' . $category->getCategoryName() . '</option> ';
                                 } ?>
                             </select>
 
-                            <input class="input" autocomplete="off" data-filterName="type" placeholder="Pesquisar por tipos..." type="text" name="filter">
+                            <input class="input" autocomplete="off" data-filterName="category" placeholder="Pesquisar por tipos..." type="text" name="filter">
                         </div>
 
                         <div class="filter">
@@ -233,7 +233,7 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
 
                         <textarea class="textarea" placeholder="Observações" id="obs" name="obs"></textarea>
 
-                        <input class="input" value="<?php echo($equipmentData->getAcquisitionDate());?>" type="date" name="acquisitionDate">
+                        <input class="input" value="<?php echo($equipmentData->getAcquisitionDate());?>" id="acquisitionDate" type="date" name="acquisitionDate">
 
                         <input maxlength="45" class="input" value="<?php echo($equipmentData->getPatrimonialCode());?>" placeholder="Código patrimonial" type="text" name="patrimonialCode" id="patrimonialCode">
                     </div>
@@ -244,7 +244,7 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
 
                         <input maxlength="100" class="input" value="<?php echo($equipmentData->getLocation());?>" placeholder="Localização" type="text" name="location" id="location">
 
-                        <input class="input" value="<?php echo($userDate);?>" type="date" name="userDate">
+                        <input class="input" value="<?php echo($userDate);?>" id="userDate" type="date" name="userDate">
                     </div>
 
                     <div class="lanInformation dataContainer">
@@ -257,7 +257,7 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
                     <div class="providers dataContainer">
                         <h3>Fornecedor</h3>
                         <div class="filter">
-                            <select class="select required" name="provider">
+                            <select id="provider" class="select required" name="provider">
                                 <option value="" selected disabled hidden>Selecione um fornecedor..</option>
                                 <?php foreach ($allProviders as $provider) {
                                     echo ' <option> ' . $provider->getName() . '</option> ';
@@ -274,15 +274,31 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
                             <select class="select" id="softwares" name="softwares">
                             <option value="" selected disabled hidden>Selecione um software..</option>
                                 <?php foreach ($allSoftwares as $s) {
-                                    echo ' <option> ' . $s->getTypeName() . ' - ' . $s->getVersion() . '</option> ';
+                                    echo ' <option data-id="' . $s->getId() . '"> ' . $s->getTypeName() . ' - ' . $s->getVersion() . '</option> ';
                                 } ?>
                             </select>
 
                             <input class="input" autocomplete="off" data-filterName="softwares" placeholder="Pesquisar por softwares.." type="text" name="filter">
                         </div>
+
+                        <button class="btn smallBtn" id="addSoftwareBtn">Adicionar software</button>
+
+                        <div class="tableContainer">
+                            <table class="table table-hover table-striped" id="providerContacts">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Software</th>
+                                        <th scope="col">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody">
+                                    
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <div class="submitContainer">
-                        <button type="submit" form="form" class="btn">Atualizar equipamento</button>
+                        <button type="submit" form="form" id="submitFormBtn" class="btn">Criar equipamento</button>
                     </div>
                 </form>
 

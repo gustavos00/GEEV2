@@ -103,7 +103,7 @@ $allLentProcess = $lent->getAll();
                         <i id="arrow" class="arrow fas fa-arrow-right"></i>
                     </div>
                     <div data-dropdown="fornecedores" class="dropdownContent">
-                        <a href="home.php">• Visualizar fornecedores</a>
+                        <a href="home.php#providers">• Visualizar fornecedores</a>
                         <a href="createProvider.php">• Criar fornecedores</a>
                         <a data-doWhat="updateProvider" class="openModalAction">• Atualizar fornecedores</a>
                         <a data-doWhat="deleteProvider" class="openModalAction">• Apagar fornecedores</a>
@@ -349,7 +349,7 @@ $allLentProcess = $lent->getAll();
                 </div>
             </div>
 
-            <div id="assistancesContainer" class="dataContainer assistances">
+            <div id="providers" class="dataContainer providers">
                 <h3>Fornecedores</h3>
 
                 <div class="dataContent">
@@ -393,7 +393,7 @@ $allLentProcess = $lent->getAll();
                 </div>
             </div>
 
-            <div id="assistancesContainer" class="dataContainer assistances">
+            <div id="lent" class="dataContainer lent">
                 <h3>Emprestimos</h3>
 
                 <div class="dataContent">
@@ -572,7 +572,7 @@ $allLentProcess = $lent->getAll();
 
                     <input class="input" autocomplete="off" data-filtername="deleteSoftwareSelect" placeholder="Pesquisar por softwares..." type="text" name="filter">
                 </form>
-                <button data-who="deleteSoftware" data-select="deleteSoftwareSelect" id="deleteSoftwareBtnAction" class="btn">Apgar</button>
+                <button data-who="deleteSoftware" data-select="deleteSoftwareSelect" id="deleteSoftwareBtnAction" class="btn">Apagar</button>
             </div>
 
             <div data-actionBtn="updateProviderBtnAction" class="providerModal updateProvider modalContent" id="updateProvider">
