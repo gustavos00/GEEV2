@@ -1,9 +1,52 @@
 <?php
 require_once '../config.php';
-require_once '../dao/softwaresDaoMS.php';
-require_once '../dao/providersDaoMS.php';
+require_once '../dao/assistanceDaoMS.php';
 require_once '../dao/equipmentsDaoMS.php';
+require_once '../dao/softwaresDaoMS.php';
+require_once '../dao/malfunctionsDaoMS.php';
+require_once '../dao/providersDaoMS.php';
+require_once '../dao/lentDaoMS.php';
+require_once '../dao/categorysDaoMS.php';
+require_once '../dao/brandsDaoMS.php';
+require_once '../dao/statesDaoMS.php';
 session_start();
+
+$equipments = new equipmentsDAOMS($pdo);
+$malfunctions = new malfunctionsDAOMS($pdo);
+$softwares = new softwaresDAOMS($pdo);
+$providers = new providersDAOMS($pdo);
+$categorys = new categorysDAOMS($pdo);
+$brands = new brandsDAOMS($pdo);
+$states = new statesDAOMS($pdo);
+$assistance = new assistanceDAOMS($pdo);
+$lent = new lentDAOMS($pdo);
+
+$AllMalfunctions = $malfunctions->getAll();
+
+$allSoftwares = $softwares->getAllSoftwares();
+
+$allProviders = $providers->getAll();
+
+$allAssistances = $assistance->getAll();
+
+$allEquipments = $equipments->getAll();
+$allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
+$AllNotLentEquipments = $equipments->getAllNotLentEquipments();
+
+$allLentProcess = $lent->getAll();
+
+//For the page
+$allCategorys = $categorys->getAll();
+$allBrands = $brands->getAll();
+$allStates = $states->getAll();
+$specific = $softwares->getSpecificSoftwareById($_GET['id']);
+
+if(!isset($_GET['id']) && !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
+    $_SESSION['indexErrorMessage'] = 'Ocorreu um problema a encontrar o equipamento para o atualizar, tente novamente.';
+    
+    header('Location: ./home.php');
+    die();
+}
 
 function getUrl($adress)
 {
@@ -13,22 +56,6 @@ function getUrl($adress)
     echo strtoupper($url) . $adress;
 }
 
-
-if(!isset($_GET['id']) && !filter_var($_GET['id'],FILTER_VALIDATE_INT)) {
-    //REDIRECT
-}
-
-
-$softwares = new softwaresDaoMS($pdo);
-$equipments = new equipmentsDaoMS($pdo);
-$providers = new providersDaoMS($pdo);
-
-$allSoftwaresType = $softwares->getAllSoftwareTypes();
-$allSoftwares = $softwares->getAllSoftwares();
-$AllProviders = $providers->getAll();
-$allEquipments = $equipments->getAll();
-
-$specific = $softwares->getSpecificSoftwareById($_GET['id']);
 ?>
 
 <!DOCTYPE html>
@@ -195,12 +222,9 @@ $specific = $softwares->getSpecificSoftwareById($_GET['id']);
                             <input class="input" autocomplete="off" data-filterName="type" placeholder="Pesquisar por fornecedores..." type="text" name="filter">
                         </div>
 
+                        <input value=<?= $specific->getInitialDate()?> class="input" placeholder="Data inicial" onfocus="(this.type='date')" onblur="(this.type='text')" name="initialDate" id="initialDate">
 
-                        
-
-                        <input value=<?= $specific->getInitialDate()?> class="input" type="date" name="initialDate" id="initialDate">
-
-                        <input value=<?= $specific->getFinalDate()?> class="input" type="date" name="finalDate" id="finalDate">
+                        <input value=<?= $specific->getFinalDate()?> class="input" placeholder="Data final" onfocus="(this.type='date')" onblur="(this.type='text')" name="finalDate" id="finalDate">
 
                         <input class="btn" type="submit" value="Atualizar software">
                     </div>
@@ -208,6 +232,7 @@ $specific = $softwares->getSpecificSoftwareById($_GET['id']);
             </div>
         </div>
 
+        
         <div class="modalFilter" id="modalFilter">
             <!--MODALS TO SIDEBAR -->
             <div data-actionBtn="updateEquipmentBtnAction" id="updateEquipment" class="equipmentModal modalContent updateEquipment">
@@ -263,8 +288,8 @@ $specific = $softwares->getSpecificSoftwareById($_GET['id']);
 
                 <form id="lendEquipmentForm" action="<?php getUrl('/actions/lendEquipment.php'); ?>" method="post">
                     <input type="hidden" name="selectedEquipmentId" id="selectedEquipmentId">
-                    <input class="input" type="date" name="initialDate" id="initialDate">
-                    <input class="input" type="date" name="finalDate" id="finalDate">
+                    <input class="input" placeholder="Data inicial" onfocus="(this.type='date')" onblur="(this.type='text')" name="initialDate" id="initialDate">
+                    <input class="input" placeholder="Data final" onfocus="(this.type='date')" onblur="(this.type='text')" name="finalDate" id="finalDate">
                     
                     <input class="input" required maxlength="50" placeholder="Responsável pelo emprestimo..." type="text" name="responsibleUser" id="responsibleUser">
                     <input class="input" placeholder="Contacto...." type="text" name="contact" id="contact">
@@ -290,7 +315,7 @@ $specific = $softwares->getSpecificSoftwareById($_GET['id']);
 
                 <form id="returnEquipmentForm" action="<?php getUrl('/actions/returnEquipment.php'); ?>" method="post">
                     <input type="hidden" name="selectedEquipmentId" id="returnEquipmentId">
-                    <input class="input" type="date" name="finalDate" id="finalDate">
+                    <input class="input"  placeholder="Data final" onfocus="(this.type='date')" onblur="(this.type='text')" name="finalDate" id="finalDate">
                     <select class="select" id="returnEquipmentSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione um equipamento..</option>
                         <?php foreach ($allNotRetiredEquipments as $lentEquipment) {
@@ -422,7 +447,7 @@ $specific = $softwares->getSpecificSoftwareById($_GET['id']);
                     <select class="select" id="updateAssistanceSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione uma assistência..</option>
                         <?php foreach($allAssistances as $assistances) {
-                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnical() . ' (' . $assistances->getTypeName() . ') </option> ';
+                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnicalName() . ' (' . $assistances->getTypeName() . ') </option> ';
                         } ?>
                     </select>
 
@@ -438,7 +463,7 @@ $specific = $softwares->getSpecificSoftwareById($_GET['id']);
                     <select class="select" id="deleteAssistanceSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione uma assistência..</option>
                         <?php foreach($allAssistances as $assistances) {
-                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnical() . ' (' . $assistances->getTypeName() . ') </option> ';
+                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnicalName() . ' (' . $assistances->getTypeName() . ') </option> ';
                         } ?>
                     </select>
 

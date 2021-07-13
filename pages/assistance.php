@@ -1,9 +1,35 @@
 <?php
 require_once '../config.php';
 require_once '../dao/assistanceDaoMS.php';
+require_once '../dao/equipmentsDaoMS.php';
+require_once '../dao/softwaresDaoMS.php';
+require_once '../dao/malfunctionsDaoMS.php';
+require_once '../dao/providersDaoMS.php';
+require_once '../dao/lentDaoMS.php';
+session_start();
+
+$equipments = new equipmentsDAOMS($pdo);
+$malfunctions = new malfunctionsDAOMS($pdo);
+$softwares = new softwaresDAOMS($pdo);
+$providers = new providersDAOMS($pdo);
+$assistance = new assistanceDAOMS($pdo);
+$lent = new lentDAOMS($pdo);
+
+$AllMalfunctions = $malfunctions->getAll();
+
+$allSoftwares = $softwares->getAllSoftwares();
+
+$allProviders = $providers->getAll();
+
+$allAssistances = $assistance->getAll();
+
+$allEquipments = $equipments->getAll();
+$allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
+$AllNotLentEquipments = $equipments->getAllNotLentEquipments();
+
+$allLentProcess = $lent->getAll();
 
 if(filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
-    $assistance = new assistanceDAOMS($pdo);
     $assistanceData = $assistance->getSpecific($_GET['id']);
     
     if(is_null($assistanceData)) {
@@ -15,13 +41,6 @@ if(filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
     exit(0);
 }
 
-require_once '../dao/equipmentsDaoMS.php';
-require_once '../dao/softwaresDaoMS.php';
-require_once '../dao/malfunctionsDaoMS.php';
-require_once '../dao/providersDaoMS.php';
-require_once '../dao/lentDaoMS.php';
-session_start();
-
 function getUrl($adress)
 {
     $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ?
@@ -29,21 +48,6 @@ function getUrl($adress)
 
     echo strtoupper($url) . $adress;
 }
-
-$equipments = new equipmentsDAOMS($pdo);
-$malfunctions = new malfunctionsDAOMS($pdo);
-$softwares = new softwaresDAOMS($pdo);
-$providers = new providersDAOMS($pdo);
-$lent = new lentDAOMS($pdo);
-
-$AllMalfunctions = $malfunctions->getAll();
-$allSoftwares = $softwares->getAllSoftwares();
-$allEquipments = $equipments->getAll();
-$allProviders = $providers->getAll();
-$allAssistances = $assistance->getAll();
-$allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
-$AllNotLentEquipments = $equipments->getAllNotLentEquipments();
-$allLentProcess = $lent->getAll();
 
 ?>
 
@@ -185,6 +189,7 @@ $allLentProcess = $lent->getAll();
             </div>
         </div>
 
+
         <div class="modalFilter" id="modalFilter">
             <!--MODALS TO SIDEBAR -->
             <div data-actionBtn="updateEquipmentBtnAction" id="updateEquipment" class="equipmentModal modalContent updateEquipment">
@@ -240,8 +245,8 @@ $allLentProcess = $lent->getAll();
 
                 <form id="lendEquipmentForm" action="<?php getUrl('/actions/lendEquipment.php'); ?>" method="post">
                     <input type="hidden" name="selectedEquipmentId" id="selectedEquipmentId">
-                    <input class="input" required type="date" name="initialDate" id="initialDate">
-                    <input class="input" required type="date" name="finalDate" id="finalDate">
+                    <input class="input" placeholder="Data inicial" onfocus="(this.type='date')" onblur="(this.type='text')" name="initialDate" id="initialDate">
+                    <input class="input" placeholder="Data final" onfocus="(this.type='date')" onblur="(this.type='text')" name="finalDate" id="finalDate">
                     
                     <input class="input" required maxlength="50" placeholder="Responsável pelo emprestimo..." type="text" name="responsibleUser" id="responsibleUser">
                     <input class="input" placeholder="Contacto...." type="text" name="contact" id="contact">
@@ -267,7 +272,7 @@ $allLentProcess = $lent->getAll();
 
                 <form id="returnEquipmentForm" action="<?php getUrl('/actions/returnEquipment.php'); ?>" method="post">
                     <input type="hidden" name="selectedEquipmentId" id="returnEquipmentId">
-                    <input class="input" required type="date" name="finalDate" id="finalDate">
+                    <input class="input"  placeholder="Data final" onfocus="(this.type='date')" onblur="(this.type='text')" name="finalDate" id="finalDate">
                     <select class="select" id="returnEquipmentSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione um equipamento..</option>
                         <?php foreach ($allNotRetiredEquipments as $lentEquipment) {

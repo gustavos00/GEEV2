@@ -1,12 +1,46 @@
-<?php 
+<?php
 require_once '../config.php';
+require_once '../dao/assistanceDaoMS.php';
+require_once '../dao/equipmentsDaoMS.php';
+require_once '../dao/softwaresDaoMS.php';
+require_once '../dao/malfunctionsDaoMS.php';
+require_once '../dao/providersDaoMS.php';
+require_once '../dao/lentDaoMS.php';
 require_once '../dao/categorysDaoMS.php';
 require_once '../dao/brandsDaoMS.php';
 require_once '../dao/statesDaoMS.php';
-require_once '../dao/providersDaoMS.php';
-require_once '../dao/softwaresDaoMS.php';
-require_once '../dao/equipmentsDaoMS.php';
 session_start();
+
+$equipments = new equipmentsDAOMS($pdo);
+$malfunctions = new malfunctionsDAOMS($pdo);
+$softwares = new softwaresDAOMS($pdo);
+$providers = new providersDAOMS($pdo);
+$categorys = new categorysDAOMS($pdo);
+$brands = new brandsDAOMS($pdo);
+$states = new statesDAOMS($pdo);
+$assistance = new assistanceDAOMS($pdo);
+$lent = new lentDAOMS($pdo);
+
+$AllMalfunctions = $malfunctions->getAll();
+
+$allSoftwares = $softwares->getAllSoftwares();
+
+$allProviders = $providers->getAll();
+
+$allAssistances = $assistance->getAll();
+
+$allEquipments = $equipments->getAll();
+$allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
+$AllNotLentEquipments = $equipments->getAllNotLentEquipments();
+
+$allLentProcess = $lent->getAll();
+
+//For the page
+$equipmentData = $equipments->getSpecificById($_GET['id']);
+$allCategorys = $categorys->getAll();
+$allBrands = $brands->getAll();
+$allStates = $states->getAll();
+
 
 function getUrl($adress)
 {
@@ -17,31 +51,13 @@ function getUrl($adress)
 }
 
 if(!isset($_GET['id']) && !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
-    $_SESSION['updateEquipmentError'] = 'Ocorreu um problema a encontrar o equipamento para o atualizar, tente novamente.';
+    $_SESSION['indexErrorMessage'] = 'Ocorreu um problema a encontrar o equipamento para o atualizar, tente novamente.';
     
     header('Location: ./home.php');
     die();
 }
 
 $id = $_GET['id'];
-
-$equipments = new equipmentsDAOMS($pdo);
-$categorys = new categorysDAOMS($pdo);
-$brands = new brandsDAOMS($pdo);
-$states = new statesDAOMS($pdo);
-$providers = new providersDAOMS($pdo);
-$softwares = new softwaresDAOMS($pdo);
-$equipments = new equipmentsDAOMS($pdo);
-
-$allSoftwaresType = $softwares->getAllSoftwareTypes();
-$allSoftwares = $softwares->getAllSoftwares();
-$allCategorys = $categorys->getAll();
-$allBrands = $brands->getAll();
-$allStates = $states->getAll();
-$allProviders = $providers->getAll();
-$equipmentData = $equipments->getSpecificById($id);
-$allEquipments = $equipments->getAll();
-
 $userDate = str_replace('-', '/', $equipmentData->getUserDate());
 
 ?>
@@ -233,7 +249,7 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
 
                         <textarea class="textarea" placeholder="Observações" id="obs" name="obs"></textarea>
 
-                        <input class="input" value="<?php echo($equipmentData->getAcquisitionDate());?>" id="acquisitionDate" type="date" name="acquisitionDate">
+                        <input class="input" value="<?php echo($equipmentData->getAcquisitionDate());?>" id="acquisitionDate"  placeholder="Data de aquisição" onfocus="(this.type='date')" onblur="(this.type='text')"  name="acquisitionDate">
 
                         <input maxlength="45" class="input" value="<?php echo($equipmentData->getPatrimonialCode());?>" placeholder="Código patrimonial" type="text" name="patrimonialCode" id="patrimonialCode">
                     </div>
@@ -244,7 +260,7 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
 
                         <input maxlength="100" class="input" value="<?php echo($equipmentData->getLocation());?>" placeholder="Localização" type="text" name="location" id="location">
 
-                        <input class="input" value="<?php echo($userDate);?>" id="userDate" type="date" name="userDate">
+                        <input class="input" value="<?php echo($userDate);?>" id="userDate"  placeholder="Data de atribuição ao utilizador" onfocus="(this.type='date')" onblur="(this.type='text')"  name="userDate">
                     </div>
 
                     <div class="lanInformation dataContainer">
@@ -306,6 +322,7 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
         </div>
 
         
+        
         <div class="modalFilter" id="modalFilter">
             <!--MODALS TO SIDEBAR -->
             <div data-actionBtn="updateEquipmentBtnAction" id="updateEquipment" class="equipmentModal modalContent updateEquipment">
@@ -361,8 +378,8 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
 
                 <form id="lendEquipmentForm" action="<?php getUrl('/actions/lendEquipment.php'); ?>" method="post">
                     <input type="hidden" name="selectedEquipmentId" id="selectedEquipmentId">
-                    <input class="input" required type="date" name="initialDate" id="initialDate">
-                    <input class="input" required type="date" name="finalDate" id="finalDate">
+                    <input class="input" placeholder="Data inicial" onfocus="(this.type='date')" onblur="(this.type='text')" name="initialDate" id="initialDate">
+                    <input class="input" placeholder="Data final" onfocus="(this.type='date')" onblur="(this.type='text')" name="finalDate" id="finalDate">
                     
                     <input class="input" required maxlength="50" placeholder="Responsável pelo emprestimo..." type="text" name="responsibleUser" id="responsibleUser">
                     <input class="input" placeholder="Contacto...." type="text" name="contact" id="contact">
@@ -388,7 +405,7 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
 
                 <form id="returnEquipmentForm" action="<?php getUrl('/actions/returnEquipment.php'); ?>" method="post">
                     <input type="hidden" name="selectedEquipmentId" id="returnEquipmentId">
-                    <input class="input" required type="date" name="finalDate" id="finalDate">
+                    <input class="input"  placeholder="Data final" onfocus="(this.type='date')" onblur="(this.type='text')" name="finalDate" id="finalDate">
                     <select class="select" id="returnEquipmentSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione um equipamento..</option>
                         <?php foreach ($allNotRetiredEquipments as $lentEquipment) {
@@ -520,7 +537,7 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
                     <select class="select" id="updateAssistanceSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione uma assistência..</option>
                         <?php foreach($allAssistances as $assistances) {
-                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnical() . ' (' . $assistances->getTypeName() . ') </option> ';
+                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnicalName() . ' (' . $assistances->getTypeName() . ') </option> ';
                         } ?>
                     </select>
 
@@ -536,7 +553,7 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
                     <select class="select" id="deleteAssistanceSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione uma assistência..</option>
                         <?php foreach($allAssistances as $assistances) {
-                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnical() . ' (' . $assistances->getTypeName() . ') </option> ';
+                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnicalName() . ' (' . $assistances->getTypeName() . ') </option> ';
                         } ?>
                     </select>
 
