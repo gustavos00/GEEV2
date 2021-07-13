@@ -1,27 +1,44 @@
 <?php 
 require_once '../config.php';
+require_once '../dao/assistanceDaoMS.php';
+require_once '../dao/equipmentsDaoMS.php';
+require_once '../dao/softwaresDaoMS.php';
+require_once '../dao/malfunctionsDaoMS.php';
+require_once '../dao/providersDaoMS.php';
+require_once '../dao/lentDaoMS.php';
 require_once '../dao/categorysDaoMS.php';
 require_once '../dao/brandsDaoMS.php';
 require_once '../dao/statesDaoMS.php';
-require_once '../dao/providersDaoMS.php';
-require_once '../dao/softwaresDaoMS.php';
-require_once '../dao/equipmentsDaoMS.php';
 session_start();
 
 $equipments = new equipmentsDAOMS($pdo);
+$malfunctions = new malfunctionsDAOMS($pdo);
+$softwares = new softwaresDAOMS($pdo);
+$providers = new providersDAOMS($pdo);
 $categorys = new categorysDAOMS($pdo);
 $brands = new brandsDAOMS($pdo);
 $states = new statesDAOMS($pdo);
-$providers = new providersDAOMS($pdo);
-$softwares = new softwaresDAOMS($pdo);
+$assistance = new assistanceDAOMS($pdo);
+$lent = new lentDAOMS($pdo);
 
-$allSoftwaresType = $softwares->getAllSoftwareTypes();
+$AllMalfunctions = $malfunctions->getAll();
+
 $allSoftwares = $softwares->getAllSoftwares();
+
+$allProviders = $providers->getAll();
+
+$allAssistances = $assistance->getAll();
+
+$allEquipments = $equipments->getAll();
+$allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
+$AllNotLentEquipments = $equipments->getAllNotLentEquipments();
+
+$allLentProcess = $lent->getAll();
+
+//For the page
 $allCategorys = $categorys->getAll();
 $allBrands = $brands->getAll();
 $allStates = $states->getAll();
-$allProviders = $providers->getAll();
-$allEquipments = $equipments->getAll();
 
 function getUrl($adress)
 {
@@ -222,7 +239,7 @@ function getUrl($adress)
 
                         <textarea class="textarea" placeholder="Observações" id="obs" name="obs"></textarea>
 
-                        <input class="input" type="date" id="acquisitionDate" name="acquisitionDate">
+                        <input class="input" placeholder="Data de aquisição" onfocus="(this.type='date')" onblur="(this.type='text')" id="acquisitionDate" name="acquisitionDate">> 
 
                         <input maxlength="45" class="input" placeholder="Código patrimonial" type="text" name="patrimonialCode" id="patrimonialCode">
                     </div>
@@ -233,7 +250,7 @@ function getUrl($adress)
 
                         <input maxlength="100" class="input" placeholder="Localização" type="text" name="location" id="location">
 
-                        <input id="userDate" class="input" type="date" name="userDate">
+                        <input id="userDate" class="input" placeholder="Data de atribuição ao utilizador" onfocus="(this.type='date')" onblur="(this.type='text')" name="userDate">
                     </div>
 
                     <div class="lanInformation dataContainer">
@@ -348,8 +365,8 @@ function getUrl($adress)
 
                 <form id="lendEquipmentForm" action="<?php getUrl('/actions/lendEquipment.php'); ?>" method="post">
                     <input type="hidden" name="selectedEquipmentId" id="selectedEquipmentId">
-                    <input class="input" type="date" name="initialDate" id="initialDate">
-                    <input class="input" type="date" name="finalDate" id="finalDate">
+                    <input class="input" placeholder="Data inicial" onfocus="(this.type='date')" onblur="(this.type='text')" name="initialDate" id="initialDate">
+                    <input class="input" placeholder="Data final" onfocus="(this.type='date')" onblur="(this.type='text')" name="finalDate" id="finalDate">
                     
                     <input class="input" required maxlength="50" placeholder="Responsável pelo emprestimo..." type="text" name="responsibleUser" id="responsibleUser">
                     <input class="input" placeholder="Contacto...." type="text" name="contact" id="contact">
@@ -375,7 +392,7 @@ function getUrl($adress)
 
                 <form id="returnEquipmentForm" action="<?php getUrl('/actions/returnEquipment.php'); ?>" method="post">
                     <input type="hidden" name="selectedEquipmentId" id="returnEquipmentId">
-                    <input class="input" type="date" name="finalDate" id="finalDate">
+                    <input class="input"  placeholder="Data final" onfocus="(this.type='date')" onblur="(this.type='text')" name="finalDate" id="finalDate">
                     <select class="select" id="returnEquipmentSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione um equipamento..</option>
                         <?php foreach ($allNotRetiredEquipments as $lentEquipment) {
@@ -507,7 +524,7 @@ function getUrl($adress)
                     <select class="select" id="updateAssistanceSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione uma assistência..</option>
                         <?php foreach($allAssistances as $assistances) {
-                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnical() . ' (' . $assistances->getTypeName() . ') </option> ';
+                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnicalName() . ' (' . $assistances->getTypeName() . ') </option> ';
                         } ?>
                     </select>
 
@@ -523,7 +540,7 @@ function getUrl($adress)
                     <select class="select" id="deleteAssistanceSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione uma assistência..</option>
                         <?php foreach($allAssistances as $assistances) {
-                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnical() . ' (' . $assistances->getTypeName() . ') </option> ';
+                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnicalName() . ' (' . $assistances->getTypeName() . ') </option> ';
                         } ?>
                     </select>
 

@@ -13,10 +13,13 @@ $providers = new providersDAOMS($pdo);
 $states = new statesDAOMS($pdo);
 $categorys = new categorysDAOMS($pdo);
 
-$categoryId = $categorys->getIdByName($_POST['type']);
-$providerId = $providers->getIdByName($_POST['provider']);
-$stateId = $states->getIdByName($_POST['state']);
-$brandId = $brands->getIdByName($_POST['brand']);
+$data = json_decode(file_get_contents("php://input"));
+$categoryId = $categorys->getIdByName(data->type);
+$providerId = $providers->getIdByName(data->provider);
+$stateId = $states->getIdByName(data->state);
+$brandId = $brands->getIdByName(data->brand);
+
+var_dump($data);
 
 function checkInput($i) {
     return (trim($i) != "");
@@ -77,10 +80,8 @@ if(checkInput($data->internalCode)) { //Check if input is just empty spaces
             if(isset($_COOKIE['__geeupdateequipment'])) {
                 setcookie("__geeupdateequipment", 'DELETED', 1, '/');
             }
-            echo 'SUCESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS';
 
-            header('Location: ../index.php');
-            die();
+            http_response_code(200);
         } else {
             $_SESSION['updateEquipmentError'] = "Já existe um equipamento com esse endereço IP."; 
         }
@@ -91,7 +92,5 @@ if(checkInput($data->internalCode)) { //Check if input is just empty spaces
     $_SESSION['updateEquipmentError'] = "Algum dos dados inseridos não é valido.";
 }
 
-header('Location: ../pages/updateEquipment.php?id=' .  $_POST['id']);
-die();
-
-echo 'FAILEDDDDDDDDDDDDDDDDDDDDDD';
+print_r($_SESSION['updateEquipmentError']);
+http_response_code(400);

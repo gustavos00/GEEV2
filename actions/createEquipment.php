@@ -51,7 +51,7 @@ if(checkInput($data->internalCode)) { //Check if input is just empty spaces
 
         $equipmentStatus = $equipments->getEquipmentStatus($data->ipAdress, $data->internalCode, $data->serieNumber);
 
-        if (!$equipmentStatus) { //Validate equipment
+        if (true) { //Validate equipment
             $newEquipment = new equipments();   
             
             $newEquipment->setInternalCode($data->internalCode);
@@ -92,7 +92,8 @@ if(checkInput($data->internalCode)) { //Check if input is just empty spaces
             if(isset($_COOKIE['__geecreateequipment'])) {
                 setcookie("__geecreateequipment", 'DELETED', 1, '/');
             } 
-            echo 'SUCCESEEEEEEEEEEEEEEEE';
+
+            http_response_code(200);
 
         } else {
             $_SESSION['createEquipmentError'] = "Já existe um equipamento com esse endereço IP."; 
@@ -104,5 +105,8 @@ if(checkInput($data->internalCode)) { //Check if input is just empty spaces
     $_SESSION['createEquipmentError'] = "Algum dos dados inseridos não é valido.";
 }
 
-var_dump($_SESSION);
+$_SESSION['createEquipmentError'] = "Algum dos dados inseridos não é valido.";
+
+print_r($_SESSION['createEquipmentError']);
+http_response_code(400);
 

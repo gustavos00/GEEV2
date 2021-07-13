@@ -309,4 +309,10 @@ class equipmentsDAOMS implements equipmentsDAO
         }
         return $equipmentData;
     }
+
+    public function deleteHistoric(equipments $e) {
+        $sql = $this->pdo->prepare("DELETE FROM historico WHERE equipamentos_idEquipamentos = :id");
+        $sql->bindValue(':id', $e->getId());
+        $sql->execute();
+    }
 }

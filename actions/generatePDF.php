@@ -3,6 +3,7 @@ require_once '../vendor/autoload.php';
 require_once '../dao/softwaresDaoMS.php';
 require_once '../dao/equipmentsDaoMS.php';
 require_once '../dao/assistanceDaoMS.php';
+require_once '../dao/lentDaoMS.php';
 require_once '../dao/malfunctionsDaoMS.php';
 require_once '../config.php';
 session_start();
@@ -112,18 +113,31 @@ function generateSoftware($pdo) {
     $data = '';
 
     foreach($allSoftwares as $softwareData) {
-        $providerName = $softwareData->getProviderName();
-
         $data .= generateHeader('Software', $softwareData->getId());
         $data .= '<p><strong>Tipo: </strong>' . $softwareData->getTypeName() . '</p>';
         $data .= '<p><strong>Versão: </strong>' . $softwareData->getVersion() . '</p>';
         $data .= '<p><strong>Chave: </strong>' . $softwareData->getKey() . '</p>';
         $data .= '<p><strong>Data inicial de contrato: </strong>' . $softwareData->getInitialDate() . '</p>';
         $data .= '<p><strong>Data final de contrato: </strong>' . $softwareData->getFinalDate() . '</p>';
+    }
+    return $data;
+}
 
-        if (trim($providerName) !== "") {
-            $data .= '<p><strong>Fornecedor: </strong>' . $providerName . '</p>';
-        }
+function generateLent($pdo) {
+    $lent = new lentDAOMS($pdo);
+    $allLent = $lent->getAll();
+    $data = '';
+
+    var_dump($allLent);
+
+    foreach($allLent as $lent) {
+        $data .= generateHeader('Emprestimo', $lent->getId());
+        $data .= '<p><strong>Data inicial: </strong>' . $lent->getInitialDate() . '</p>';
+        $data .= '<p><strong>Data final: </strong>' . $lent->getFinalDate() . '</p>';
+        $data .= '<p><strong>Responsável: </strong>' . $lent->getUser() . '</p>';
+        $data .= '<p><strong>Contacto: </strong>' . $lent->getContact() . '</p>';
+        $data .= '<p><strong>Observações: </strong>' . $lent->getObs() . '</p>';
+        $data .= '<p><strong>Equipamento emprestado: </strong>' . $lent->getEquipmentInternalCode() . '</p>';
     }
     return $data;
 }
@@ -156,12 +170,11 @@ switch ($_POST['category']) {
     case 'Emprestimos':
         echo ' <title> Relatorio emprestimos - GEE</title>';
 
-        $pdfData = generateSoftware($pdo);
+        $pdfData = generateLent($pdo);
         break; 
     default:
         $_SESSION['generatePDFError'] = "Aparentemente ocorreu um problema ao determinar que tipo de PDF você quer gerar. Tente novamemente";
-
-
+        
         break;
 }
 
@@ -171,3 +184,5 @@ $pdfData .= '<p> Gerado na data: ' . $date . '</p>';
 $mpdf = new \Mpdf\Mpdf();
 $mpdf->WriteHTML($pdfData);
 $mpdf->Output();
+
+

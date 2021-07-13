@@ -1,11 +1,38 @@
 <?php 
 require_once '../config.php';
-require_once '../dao/softwaresDaoMS.php';
-require_once '../dao/providersDaoMS.php';
-require_once '../dao/equipmentsDaoMS.php';
 require_once '../dao/assistanceDaoMS.php';
+require_once '../dao/equipmentsDaoMS.php';
+require_once '../dao/softwaresDaoMS.php';
 require_once '../dao/malfunctionsDaoMS.php';
+require_once '../dao/providersDaoMS.php';
+require_once '../dao/lentDaoMS.php';
 session_start();
+
+$equipments = new equipmentsDAOMS($pdo);
+$malfunctions = new malfunctionsDAOMS($pdo);
+$softwares = new softwaresDAOMS($pdo);
+$providers = new providersDAOMS($pdo);
+$assistance = new assistanceDAOMS($pdo);
+$lent = new lentDAOMS($pdo);
+
+$AllMalfunctions = $malfunctions->getAll();
+
+$allSoftwares = $softwares->getAllSoftwares();
+
+$allProviders = $providers->getAll();
+
+$allAssistances = $assistance->getAll();
+
+$allEquipments = $equipments->getAll();
+$allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
+$AllNotLentEquipments = $equipments->getAllNotLentEquipments();
+
+$allLentProcess = $lent->getAll();
+
+//For the page
+$malfunctionData = $malfunctions->getSpecific($_GET['id']);
+$allAssistanceTypes = $assistance->getAllAssistanceTypes();
+
 
 function getUrl($adress)
 {
@@ -15,17 +42,13 @@ function getUrl($adress)
     echo $url . $adress;
 }
 
-$softwares = new softwaresDaoMS($pdo);
-$equipments = new equipmentsDaoMS($pdo);
-$providers = new providersDaoMS($pdo);
-$assistance = new assistanceDAOMS($pdo);
-$malfunction = new malfunctionsDAOMS($pdo);
 
-$malfunctionData = $malfunction->getSpecific($_GET['id']);
-$allAssistances = $assistance->getAll();
-$allSoftwares = $softwares->getAllSoftwares();
-$allEquipments = $equipments->getAll();
-$allProviders = $providers->getAll();
+if(!isset($_GET['id']) && !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
+    $_SESSION['indexErrorMessage'] = 'Ocorreu um problema a encontrar a avaria para o atualizar, tente novamente.';
+    
+    header('Location: ./home.php');
+    die();
+}
 
 ?>
 
@@ -49,6 +72,7 @@ $allProviders = $providers->getAll();
     <title>Atualizar avaria - GEE</title>
 </head>
     <body>
+    <div class="sidebarWrapper">
         <nav class="sidebar">
             <div class="sidebarBtnContainer">
                 <div class="sidebarBtn"></div>
@@ -144,6 +168,7 @@ $allProviders = $providers->getAll();
                 </label>
             </div>
         </nav>
+    </div>
         <div class="contentWrap">       
             <div class="container">
                 <h1>Atualizar avaria</h1>
@@ -162,7 +187,7 @@ $allProviders = $providers->getAll();
 
                 <form id="form" data-cookieName="__geecreatemalfunction" action="<?php getUrl('/actions/createMalfunction.php'); ?>" method="post">
                     <div class="dataContainer">
-                        <input class="input" value=<?php echo ($malfunctionData->getDate());?> type="date" name="dateMalfunction" id="dateMalfunction">
+                        <input class="input" value=<?php echo ($malfunctionData->getDate());?>  placeholder="Data da avaria" onfocus="(this.type='date')" onblur="(this.type='text')"  name="dateMalfunction" id="dateMalfunction">
 
                         <textarea class="textarea"  placeholder="Insira uma descrição..." name="description" id="description" cols="30" rows="10"><?php echo ($malfunctionData->getDescription());?></textarea>
 
@@ -200,6 +225,7 @@ $allProviders = $providers->getAll();
             </div>
         </div>
 
+       
         <div class="modalFilter" id="modalFilter">
             <!--MODALS TO SIDEBAR -->
             <div data-actionBtn="updateEquipmentBtnAction" id="updateEquipment" class="equipmentModal modalContent updateEquipment">
@@ -255,8 +281,8 @@ $allProviders = $providers->getAll();
 
                 <form id="lendEquipmentForm" action="<?php getUrl('/actions/lendEquipment.php'); ?>" method="post">
                     <input type="hidden" name="selectedEquipmentId" id="selectedEquipmentId">
-                    <input class="input" type="date" name="initialDate" id="initialDate">
-                    <input class="input" type="date" name="finalDate" id="finalDate">
+                    <input class="input" placeholder="Data inicial" onfocus="(this.type='date')" onblur="(this.type='text')" name="initialDate" id="initialDate">
+                    <input class="input" placeholder="Data final" onfocus="(this.type='date')" onblur="(this.type='text')" name="finalDate" id="finalDate">
                     
                     <input class="input" required maxlength="50" placeholder="Responsável pelo emprestimo..." type="text" name="responsibleUser" id="responsibleUser">
                     <input class="input" placeholder="Contacto...." type="text" name="contact" id="contact">
@@ -282,7 +308,7 @@ $allProviders = $providers->getAll();
 
                 <form id="returnEquipmentForm" action="<?php getUrl('/actions/returnEquipment.php'); ?>" method="post">
                     <input type="hidden" name="selectedEquipmentId" id="returnEquipmentId">
-                    <input class="input" type="date" name="finalDate" id="finalDate">
+                    <input class="input"  placeholder="Data final" onfocus="(this.type='date')" onblur="(this.type='text')" name="finalDate" id="finalDate">
                     <select class="select" id="returnEquipmentSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione um equipamento..</option>
                         <?php foreach ($allNotRetiredEquipments as $lentEquipment) {
@@ -414,7 +440,7 @@ $allProviders = $providers->getAll();
                     <select class="select" id="updateAssistanceSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione uma assistência..</option>
                         <?php foreach($allAssistances as $assistances) {
-                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnical() . ' (' . $assistances->getTypeName() . ') </option> ';
+                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnicalName() . ' (' . $assistances->getTypeName() . ') </option> ';
                         } ?>
                     </select>
 
@@ -430,7 +456,7 @@ $allProviders = $providers->getAll();
                     <select class="select" id="deleteAssistanceSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione uma assistência..</option>
                         <?php foreach($allAssistances as $assistances) {
-                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnical() . ' (' . $assistances->getTypeName() . ') </option> ';
+                            echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnicalName() . ' (' . $assistances->getTypeName() . ') </option> ';
                         } ?>
                     </select>
 
