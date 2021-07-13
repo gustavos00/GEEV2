@@ -44,19 +44,18 @@ class assistanceDAOMS implements assistanceDAO
             foreach ($data as $item) {
                 $a = new assistance();
 
-                
-
                 $a->setId($item['idAssistencia']);
                 $a->setInitialDate($item['dataInicio']);
                 $a->setFinalDate($item['dataFim']);
-                $a->setDescription($item['duracao']);
-                $a->setDuration($item['descricao']);
+                $a->setDescription($item['descricao']);
+                $a->setDuration($item['duracao']);
                 $a->setTechnicalName($item['nome']);
                 $a->setGoals($item['objetivo']);
                 $a->setFrontOffice($item['frontOffice']);
                 $a->setTypeId($item['idtipoOcorrencia']);
                 $a->setTypeName($item['tipoOcorrencia']);
-                $a->setEquipmentId($item['equipamentos_idEquipamentos']);      
+                $a->setEquipmentId($item['equipamentos_idEquipamentos']); 
+                $a->setEquipmentName($item['codInterno']);         
 
                 $assistanceData[] =  $a;
             } 

@@ -15,8 +15,6 @@ function checkInput($i) {
     return (trim($i) != "");
 }
 
-var_dump($_POST);
-
 if (checkInput($_POST['technical']) && checkInput($_POST['objective']) && isset($_POST['assistanceType'])) {
     $assistance = new assistanceDAOMS($pdo);
     $equipments = new equipmentsDAOMS($pdo);
@@ -26,8 +24,6 @@ if (checkInput($_POST['technical']) && checkInput($_POST['objective']) && isset(
     $equipmentId = $equipments->getIdByInternalCode(explode(' (', $_POST['equipments'])[0]);
     $providerId = $providers->getIdByName($_POST['technical']);
     $typeId = $assistance->getAssistanceTypeIdBYName($_POST['assistanceType']);
-
-    echo 'aaaaaaaaaaaa ' . $_POST['assistanceType'];
 
     $initialDateAssistance = null;
     $frontOffice = null;
