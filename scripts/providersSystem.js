@@ -119,6 +119,7 @@ document.getElementById('createProviderContact').addEventListener('click', (e) =
         contactsData.push(oneContactData);
         generateTable(contactsData)
     } else {
+        alert('Insira algum contacto primeiro.')
         console.log(contactsInput.value.replace(/ /g, '').length)
     }
 
@@ -128,21 +129,26 @@ document.getElementById('createProviderContact').addEventListener('click', (e) =
 document.getElementById('createProviderBtn').addEventListener('click', (e) => {
     e.preventDefault();
 
-    if (contactsData.length != 0 || confirm("Tem a certeza que deseja criar um fornecedor sem contactos?") && !nameProvider.value.replace(/ /g, '') == "") {
-        let status = 'd';
+    if(nameProvider.value != "") {
+        if (contactsData.length != 0 || confirm("Tem a certeza que deseja criar um fornecedor sem contactos?") && !nameProvider.value.replace(/ /g, '') == "") {
+            let status = 'd';
 
-        const providerData = {
-            name: nameProvider.value,
-            obs: obsProvider.value,
-            id: id,
-            status: status,
+            const providerData = {
+                name: nameProvider.value,
+                obs: obsProvider.value,
+                id: id,
+                status: status,
 
-            contacts: contactsData
+                contacts: contactsData
+            }
+
+            console.log(actionFile)
+            request(providerData);
         }
-
-        console.log(actionFile)
-        request(providerData);
+    } else {
+        alert('Insira um nome para o fornecedor primeiro.')
     }
+
 
 })
 

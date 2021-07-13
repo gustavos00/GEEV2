@@ -2,6 +2,7 @@
 require_once '../vendor/autoload.php';
 require_once '../dao/softwaresDaoMS.php';
 require_once '../dao/equipmentsDaoMS.php';
+require_once '../dao/assistanceDaoMS.php';
 require_once '../dao/malfunctionsDaoMS.php';
 require_once '../config.php';
 session_start();
@@ -17,16 +18,21 @@ function generateSubheader($subheaderName) {
 }
 
 function generateAssistance($pdo) {
-    $malfunction = new malfunctionsDAOMS($pdo);
-    $allMalfunctions = $malfunction->getAll();
+    $assistance = new assistanceDAOMS($pdo);
+    $Allassistances = $assistance->getAll();
     $data = '';
 
-    foreach($allMalfunctions as $malfunctionData) {
-        $data .= generateHeader('Assistência', $malfunctionData->getId());
-        $data .= '<p><strong>Data: </strong>' . $malfunctionData->getDate() . '</p>';
-        $data .= '<p><strong>Status: </strong>' . $malfunctionData->getStatus() . '</p>';
-        $data .= '<p><strong>Descrição: </strong>' . $malfunctionData->getDescription() . '</p>';
-        $data .= '<p><strong>Responsável: </strong>' . $malfunctionData->getProviderName() . '</p>';  
+    foreach($Allassistances as $assistanceData) {
+        $data .= generateHeader('Assistência', $assistanceData->getId());
+        $data .= '<p><strong>Data inicial: </strong>' . $assistanceData->getInitialDate() . '</p>';
+        $data .= '<p><strong>Data final: </strong>' . $assistanceData->getFinalDate() . '</p>';
+        $data .= '<p><strong>Duração: </strong>' . $assistanceData->getDuration() . 'h </p>';
+        $data .= '<p><strong>Descrição: </strong>' . $assistanceData->getDescription() . '</p>';
+        $data .= '<p><strong>Objetivos: </strong>' . $assistanceData->getGoals() . '</p>';
+        $data .= '<p><strong>Front-Office: </strong>' . $assistanceData->getFrontOffice() . '</p>';
+        $data .= '<p><strong>Tecnico responsável: </strong>' . $assistanceData->getTechnicalName() . '</p>';  
+        $data .= '<p><strong>Tipo: </strong>' . $assistanceData->getTypeName() . '</p>';
+        $data .= '<p><strong>Código interno do equipamento: </strong>' . $assistanceData->getEquipmentName() . '</p>';
         $data .= '<br>';
     }
     return $data;

@@ -38,59 +38,64 @@ if($data->userDate == "") {
     $data->userDate = null;
 }
 
-if(checkInput($data->internalCode) && checkInput($data->serieNumber)) { //Check if input is just empty spaces
+if(checkInput($data->internalCode)) { //Check if input is just empty spaces
     if(isset($data->brand) && isset($data->model) && isset($data->category)) { //Check if exist some important data
-        if(filter_var($data->ipAdress, FILTER_VALIDATE_IP) && isset($data->ipAdress)) {
-
-            $equipmentStatus = $equipments->getEquipmentStatus($data->ipAdress, $data->internalCode, $data->serieNumber);
-            $equipmentStatus=false;
-
-            if (!$equipmentStatus) { //Validate equipment
-                $newEquipment = new equipments();   
+        if(checkInput($data->ipAdress)) {
+            if(!filter_var($data->ipAdress, FILTER_VALIDATE_IP)) {
+                $_SESSION['updateEquipmentError'] = "O endereço IP inserido não é valido.";
                 
-                $newEquipment->setInternalCode($data->internalCode);
-                $newEquipment->setModel($data->model);
-                $newEquipment->setSerieNumber($data->serieNumber);
-                $newEquipment->setFeatures($data->features);
-                $newEquipment->setObs($data->obs);
-                $newEquipment->setAcquisitionDate($date);
-                $newEquipment->setPatrimonialCode($data->patrimonialCode);
-                $newEquipment->setUser($data->user);
-                $newEquipment->setLocation($data->location);
-                $newEquipment->setUserDate($data->userDate);
-                $newEquipment->setLanPort($data->lanPort);
-                $newEquipment->setActiveEquipment($data->activeEquipment);
-                $newEquipment->setIpAdress($data->ipAdress);
+                header('Location: ../index.php');
+                die();
+            } 
+        } 
 
-                $newEquipment->setProviderId($providerId);
-                $newEquipment->setProviderName($data->provider);
+        $equipmentStatus = $equipments->getEquipmentStatus($data->ipAdress, $data->internalCode, $data->serieNumber);
 
-                $newEquipment->setBrandId($brandId);
-                $newEquipment->setBrandName($data->brand);
+        if (!$equipmentStatus) { //Validate equipment
+            $newEquipment = new equipments();   
+            
+            $newEquipment->setInternalCode($data->internalCode);
+            $newEquipment->setModel($data->model);
+            $newEquipment->setSerieNumber($data->serieNumber);
+            $newEquipment->setFeatures($data->features);
+            $newEquipment->setObs($data->obs);
+            $newEquipment->setAcquisitionDate($date);
+            $newEquipment->setPatrimonialCode($data->patrimonialCode);
+            $newEquipment->setUser($data->user);
+            $newEquipment->setLocation($data->location);
+            $newEquipment->setUserDate($data->userDate);
+            $newEquipment->setLanPort($data->lanPort);
+            $newEquipment->setActiveEquipment($data->activeEquipment);
+            $newEquipment->setIpAdress($data->ipAdress);
 
-                $newEquipment->setStateId($stateId);
-                $newEquipment->setStateName($data->state);
+            $newEquipment->setProviderId($providerId);
+            $newEquipment->setProviderName($data->provider);
 
-                $newEquipment->setCategoryId($categoryId);
-                $newEquipment->setCategoryName($data->category);
+            $newEquipment->setBrandId($brandId);
+            $newEquipment->setBrandName($data->brand);
 
-                foreach ($softwaresData as $software) {
-                    $equipments->linkSoftwares($software->id, 19);
-                }
+            $newEquipment->setStateId($stateId);
+            $newEquipment->setStateName($data->state);
 
-                unset($_SESSION['createEquipmentError']);
-                $_SESSION['successMessage'] = "O equipmento " . $data->internalCode . " foi criado com sucesso.";
-                
-                if(isset($_COOKIE['__geecreateequipment'])) {
-                    setcookie("__geecreateequipment", 'DELETED', 1, '/');
-                }
+            $newEquipment->setCategoryId($categoryId);
+            $newEquipment->setCategoryName($data->category);
 
-
-            } else {
-                $_SESSION['createEquipmentError'] = "Já existe um equipamento com esse endereço IP."; 
+            foreach ($softwaresData as $software) {
+                $equipments->linkSoftwares($software->id, 19);
             }
+
+            $equipments->createEquipment($newEquipment);
+
+            unset($_SESSION['createEquipmentError']);
+            $_SESSION['successMessage'] = "O equipmento " . $data->internalCode . " foi criado com sucesso.";
+            
+            if(isset($_COOKIE['__geecreateequipment'])) {
+                setcookie("__geecreateequipment", 'DELETED', 1, '/');
+            } 
+            echo 'SUCCESEEEEEEEEEEEEEEEE';
+
         } else {
-            $_SESSION['createEquipmentError'] = "O endereço IP inserido não é valido.";
+            $_SESSION['createEquipmentError'] = "Já existe um equipamento com esse endereço IP."; 
         }
     } else {
         $_SESSION['createEquipmentError'] = "Não foram introduzidos todos os dados necessários.";
@@ -98,3 +103,6 @@ if(checkInput($data->internalCode) && checkInput($data->serieNumber)) { //Check 
 } else {
     $_SESSION['createEquipmentError'] = "Algum dos dados inseridos não é valido.";
 }
+
+var_dump($_SESSION);
+

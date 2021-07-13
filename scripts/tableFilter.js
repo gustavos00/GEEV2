@@ -1,7 +1,5 @@
 $(document).ready(function(){
 	$(".search-input").keyup(function(){
-	    
-	    
 		filter = new RegExp($(this).val(),'i');
 		id = $(this).attr('data-filtername');
 		console.log("#" + id + " tr")

@@ -17,7 +17,7 @@ $softwares = new softwaresDAOMS($pdo);
 $providers = new providersDAOMS($pdo);
 
 
-if(checkFullDate($_POST['initialDate']) && checkFullDate($_POST['finalDate']) && checkInput($_POST['key']) && checkInput($_POST['version'])) {
+if(checkFullDate($_POST['initialDate']) && checkInput($_POST['key']) && checkInput($_POST['version'])) {
     if(isset($_POST['type']) && isset($_POST['provider']) && checkInput($_POST['type']) && checkInput($_POST['provider'])) {
         $typeId = $softwares->getSoftwareTypeIdByName($_POST['type']);
         $providerId = $providers->getIdByName($_POST['provider']);
