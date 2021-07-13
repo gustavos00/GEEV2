@@ -165,7 +165,7 @@ function request(data) {
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             console.log(this.responseText);
-            location.reload();
+            
         }
     };
 
@@ -196,7 +196,6 @@ function generateTable(softwareData) {
 }
 
 const addSoftwareBtn = document.getElementById('addSoftwareBtn');
-console.log(addSoftwareBtn)
 addSoftwareBtn.addEventListener('click', (e) => {
     e.preventDefault();
 
