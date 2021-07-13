@@ -32,7 +32,7 @@ class lentDAOMS implements lentDAO
         $lentData = [];
 
         $sql = $this->pdo->prepare("SELECT emprestimos.*, equipamentos.codInterno FROM (emprestimos 
-        INNER JOIN equipamentos ON emprestimos.equipamentos_idEquipamentos = equipamentos.idEquipamentos)");
+        LEFT JOIN equipamentos ON emprestimos.equipamentos_idEquipamentos = equipamentos.idEquipamentos)");
         $sql->execute();
     
         if($sql->rowCount() > 0) {
@@ -51,10 +51,10 @@ class lentDAOMS implements lentDAO
                 $eq->setEquipmentInternalCode($item['codInterno']);
                 $eq->setEquipmentId($item['equipamentos_idEquipamentos']);
 
-                $equipmentData[] =  $eq;
-            }
-            return $equipmentData;
+                $lentData[] =  $eq;
+            }  
         }
+        return $lentData;
     }
 
     public function getAllOpenLentProcess() {
