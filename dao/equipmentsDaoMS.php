@@ -89,11 +89,11 @@ class equipmentsDAOMS implements equipmentsDAO
 
     public function getSpecificById($id) {
         $sql = $this->pdo->prepare(
-            "SELECT equipamentos.*, prestadorServicos.nome, estados.estado, marca.nomeMarca, categoria.nomeCategoria FROM ((((equipamentos
+            "SELECT equipamentos.*, prestadorservicos.nome, estados.estado, marca.nomeMarca, categoria.nomeCategoria FROM ((((equipamentos
             INNER JOIN estados ON equipamentos.estados_idestados = estados.idestados)
             INNER JOIN marca ON equipamentos.marca_idmarca = marca.idmarca)
             INNER JOIN categoria ON equipamentos.categoria_idcategoria = categoria.idcategoria)
-            INNER JOIN prestadorServicos ON equipamentos.prestadorservicos_idprestadorservico = prestadorServicos.idprestadorServico)
+            INNER JOIN prestadorservicos ON equipamentos.prestadorservicos_idprestadorservico = prestadorservicos.idprestadorServico)
             WHERE idequipamentos = :id"
         );
 

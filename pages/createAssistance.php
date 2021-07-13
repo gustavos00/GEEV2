@@ -9,7 +9,7 @@ session_start();
 function getUrl($adress)
 {
     $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ?
-        "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/geev2';
+        "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/GEEV2';
 
     echo $url . $adress;
 }

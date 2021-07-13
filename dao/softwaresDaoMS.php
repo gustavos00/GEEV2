@@ -12,7 +12,7 @@ class softwaresDAOMS implements sotfwaresDAO
 
     public function insertSoftware(softwares $s)
     {
-        $sql = $this->pdo->prepare("INSERT INTO softwares(chave, versao, dataInicio, dataFinal, tipoSoftwares_idtipoSoftwares, prestadorServicos_idprestadorServico) VALUES (:key, :version, :initialDate, :finalDate, :typeId, :providerId)");
+        $sql = $this->pdo->prepare("INSERT INTO softwares(chave, versao, dataInicio, dataFinal, tipoSoftwares_idtipoSoftwares, prestadorservicos_idprestadorServico) VALUES (:key, :version, :initialDate, :finalDate, :typeId, :providerId)");
 
         $sql->bindValue(':key', $s->getKey());
         $sql->bindValue(':version', $s->getVersion());
@@ -26,7 +26,7 @@ class softwaresDAOMS implements sotfwaresDAO
     }
 
     public function updateSoftware(softwares $s) {
-        $sql = $this->pdo->prepare("UPDATE softwares SET chave = :key, versao = :version, dataInicio = :initialDate, dataFinal = :finalDate, tipoSoftwares_idtipoSoftwares = :typeId, prestadorServicos_idprestadorServico = :providerId WHERE idsoftwares = :id");
+        $sql = $this->pdo->prepare("UPDATE softwares SET chave = :key, versao = :version, dataInicio = :initialDate, dataFinal = :finalDate, tipoSoftwares_idtipoSoftwares = :typeId, prestadorservicos_idprestadorServico = :providerId WHERE idsoftwares = :id");
         $sql->bindValue(':key', $s->getKey());
         $sql->bindValue(':version', $s->getVersion());
         $sql->bindValue(':initialDate', $s->getInitialDate());
@@ -125,9 +125,9 @@ class softwaresDAOMS implements sotfwaresDAO
 
     public function getSpecificSoftwareById($id) {
         $sql = $this->pdo->prepare(
-            "SELECT softwares.*, tipoSoftwares.tipoSoftware, prestadorServicos.nome FROM ((softwares
-            INNER JOIN tipoSoftwares ON tipoSoftwares.idtipoSoftwares = softwares.tipoSoftwares_idtipoSoftwares)
-            INNER JOIn prestadorServicos ON prestadorServicos.idprestadorServico = softwares.tipoSoftwares_idtipoSoftwares) 
+            "SELECT softwares.*, tiposoftwares.tipoSoftware, prestadorservicos.nome FROM ((softwares
+            INNER JOIN tiposoftwares ON tiposoftwares.idtipoSoftwares = softwares.tipoSoftwares_idtipoSoftwares)
+            INNER JOIn prestadorservicos ON prestadorservicos.idprestadorServico = softwares.tipoSoftwares_idtipoSoftwares) 
             WHERE idsoftwares = :id");
         $sql->bindValue(':id', $id);
         $sql->execute();

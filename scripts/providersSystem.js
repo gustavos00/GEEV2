@@ -79,7 +79,7 @@ function request(providerData) {
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            window.location.href = "/pages/home.php"
+            window.location.href = "/GEEV2/pages/home.php"
         }
     };
 

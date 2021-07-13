@@ -195,6 +195,7 @@ function generateTable(softwareData) {
 }
 
 const addSoftwareBtn = document.getElementById('addSoftwareBtn');
+console.log(addSoftwareBtn)
 addSoftwareBtn.addEventListener('click', (e) => {
     e.preventDefault();
 

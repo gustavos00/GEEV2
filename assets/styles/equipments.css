@@ -38,3 +38,24 @@
 
     justify-content: unset;
 }
+
+/* FULL VIEW DATA*/ 
+
+.viewData {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(4, auto);
+    grid-gap: 20px
+}
+
+.viewData .dataContainer {
+    height: 100%;
+}
+
+.viewData .dataContainer .dataContent {
+    color: var(--text-dark)
+}
+
+.viewData .dataContainer .dataContent h4 {
+    font-size: 20px;
+}

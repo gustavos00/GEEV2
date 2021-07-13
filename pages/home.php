@@ -11,7 +11,7 @@ session_start();
 function getUrl($adress)
 {
     $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ?
-        "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/geev2';
+        "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/GEEV2';
 
     echo $url . $adress;
 }
@@ -211,7 +211,7 @@ $allLentProcess = $lent->getAll();
                             </thead>
                             <tbody id="equipments" class="tbody">
                                 <?php foreach($allEquipments as $specificEquipment) : ?>
-                                    <tr>
+                                    <tr data-id="<?= $specificEquipment->getId(); ?>">
                                         <td><?= $specificEquipment->getInternalCode(); ?></td>
                                         <td><?= $specificEquipment->getCategoryName(); ?></td>
                                         <td><?php echo ($specificEquipment->getBrandName() . ' - ' . $specificEquipment->getModel()); ?></td>
@@ -243,7 +243,7 @@ $allLentProcess = $lent->getAll();
                     <div class="tableContainer">
                         <table class="table table-hover table-striped">
                             <thead>
-                                <tr>
+                                <tr >
                                     <th scope="col">Tipo</th>
                                     <th scope="col">Chave</th>
                                     <th scope="col">Versão</th>
@@ -254,7 +254,7 @@ $allLentProcess = $lent->getAll();
                             </thead>
                             <tbody id="softwares" class="tbody">
                                 <?php foreach($allSoftwares as $specificSoftware) :  ?>
-                                    <tr>
+                                    <tr data-id="<?= $specificSoftware->getId(); ?>">
                                         <td><?= $specificSoftware->getTypeName(); ?></td>
                                         <td><?= $specificSoftware->getKey(); ?></td>
                                         <td><?= $specificSoftware->getVersion(); ?></td>
@@ -294,7 +294,7 @@ $allLentProcess = $lent->getAll();
                             </thead>
                             <tbody id="malfunctions" class="tbody">
                                 <?php foreach($AllMalfunctions as $malfunctions) : ?>
-                                    <tr>
+                                    <tr data-id="<?= $malfunctions->getId(); ?>">
                                         <td><?= $malfunctions->getDate(); ?></td>
                                         <td><?= $malfunctions->getDescription(); ?></td>
                                         <td><?= $malfunctions->getProviderName(); ?></td>
@@ -334,7 +334,7 @@ $allLentProcess = $lent->getAll();
                             </thead>
                             <tbody id="assistance" class="tbody">
                                 <?php foreach($allAssistances as $assistance) :  ?>
-                                    <tr>
+                                    <tr data-id="<?= $assistance->getId(); ?>">
                                         <td><?= $assistance->getInitialDate(); ?></td>
                                         <td><?= $assistance->getFinalDate(); ?></td>
                                         <td><?= $assistance->getTechnicalName(); ?></td>
@@ -373,7 +373,7 @@ $allLentProcess = $lent->getAll();
                             </thead>
                             <tbody id="providers" class="tbody">
                                 <?php foreach($allProviders as $provider) :  ?>
-                                    <tr>
+                                    <tr data-id="<?= $provider->getId(); ?>">
                                         <td><?= $provider->getName(); ?></td>
                                         <td><?= $provider->getObs(); ?></td>
                                         <td>
@@ -418,7 +418,7 @@ $allLentProcess = $lent->getAll();
                             </thead>
                             <tbody class="tbody">
                                 <?php foreach($allEquipmentsLent as $equipmentLent) :  ?>
-                                    <tr>
+                                    <tr data-id="<?= $equipmentLent->getId(); ?>">
                                         <td><?=$equipmentLent->getUser();?></td>
                                         <td><?=$equipmentLent->getInitialDate();?></td>
                                         <td><?=$equipmentLent->getContact();?></td>

@@ -16,13 +16,13 @@ function generateSubheader($subheaderName) {
     return '<h2>' . $subheaderName . '</h2>';
 }
 
-function generateAssistance($pdo, $data) {
+function generateAssistance($pdo) {
     $malfunction = new malfunctionsDAOMS($pdo);
     $allMalfunctions = $malfunction->getAll();
     $data = '';
 
     foreach($allMalfunctions as $malfunctionData) {
-        $data .= generateHeader($data, 'Assistência', $malfunctionData->getId());
+        $data .= generateHeader('Assistência', $malfunctionData->getId());
         $data .= '<p><strong>Data: </strong>' . $malfunctionData->getDate() . '</p>';
         $data .= '<p><strong>Status: </strong>' . $malfunctionData->getStatus() . '</p>';
         $data .= '<p><strong>Descrição: </strong>' . $malfunctionData->getDescription() . '</p>';
@@ -73,6 +73,7 @@ function generateEquipment($pdo) {
             $data .= '<p><strong>Utilizador: </strong>' . $historic->getUser() . '</p>';
             $data .= '<p><strong>Data inicio: </strong>' . $historic->getInitialDate() . '</p>';
             $data .= '<p><strong>Data fim: </strong>' . $historic->getFinalDate() . '</p>';
+            $data .= '<hr>';
         }
     }
     return $data;
@@ -163,3 +164,4 @@ $pdfData .= '<p> Gerado na data: ' . $date . '</p>';
 
 $mpdf = new \Mpdf\Mpdf();
 $mpdf->WriteHTML($pdfData);
+$mpdf->Output();
