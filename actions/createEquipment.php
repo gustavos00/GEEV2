@@ -38,20 +38,51 @@ if($data->userDate == "") {
     $data->userDate = null;
 }
 
+if($data->ipAdress == "") {
+    $data->ipAdress = null;
+}
+
+if($data->serieNumber == "") {
+    $data->serieNumber = null;
+}
+
 if(checkInput($data->internalCode)) { //Check if input is just empty spaces
-    if(isset($data->brand) && isset($data->model) && isset($data->category)) { //Check if exist some important data
-        if(checkInput($data->ipAdress)) {
-            if(!filter_var($data->ipAdress, FILTER_VALIDATE_IP)) {
-                $_SESSION['updateEquipmentError'] = "O endereço IP inserido não é valido.";
-                
-                header('Location: ../index.php');
-                die();
-            } 
-        } 
+    if(isset($data->brand) && isset($data->model) && isset($data->category) && isset($data->provider)) { //Check if exist some important data
+        if($data->ipAdress != "") {
+            print_r($data->ipAdress);
+            if(filter_var($data->ipAdress, FILTER_VALIDATE_IP)) {
+                if($equipments->getIpStatus($data->ipAdress)) {
+                    print_r("O endereço IP inserido já está a ser utilizado.");
+                    
+                    http_response_code(400);
+                    return false;
+                }
+            } else {
+                print_r("O endereço IP inserido não é valido.");
+    
+                http_response_code(400);
+                return false;
+            }
+        }
 
-        $equipmentStatus = $equipments->getEquipmentStatus($data->ipAdress, $data->internalCode, $data->serieNumber);
+        if($data->serieNumber != "") {
+            if(filter_var($data->serieNumber, FILTER_SANITIZE_STRING)) {
+                if($equipments->getSerieNumberStatus($data->serieNumber)) {
+                    print_r("O número de série inserido já está a ser utilizado.");
 
-        if (true) { //Validate equipment
+                    http_response_code(400);
+                    return false;
+                } 
+            } else {
+                print_r("O número de série inserido não é valido.");
+
+                http_response_code(400);
+                return false;
+            }       
+        }  
+        
+
+        if (!$equipments->getInternalCodeStatus($data->internalCode)) { //Validate equipment
             $newEquipment = new equipments();   
             
             $newEquipment->setInternalCode($data->internalCode);
@@ -94,19 +125,21 @@ if(checkInput($data->internalCode)) { //Check if input is just empty spaces
             } 
 
             http_response_code(200);
+            
 
         } else {
-            $_SESSION['createEquipmentError'] = "Já existe um equipamento com esse endereço IP."; 
+            print_r("Já existe um equipamento com esse código interno.");
+
+            http_response_code(400);
         }
     } else {
-        $_SESSION['createEquipmentError'] = "Não foram introduzidos todos os dados necessários.";
+        print_r("Não foram introduzidos todos os dados necessários.");
+        http_response_code(400);
     }
 } else {
-    $_SESSION['createEquipmentError'] = "Algum dos dados inseridos não é valido.";
+    print_r("Algum dos dados inseridos não é valido.");
+    http_response_code(400);
 }
 
-$_SESSION['createEquipmentError'] = "Algum dos dados inseridos não é valido.";
 
-print_r($_SESSION['createEquipmentError']);
-http_response_code(400);
 

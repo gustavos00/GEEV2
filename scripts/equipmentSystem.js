@@ -1,8 +1,32 @@
 //CREATE TYPE, BRAND OR STATE MODAL
 const equipmentsActionButton = document.getElementsByClassName('equipmentsActionButton');
 const tbodyElement = document.getElementById('tbody');
-let softwareData = []
+let softwaresData = []
 
+async function getAllEquipmentSoftwares(id) {
+
+    fetch("../actions/getAllEquipmentsSoftwares.php", {
+        method: 'POST',
+        body: JSON.stringify(id),
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8'
+        }
+    })
+        .then(response => response.json())
+        .then(response => {
+            for (let i = 0; i < response.length; i++) {
+                const responseObj = JSON.parse(response[i]);
+
+                const oneSoftwareData = {
+                    name: responseObj.typeName + ' - ' + responseObj.version,
+                    id: responseObj.id,
+                }
+                softwaresData.push(oneSoftwareData);
+                generateTable(softwaresData);
+            }
+        })
+
+}
 
 function stateCategoryBrandRequest(data) {
     var xhttp = new XMLHttpRequest();
@@ -150,25 +174,23 @@ window.addEventListener("click", (e) => {
 
 
 //TABLE SYSTEM CREATE / UPDATE EQUIPMENT
-if(document.getElementById('id')) {
+if (document.getElementById('id')) {
     actionFile = 'updateEquipment'
+    getAllEquipmentSoftwares(document.getElementById('id').value)
+
 } else {
     actionFile = 'createEquipment'
 }
 
-const RELATIVE_PATH = window.location.pathname; 
-
-
 //General xhttp request 
 function request(data) {
-    console.log(actionFile);
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "../actions/" + actionFile + ".php", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            window.location.href = 'home.php';
-        } 
+            console.log(this.response)
+        }
         if (this.readyState == 4 && this.status == 400) {
             alert(this.response);
         }
@@ -207,14 +229,13 @@ addSoftwareBtn.addEventListener('click', (e) => {
     const softwareSelect = document.getElementById('softwares')
     const selectedSoftware = softwareSelect.options[softwareSelect.selectedIndex];
 
-    if(!selectedSoftware.hasAttribute('disabled')) {
+    if (!selectedSoftware.hasAttribute('disabled')) {
         const value = {
             name: selectedSoftware.text,
             id: selectedSoftware.dataset.id
         }
-        softwareData.push(value);
-
-        generateTable(softwareData)
+        softwaresData.push(value);
+        generateTable(softwaresData);
 
     } else {
         alert('O opção selecionada não é valida.')
@@ -230,9 +251,9 @@ submitFormBtn.addEventListener('click', (e) => {
     const category = document.getElementById('category');
     const status = 'd';
 
-    const providerData = {
+    const equipmentData = {
+        id: document.getElementById('id').value,
         internalCode: document.getElementById('internalCode').value,
-        category: document.getElementById('category').value,
         brand: brand.options[brand.selectedIndex].text,
         state: state.options[state.selectedIndex].text,
         category: category.options[category.selectedIndex].text,
@@ -253,10 +274,10 @@ submitFormBtn.addEventListener('click', (e) => {
         ipAdress: document.getElementById('ipAdress').value,
 
         provider: provider.options[provider.selectedIndex].text,
-        softwares: softwareData,
+        softwares: softwaresData,
 
         status: status,
     }
 
-    request(providerData);
+    request(equipmentData);
 })

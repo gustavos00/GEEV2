@@ -179,36 +179,38 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
             </div>
         </nav>
     </div>
-        <div class="contentWrap">       
-            <div class="container">
-                <h1>Atualizar equipamento</h1>
+    <div class="contentWrap">
+        <div class="container">
+            <h1>Atualizar equipamento</h1>
+
                 <?php
-                    if (isset($_SESSION['updateEquipmentError'])) {
-                        echo '
-                        <div class="alert">
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                ' . $_SESSION['updateEquipmentError'] . '
-                                <button type="button" class="btn-close unsetSessionVariable" data-session-name="updateEquipmentError" data-bs-dismiss="alert"></button>
-                            </div>
+                if (isset($_SESSION['createEquipmentError'])) {
+                    echo '
+                    <div class="alert">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            ' . $_SESSION['createEquipmentError'] . '
+                            <button type="button" class="btn-close unsetSessionVariable" data-session-name="createEquipmentError" data-bs-dismiss="alert"></button>
                         </div>
-                        ';
-                    }
+                    </div>
+                    ';
+                }
                 ?>
-                <form id="form" data-cookieName="__geeupdateequipment" action="<?php getUrl('/actions/updateEquipment.php?id=' . $id); ?>" method="post">
-                    <input type="hidden" id="id" value="<?php echo $_GET['id'] ?>"name="id">
+
+                <form id="form" data-cookieName="__geecreateequipment" action="<?php getUrl('/actions/createEquipment.php'); ?>" method="post">
                     <div class="description dataContainer">
                         <h3>Descrição</h3>
-                        <input class="input" required maxlength="20" value="<?php echo($equipmentData->getInternalCode());?>" placeholder="Código interno" type="text" name="internalCode" id="internalCode">
+                        <input type="hidden" value="<?= $equipmentData->getId() ?>" id="id">
+                        <input class="input" value="<?= $equipmentData->getInternalCode() ?>" required maxlength="20" placeholder="Código interno*" type="text" name="internalCode" id="internalCode">
 
                         <div class="filter">
                             <select class="select required" id="category" name="category">
-                                <option value="" selected disabled hidden>Selecione um tipo..</option>
+                                <option value="" selected disabled hidden>Selecione uma categoria..</option>
                                 <?php foreach ($allCategorys as $category) {
                                     echo ' <option> ' . $category->getCategoryName() . '</option> ';
                                 } ?>
                             </select>
 
-                            <input class="input" autocomplete="off" data-filterName="category" placeholder="Pesquisar por tipos..." type="text" name="filter">
+                            <input class="input" autocomplete="off" data-filterName="category" placeholder="Pesquisar por categorias..." type="text" name="filter">
                         </div>
 
                         <div class="filter">
@@ -219,7 +221,7 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
                                 } ?>
                             </select>
 
-                            <input class="input" autocomplete="off" data-filterName="brand" placeholder="Pesquisar por tipos..." type="text" name="filter">
+                            <input class="input" autocomplete="off" data-filterName="brand" placeholder="Pesquisar por marcas..." type="text" name="filter">
                         </div>
                                             
                         <div class="filter">
@@ -233,54 +235,54 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
                             <input class="input" autocomplete="off" data-filterName="state" placeholder="Pesquisar por estados..." type="text" name="filter">
                         </div>
 
-                        <input class="input" maxlength="100" value="<?php echo($equipmentData->getModel());?>" placeholder="Modelo" type="text" name="model" id="model">
-                        <input class="input" maxlength="32" required value="<?php echo($equipmentData->getSerieNumber());?>" placeholder="Código de série" type="text" name="serieNumber" id="serieNumber"/>
-
+                        <input class="input" value="<?= $equipmentData->getModel() ?>" maxlength="100" placeholder="Modelo" type="text" name="model" id="model">
+                        <input class="input" value="<?= $equipmentData->getSerieNumber() ?>" maxlength="32" placeholder="Código de série" type="text" name="serieNumber" id="serieNumber"/>
+                        
                         <div class="buttonsContainer">
-                        <button class="btn equipmentsActionButton" data-modalId="createCategory">Criar categoria</button>
-                            <button class="btn equipmentsActionButton" data-modalId="createBrand">Criar marca</button>
-                            <button class="btn equipmentsActionButton" data-modalId="createState">Criar estado</button>
+                            <button class="btn smallBtn equipmentsActionButton" data-modalId="createCategoryModal">Criar categoria</button>
+                            <button class="btn smallBtn equipmentsActionButton" data-modalId="createBrandModal">Criar marca</button>
+                            <button class="btn smallBtn equipmentsActionButton" data-modalId="createStateModal">Criar estado</button>
                         </div>
                     </div>
 
                     <div class="characterization dataContainer">
                         <h3>Caracterização</h3>
-                        <textarea class="textarea" placeholder="Características" id="features" name="features"></textarea>
+                        <textarea class="textarea" value="<?= $equipmentData->getFeatures() ?>"  placeholder="Características" id="features" name="features"></textarea>
 
-                        <textarea class="textarea" placeholder="Observações" id="obs" name="obs"></textarea>
+                        <textarea class="textarea" value="<?= $equipmentData->getObs() ?>" placeholder="Observações" id="obs" name="obs"></textarea>
 
-                        <input class="input" value="<?php echo($equipmentData->getAcquisitionDate());?>" id="acquisitionDate"  placeholder="Data de aquisição" onfocus="(this.type='date')" onblur="(this.type='text')"  name="acquisitionDate">
+                        <input class="input" value="<?= $equipmentData->getAcquisitionDate() ?>" placeholder="Data de aquisição" onfocus="(this.type='date')" onblur="(this.type='text')" id="acquisitionDate" name="acquisitionDate">> 
 
-                        <input maxlength="45" class="input" value="<?php echo($equipmentData->getPatrimonialCode());?>" placeholder="Código patrimonial" type="text" name="patrimonialCode" id="patrimonialCode">
+                        <input maxlength="45" value="<?= $equipmentData->getPatrimonialCode() ?>" class="input" placeholder="Código patrimonial" type="text" name="patrimonialCode" id="patrimonialCode">
                     </div>
 
                     <div class="location dataContainer">
                         <h3>Localização</h3>
-                        <input maxlength="100" class="input" value="<?php echo($equipmentData->getUser());?>" placeholder="Utilizador" type="text" name="user" id="user">
+                        <input maxlength="100" class="input" value="<?= $equipmentData->getUser() ?>" placeholder="Utilizador" type="text" name="user" id="user">
 
-                        <input maxlength="100" class="input" value="<?php echo($equipmentData->getLocation());?>" placeholder="Localização" type="text" name="location" id="location">
+                        <input maxlength="100" class="input" value="<?= $equipmentData->getLocation() ?>" placeholder="Localização" type="text" name="location" id="location">
 
-                        <input class="input" value="<?php echo($userDate);?>" id="userDate"  placeholder="Data de atribuição ao utilizador" onfocus="(this.type='date')" onblur="(this.type='text')"  name="userDate">
+                        <input id="userDate" class="input" value="<?= $equipmentData->getUserDate() ?>" placeholder="Data de atribuição ao utilizador" onfocus="(this.type='date')" onblur="(this.type='text')" name="userDate">
                     </div>
 
                     <div class="lanInformation dataContainer">
                         <h3>Informação de rede</h3>
-                        <input class="input" maxlength="45" value="<?php echo($equipmentData->getLanPort());?>" placeholder="Porta de rede" type="text" name="lanPort" id="lanPort">
-                        <input class="input" maxlength="100" value="<?php echo($equipmentData->getActiveEquipment());?>" placeholder="Equipamento Ativo" type="text" name="activeEquipment" id="activeEquipment">
-                        <input class="input" maxlength="15" value="<?php echo($equipmentData->getIpAdress());?>" placeholder="Endereço IP" type="text" name="ipAdress" id="ipAdress">
+                        <input class="input" maxlength="45" value="<?= $equipmentData->getLanPort() ?>" placeholder="Porta de rede" type="text" name="lanPort" id="lanPort">
+                        <input class="input" maxlength="100" value="<?= $equipmentData->getActiveEquipment() ?>" placeholder="Equipamento Ativo" type="text" name="activeEquipment" id="activeEquipment">
+                        <input class="input" maxlength="15" value="<?= $equipmentData->getIpAdress() ?>" placeholder="Endereço IP" type="text" name="ipAdress" id="ipAdress">
                     </div>
 
                     <div class="providers dataContainer">
                         <h3>Fornecedor</h3>
                         <div class="filter">
-                            <select id="provider" class="select required" name="provider">
+                            <select class="select required" id="provider" name="provider">
                                 <option value="" selected disabled hidden>Selecione um fornecedor..</option>
                                 <?php foreach ($allProviders as $provider) {
                                     echo ' <option> ' . $provider->getName() . '</option> ';
                                 } ?>
                             </select>
 
-                            <input class="input" autocomplete="off" placeholder="Pesquisar por fornecedor.." type="text" name="filter">
+                            <input class="input" autocomplete="off" data-filterName="provider" placeholder="Pesquisar por fornecedor.." type="text" name="filter">
                         </div>
                     </div>
 
@@ -314,7 +316,7 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
                         </div>
                     </div>
                     <div class="submitContainer">
-                        <button type="submit" form="form" id="submitFormBtn" class="btn">Criar equipamento</button>
+                        <button type="submit" form="form" id="submitFormBtn" class="btn">Atualizar equipamento</button>
                     </div>
                 </form>
 

@@ -198,7 +198,7 @@ function getUrl($adress)
                         <div class="filter">
                             <select class="select" id="provider" name="provider">
                                 <option value="" selected disabled hidden>Selecione um fornecedor..</option>
-                                <?php foreach ($AllProviders as $provider) {
+                                <?php foreach ($allProviders as $provider) {
                                     echo ' <option> ' . $provider->getName() . '</option> ';
                                 } ?>
                             </select>

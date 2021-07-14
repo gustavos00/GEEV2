@@ -267,11 +267,33 @@ class equipmentsDAOMS implements equipmentsDAO
         return;
     }
 
-    public function getEquipmentStatus($ip, $ic, $sn) {
-        $sql = $this->pdo->prepare("SELECT idEquipamentos from equipamentos WHERE enderecoip = :ip OR nSerie = :sn OR codInterno = :ic");
+    public function getIpStatus($ip) {
+        $sql = $this->pdo->prepare("SELECT idEquipamentos from equipamentos WHERE enderecoip = :ip");
         $sql->bindValue(':ip', $ip);
-        $sql->bindValue(':sn', $sn);
+        $sql->execute();
+
+        if($sql->rowCount() > 0) {
+            return true;
+        }
+        
+        return false;
+    }
+
+    public function getInternalCodeStatus($ic) {
+        $sql = $this->pdo->prepare("SELECT idEquipamentos from equipamentos WHERE codInterno = :ic");
         $sql->bindValue(':ic', $ic);
+        $sql->execute();
+
+        if($sql->rowCount() > 0) {
+            return true;
+        }
+        
+        return false;
+    }
+
+    public function getSerieNumberStatus($ns) {
+        $sql = $this->pdo->prepare("SELECT idEquipamentos from equipamentos WHERE nSerie = :ns");
+        $sql->bindValue(':ns', $ns);
         $sql->execute();
 
         if($sql->rowCount() > 0) {
