@@ -43,15 +43,17 @@ if(checkInput($data->internalCode)) { //Check if input is just empty spaces
         if(checkInput($data->ipAdress)) {
             if(!filter_var($data->ipAdress, FILTER_VALIDATE_IP)) {
                 $_SESSION['updateEquipmentError'] = "O endereço IP inserido não é valido.";
-                
-                header('Location: ../index.php');
-                die();
             } 
+
+            if(!$equipments->getIpStatus($data->ipAdress)) {
+                $_SESSION['updateEquipmentError'] = "O endereço IP inserido já está a ser utilizado.";
+            }
+
+            header('Location: ../index.php');
+            die();
         } 
 
-        $equipmentStatus = $equipments->getEquipmentStatus($data->ipAdress, $data->internalCode, $data->serieNumber);
-
-        if (true) { //Validate equipment
+        if ($equipments->getInternalCodeStatus($data->internalCode)) { //Validate equipment
             $newEquipment = new equipments();   
             
             $newEquipment->setInternalCode($data->internalCode);
@@ -96,7 +98,7 @@ if(checkInput($data->internalCode)) { //Check if input is just empty spaces
             http_response_code(200);
 
         } else {
-            $_SESSION['createEquipmentError'] = "Já existe um equipamento com esse endereço IP."; 
+            $_SESSION['createEquipmentError'] = "Já existe um equipamento com esse código interno."; 
         }
     } else {
         $_SESSION['createEquipmentError'] = "Não foram introduzidos todos os dados necessários.";
