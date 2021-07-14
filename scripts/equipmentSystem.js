@@ -24,8 +24,6 @@ async function getAllEquipmentSoftwares(id) {
                 softwaresData.push(oneSoftwareData);
                 generateTable(softwaresData);
             }
-
-
         })
 
 }
