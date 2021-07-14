@@ -449,7 +449,7 @@ function getUrl($adress)
                         <?php foreach($allAssistances as $assistances) {
                             echo '<option data-id=' . $assistances->getId() . '> ' . $assistances->getInitialDate() . ' - ' . $assistances->getTechnicalName() . ' (' . $assistances->getTypeName() . ') </option> ';
                         } ?>
-                    </select>
+                    </select>   
 
                     <input class="input" autocomplete="off" data-filtername="updateAssistanceSelect" placeholder="Pesquisar por assistências..." type="text" name="filter">
                 </form>
