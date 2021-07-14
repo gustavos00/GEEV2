@@ -39,7 +39,7 @@ if(checkFullDate($_POST['initialDate']) && checkInput($_POST['key']) && checkInp
             $softwares->insertSoftware($newSoftware);
 
             unset($_SESSION['createSoftwareError']);
-            $_SESSION['successMessage'] = "O software " . $_POST['type'] . "( " . $_POST['version'] . " ) foi criada com sucesso.";
+            $_SESSION['successMessage'] = "O software " . $_POST['type'] . " (" . $_POST['version'] . ") foi criada com sucesso.";
             
 
             header('Location: ../index.php');
