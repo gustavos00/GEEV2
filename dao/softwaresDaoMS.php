@@ -148,7 +148,6 @@ class softwaresDAOMS implements sotfwaresDAO
             $s->setProviderName($data['nome']);
 
             return $s;
-            var_dump($item);
         }
         return ;
     }
@@ -181,11 +180,70 @@ class softwaresDAOMS implements sotfwaresDAO
         $sql->bindValue(':softwareType', $t);
         $sql->execute();
     }
-
     
     public function deleteSoftwareType($t) {
         $sql = $this->pdo->prepare('DELETE FROM tiposoftwares WHERE tipoSoftware = :softwareType');
         $sql->bindValue(':softwareType', $t);
         $sql->execute();
+    }
+
+    public function getSpecificEquipmentSoftwares($id) {
+        $softwares = [];
+
+        $sql = $this->pdo->prepare("SELECT tiposoftwares.tipoSoftware, softwares.* FROM ((softwares
+        LEFT JOIN softwares_has_equipamentos ON softwares_has_equipamentos.softwares_idsoftwares = softwares.idsoftwares)
+        LEFT JOIN tiposoftwares ON tiposoftwares.idtipoSoftwares = softwares.tiposoftwares_idtipoSoftwares)
+        WHERE softwares_has_equipamentos.equipamentos_idEquipamentos = :id");
+        $sql->bindValue(':id', $id);
+        $sql->execute();
+
+        if($sql->rowCount() > 0) {
+            $data = $sql->fetchAll(\PDO::FETCH_ASSOC);
+
+            foreach($data as $item) {
+                $s = new softwares();
+
+                $s->setId($item['idsoftwares']);
+                $s->setKey($item['chave']);
+                $s->setVersion($item['versao']);
+                $s->setInitialDate($item['dataInicio']);
+                $s->setFinalDate($item['dataFinal']);
+                $s->setTypeId($item['tipoSoftwares_idtipoSoftwares']);
+                $s->setTypeName($item['tipoSoftware']);
+                $s->setProviderId($item['prestadorServicos_idprestadorServico']);
+
+                array_push($softwares, $s);
+            }
+        }
+        return $softwares;
+    }
+
+    public function unlinkSoftwares($eqId, $softwaresIds) {
+        $sql = $this->pdo->prepare("DELETE FROM softwares_has_equipamentos WHERE softwares_idsoftwares = :softwareId AND equipamentos_idEquipamentos = :eqId");
+        $sql->bindValue(':eqId', $eqId);
+
+        foreach($softwaresIds as $softwareId) {
+            $sql->bindValue(':softwareId', $softwareId);
+            $sql->execute();
+        }
+    }
+
+    public function linkSoftwares($eqId, $softwaresIds) {
+        $sql = $this->pdo->prepare("INSERT INTO softwares_has_equipamentos(softwares_idsoftwares, equipamentos_idEquipamentos) VALUES (:softId, :eqId);");
+        $sql->bindValue(':eqId', $eqId);
+
+        foreach($softwaresIds as $softwareId) {
+            $sql->bindValue(':softId', $softwareId);
+            $sql->execute();
+        }
+    }
+
+    public function deleteAllSoftwares($contactIds) {
+        $sql = $this->pdo->prepare("DELETE FROM contactos WHERE idcontactos = :contactId");
+
+        foreach($contactIds as $contactId) {
+            $sql->bindValue(':contactId', $contactId);
+            $sql->execute();
+        }
     }
 }

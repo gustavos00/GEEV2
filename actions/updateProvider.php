@@ -4,7 +4,6 @@ require '../dao/providersDaoMS.php';
 session_start();
 
 $data = json_decode(file_get_contents("php://input"));
-var_dump( $data);
 
 $provider = new providersDAOMS($pdo);
 $newProvider = new provider();

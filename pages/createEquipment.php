@@ -224,7 +224,7 @@ function getUrl($adress)
                         </div>
 
                         <input class="input" maxlength="100" placeholder="Modelo" type="text" name="model" id="model">
-                        <input class="input" maxlength="32" required placeholder="Código de série *" type="text" name="serieNumber" id="serieNumber"/>
+                        <input class="input" maxlength="32" placeholder="Código de série" type="text" name="serieNumber" id="serieNumber"/>
                         
                         <div class="buttonsContainer">
                             <button class="btn smallBtn equipmentsActionButton" data-modalId="createCategoryModal">Criar categoria</button>
@@ -257,7 +257,7 @@ function getUrl($adress)
                         <h3>Informação de rede</h3>
                         <input class="input" maxlength="45" placeholder="Porta de rede" type="text" name="lanPort" id="lanPort">
                         <input class="input" maxlength="100" placeholder="Equipamento Ativo" type="text" name="activeEquipment" id="activeEquipment">
-                        <input class="input" maxlength="15" required placeholder="Endereço IP *" type="text" name="ipAdress" id="ipAdress">
+                        <input class="input" maxlength="15" placeholder="Endereço IP" type="text" name="ipAdress" id="ipAdress">
                     </div>
 
                     <div class="providers dataContainer">

@@ -118,7 +118,7 @@ class providersDAOMS implements providersDAO
 
         if($sql->rowCount() > 0) {
             $data = $sql->fetchAll(\PDO::FETCH_ASSOC);
-
+            
             foreach($data as $item) {
                 $p = new provider();
 
