@@ -291,6 +291,18 @@ class equipmentsDAOMS implements equipmentsDAO
         return false;
     }
 
+    public function getSerieNumberStatus($ns) {
+        $sql = $this->pdo->prepare("SELECT idEquipamentos from equipamentos WHERE nSerie = :ns");
+        $sql->bindValue(':ns', $ns);
+        $sql->execute();
+
+        if($sql->rowCount() > 0) {
+            return true;
+        }
+        
+        return false;
+    }
+
     public function linkSoftwares($softwareId, $equipmentId) {
         $sql = $this->pdo->prepare("INSERT INTO softwares_has_equipamentos(softwares_idsoftwares, equipamentos_idequipamentos) VALUES (:softwareId, :equipmentId)");
         $sql->bindValue(':softwareId', $softwareId);

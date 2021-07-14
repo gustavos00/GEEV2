@@ -12,33 +12,74 @@ $brands = new brandsDAOMS($pdo);
 $providers = new providersDAOMS($pdo);
 $states = new statesDAOMS($pdo);
 $categorys = new categorysDAOMS($pdo);
-
+//Get data
 $data = json_decode(file_get_contents("php://input"));
-$categoryId = $categorys->getIdByName(data->type);
-$providerId = $providers->getIdByName(data->provider);
-$stateId = $states->getIdByName(data->state);
-$brandId = $brands->getIdByName(data->brand);
+$categoryId = $categorys->getIdByName($data->category);
+$providerId = $providers->getIdByName($data->provider);
+$stateId = $states->getIdByName($data->state);
+$brandId = $brands->getIdByName($data->brand);
 
-var_dump($data);
+$softwaresData = $data->softwares;
 
 function checkInput($i) {
     return (trim($i) != "");
 }
 
+if(!isset($data->dataAdquisicao)) {
+    $date = date("Y-m-d");
+} else {
+    $date = $data->dataAdquisicao;
+}
+
+if($data->userDate == "") {
+    $data->userDate = null;
+}
+
+if($data->ipAdress == "") {
+    $data->ipAdress = null;
+}
+
+if($data->serieNumber == "") {
+    $data->serieNumber = null;
+}
+
 if(checkInput($data->internalCode)) { //Check if input is just empty spaces
-    if(isset($data->brand) && isset($data->model) && isset($data->category)) { //Check if exist some important data
-        if(checkInput($data->ipAdress)) {
-            if(!filter_var($data->ipAdress, FILTER_VALIDATE_IP)) {
-                $_SESSION['updateEquipmentError'] = "O endereço IP inserido não é valido.";
-                
-                header('Location: ../index.php');
-                die();
-            } 
-        } 
+    if(isset($data->brand) && isset($data->model) && isset($data->category) && isset($data->provider)) { //Check if exist some important data
+        if($data->ipAdress != "") {
+            print_r($data->ipAdress);
+            if(filter_var($data->ipAdress, FILTER_VALIDATE_IP)) {
+                if($equipments->getIpStatus($data->ipAdress)) {
+                    print_r("O endereço IP inserido já está a ser utilizado.");
+                    
+                    http_response_code(400);
+                    return false;
+                }
+            } else {
+                print_r("O endereço IP inserido não é valido.");
+    
+                http_response_code(400);
+                return false;
+            }
+        }
 
-        $equipmentStatus = $equipments->getEquipmentStatus($data->ipAdress, $data->internalCode, $data->serieNumber);
+        if($data->serieNumber != "") {
+            if(filter_var($data->serieNumber, FILTER_SANITIZE_STRING)) {
+                if($equipments->getSerieNumberStatus($data->serieNumber)) {
+                    print_r("O número de série inserido já está a ser utilizado.");
 
-        if (!$equipmentStatus) { //Validate equipment
+                    http_response_code(400);
+                    return false;
+                } 
+            } else {
+                print_r("O número de série inserido não é valido.");
+
+                http_response_code(400);
+                return false;
+            }       
+        }    
+        
+
+        if (!$equipments->getInternalCodeStatus($data->internalCode)) { //Validate equipment
             $updatedEquipment = new equipments();
             
             $updatedEquipment->setId($data->id);

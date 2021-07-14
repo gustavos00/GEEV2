@@ -150,25 +150,24 @@ window.addEventListener("click", (e) => {
 
 
 //TABLE SYSTEM CREATE / UPDATE EQUIPMENT
-if(document.getElementById('id')) {
+if (document.getElementById('id')) {
     actionFile = 'updateEquipment'
 } else {
     actionFile = 'createEquipment'
 }
 
-const RELATIVE_PATH = window.location.pathname; 
+const RELATIVE_PATH = window.location.pathname;
 
 
 //General xhttp request 
 function request(data) {
-    console.log(actionFile);
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "../actions/" + actionFile + ".php", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             window.location.href = 'home.php';
-        } 
+        }
         if (this.readyState == 4 && this.status == 400) {
             alert(this.response);
         }
@@ -207,7 +206,7 @@ addSoftwareBtn.addEventListener('click', (e) => {
     const softwareSelect = document.getElementById('softwares')
     const selectedSoftware = softwareSelect.options[softwareSelect.selectedIndex];
 
-    if(!selectedSoftware.hasAttribute('disabled')) {
+    if (!selectedSoftware.hasAttribute('disabled')) {
         const value = {
             name: selectedSoftware.text,
             id: selectedSoftware.dataset.id
