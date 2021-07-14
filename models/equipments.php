@@ -279,7 +279,7 @@ interface equipmentsDAO
 
     public function createEquipment(equipments $e);
 
-    public function updateEquipment(equipments $e);
+    public function updateEquipment(equipments $e, $internalCodeStatus, $serieNumberStatus, $ipStatus);
 
     public function deleteEquipment(equipments $e);
 

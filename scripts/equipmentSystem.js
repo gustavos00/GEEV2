@@ -25,7 +25,6 @@ async function getAllEquipmentSoftwares(id) {
                 generateTable(softwaresData);
             }
         })
-
 }
 
 function stateCategoryBrandRequest(data) {
@@ -34,7 +33,6 @@ function stateCategoryBrandRequest(data) {
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText)
             closeModal();
         }
 
@@ -189,7 +187,7 @@ function request(data) {
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            console.log(this.response)
+            window.location.href = 'home.php';
         }
         if (this.readyState == 4 && this.status == 400) {
             alert(this.response);

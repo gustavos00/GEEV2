@@ -21,8 +21,12 @@ $categoryId = $categorys->getIdByName($data->category);
 $providerId = $providers->getIdByName($data->provider);
 $stateId = $states->getIdByName($data->state);
 $brandId = $brands->getIdByName($data->brand);
+$oldEquipmentData = $equipments->getSpecificById($data->id);
 
 $softwaresData = $data->softwares;
+$ipStatus = 'same';
+$serieNumberStatus = 'same';
+$internalCodeStatus = 'same';
 
 function checkInput($i) {
     return (trim($i) != "");
@@ -48,39 +52,49 @@ if($data->serieNumber == "") {
 
 if(checkInput($data->internalCode)) { //Check if input is just empty spaces
     if(isset($data->brand) && isset($data->model) && isset($data->category) && isset($data->provider)) { //Check if exist some important data
+        $ipStatus = 'd';
+        if($oldEquipmentData->getId() != $data->id) {
+            if(!is_null($data->ipAdress)) {
+                if(filter_var($data->ipAdress, FILTER_VALIDATE_IP)) {
+                    if($equipments->getIpStatus($data->ipAdress)) {
+                        print_r("O endereço IP inserido já está a ser utilizado.");
+                        
+                        http_response_code(400);
+                        return false;
+                    }
+                } else {
+                    print_r("O endereço IP inserido não é valido.");
         
-        if(!is_null($data->ipAdress)) {
-            if(filter_var($data->ipAdress, FILTER_VALIDATE_IP)) {
-                if($equipments->getIpStatus($data->ipAdress)) {
-                    print_r("O endereço IP inserido já está a ser utilizado.");
-                    
                     http_response_code(400);
                     return false;
                 }
-            } else {
-                print_r("O endereço IP inserido não é valido.");
-    
-                http_response_code(400);
-                return false;
             }
         }
 
-        if(!is_null($data->serieNumber)) {
-            if(filter_var($data->serieNumber, FILTER_SANITIZE_STRING)) {
-                if($equipments->getSerieNumberStatus($data->serieNumber)) {
-                    print_r("O número de série inserido já está a ser utilizado.");
-
+        if($oldEquipmentData->getSerieNumber() != $data->serieNumber) {
+            $serieNumberStatus = 'd';
+            if(!is_null($data->serieNumber)) {
+                if(filter_var($data->serieNumber, FILTER_SANITIZE_STRING)) {
+                    if($equipments->getSerieNumberStatus($data->serieNumber)) {
+                        print_r("O número de série inserido já está a ser utilizado.");
+    
+                        http_response_code(400);
+                        return false;
+                    } 
+                } else {
+                    print_r("O número de série inserido não é valido.");
+    
                     http_response_code(400);
                     return false;
-                } 
-            } else {
-                print_r("O número de série inserido não é valido.");
+                }       
+            }    
+        }
 
-                http_response_code(400);
-                return false;
-            }       
-        }    
+        if($oldEquipmentData->getInternalCode() != $data->internalCode) {
+            $internalCodeStatus = 'd';
+        }
 
+        //Se o novo for igual ao antigo retorna true, se for diferente retorna false    
         if (!$equipments->getInternalCodeStatus($data->internalCode)) { //Validate equipment
             $updatedEquipment = new equipments();
             
@@ -112,7 +126,7 @@ if(checkInput($data->internalCode)) { //Check if input is just empty spaces
             $updatedEquipment->setCategoryId($categoryId);
             $updatedEquipment->setCategoryName($data->category);
 
-            $equipments->updateEquipment($updatedEquipment);
+            $equipments->updateEquipment($updatedEquipment, $internalCodeStatus, $serieNumberStatus, $ipStatus);
             
             
             if ($data->status == "d") {
@@ -124,6 +138,7 @@ if(checkInput($data->internalCode)) { //Check if input is just empty spaces
                 }
             
                 $softwaresDAOMS->unlinkSoftwares($data->id, $softwaresIds);
+                $softwaresIds = [];
             
                 foreach ($data->softwares as $software) {
                     $softwaresIds[] = $software->id;

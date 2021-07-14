@@ -135,17 +135,15 @@ class equipmentsDAOMS implements equipmentsDAO
         return;
     }
 
-    public function updateEquipment(equipments $e) {
-        $sql = $this->pdo->prepare(
-        "UPDATE equipamentos 
-        SET codInterno = :internalCode, modelo = :model, nSerie = :serieNumber, caracteristicas = :features, observacoes = :obs, dataAdquisicao = :acquisitionDate, codPatrimonial = :patrimonialCode, enderecoIp = :ipAdress, tomadaDeRede = :lanPort, responsavel = :user, dataResponsavel = :userDate, equipamentoAtivo = :activeEquipment, localizacao = :location, categoria_idCategoria = :categoryId, estados_idestados = :stateId, marca_idmarca = :brandId, prestadorServicos_idprestadorServico = :providerId 
-        WHERE idequipamentos = :id"
-        );
+    public function updateEquipment(equipments $e, $internalCodeStatus, $serieNumberStatus, $ipStatus) {
+        $query = "UPDATE equipamentos 
+        SET " . (($internalCodeStatus == 'd') ? "codInterno = :internalCode," : "") . "modelo = :model, " . (($serieNumberStatus == 'd') ? "nSerie = :serieNumber," : "") . " caracteristicas = :features, observacoes = :obs, dataAdquisicao = :acquisitionDate, codPatrimonial = :patrimonialCode, " . (($ipStatus == 'd') ? "enderecoIp = :ipAdress," : "") . " tomadaDeRede = :lanPort, responsavel = :user, dataResponsavel = :userDate, equipamentoAtivo = :activeEquipment, localizacao = :location, categoria_idCategoria = :categoryId, estados_idestados = :stateId, marca_idmarca = :brandId, prestadorServicos_idprestadorServico = :providerId 
+        WHERE idequipamentos = :id";
+
+        $sql = $this->pdo->prepare($query);
 
         $sql->bindValue(':id', $e->getId());
-        $sql->bindValue(':internalCode', $e->getInternalCode());
         $sql->bindValue(':model', $e->getModel());
-        $sql->bindValue(':serieNumber', $e->getSerieNumber());
         $sql->bindValue(':features', $e->getFeatures());
         $sql->bindValue(':obs', $e->getObs());
         $sql->bindValue(':acquisitionDate', $e->getAcquisitionDate());
@@ -161,6 +159,10 @@ class equipmentsDAOMS implements equipmentsDAO
         $sql->bindValue(':brandId', $e->getBrandId());
         $sql->bindValue(':providerId', $e->getProviderId());
 
+        ($internalCodeStatus == 'd') ? $sql->bindValue(':internalCode', $e->getInternalCode()) : null;
+        ($serieNumberStatus == 'd') ? $sql->bindValue(':serieNumber', $e->getSerieNumber()) : null;
+        ($internalCodeStatus == 'd') ? $sql->bindValue(':ipAdress', $e->getIpAdress()) : null;
+        
         $sql->execute();
     }
     
@@ -280,12 +282,13 @@ class equipmentsDAOMS implements equipmentsDAO
     }
 
     public function getInternalCodeStatus($ic) {
-        $sql = $this->pdo->prepare("SELECT idEquipamentos from equipamentos WHERE codInterno = :ic");
+        $sql = $this->pdo->prepare("SELECT codInterno from equipamentos WHERE codInterno = :ic");
         $sql->bindValue(':ic', $ic);
         $sql->execute();
 
         if($sql->rowCount() > 0) {
-            return true;
+            $data = $sql->fetch(\PDO::FETCH_ASSOC);
+            return ($data['codInterno'] == $ic); //Se o novo for igual ao antigo
         }
         
         return false;
