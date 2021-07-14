@@ -455,3 +455,10 @@ height: 150px;
     content: '';
     background-image: url('../img/trashcan.svg');
 }
+
+.smallBtn {
+    height: 35px;
+
+    font-size: 1.4rem;
+}
+

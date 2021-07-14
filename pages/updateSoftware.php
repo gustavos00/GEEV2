@@ -37,6 +37,7 @@ $allLentProcess = $lent->getAll();
 
 //For the page
 $allCategorys = $categorys->getAll();
+$allSoftwaresType = $softwares->getAllSoftwareTypes();
 $allBrands = $brands->getAll();
 $allStates = $states->getAll();
 $specific = $softwares->getSpecificSoftwareById($_GET['id']);
@@ -209,17 +210,17 @@ function getUrl($adress)
                             <input class="input" autocomplete="off" data-filterName="type" placeholder="Pesquisar por tipos..." type="text" name="filter">
                         </div>
                         
-                        <button class="btn softwareActionButton" data-modalId="createTypeModal">Criar tipo</button>
+                        <button class="btn smallBtn softwareActionButton" data-modalId="createTypeModal">Criar tipo</button>
 
                         <div class="filter">
-                            <select value=<?= $specific->getTypeName()?> class="select" id="type" name="type">
+                            <select class="select" id="provider" name="provider">
                                 <option value="" selected disabled hidden>Selecione um fornecedor..</option>
-                                <?php foreach ($AllProviders as $provider) {
+                                <?php foreach ($allProviders as $provider) {
                                     echo ' <option> ' . $provider->getName() . '</option> ';
                                 } ?>
                             </select>
 
-                            <input class="input" autocomplete="off" data-filterName="type" placeholder="Pesquisar por fornecedores..." type="text" name="filter">
+                            <input class="input" autocomplete="off" data-filterName="type" placeholder="Pesquisar por tipos..." type="text" name="filter">
                         </div>
 
                         <input value=<?= $specific->getInitialDate()?> class="input" placeholder="Data inicial" onfocus="(this.type='date')" onblur="(this.type='text')" name="initialDate" id="initialDate">

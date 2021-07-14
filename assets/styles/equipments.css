@@ -10,16 +10,6 @@
     grid-gap: 10px;
 }
 
-.smallBtn {
-    width: 100%;
-
-    font-size: 1.4rem;
-}
-
-.smallBtn:hover {
-    width: 100%;
-}
-
 .submitContainer {
     height: 100px;
     display: block;
