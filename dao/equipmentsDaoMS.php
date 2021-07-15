@@ -211,8 +211,7 @@ class equipmentsDAOMS implements equipmentsDAO
     public function getAllNotLentEquipments() {
         $equipmentData = [];
 
-        $sql = $this->pdo->prepare("SELECT equipamentos.idequipamentos, equipamentos.codInterno, equipamentos.enderecoip, categoria.nomecategoria FROM ((equipamentos 
-        INNER JOIN categoria ON equipamentos.categoria_idCategoria = categoria.idcategoria) 
+        $sql = $this->pdo->prepare("SELECT equipamentos.idequipamentos, equipamentos.codInterno, equipamentos.enderecoip, estados.estado FROM (equipamentos 
         INNER JOIN estados ON equipamentos.estados_idestados = estados.idestados) 
         WHERE estados.estado <> 'Emprestado';");
         $sql->execute();
@@ -226,7 +225,7 @@ class equipmentsDAOMS implements equipmentsDAO
                 $eq->setId($item['idequipamentos']);
                 $eq->setInternalCode($item['codInterno']);
                 $eq->setIpAdress($item['enderecoip']);
-                $eq->setCategoryName(ucwords(strtolower($item['nomecategoria'])));
+                $eq->setStateName(strtolower($item['estado']));
 
                 $equipmentData[] =  $eq;
             }
