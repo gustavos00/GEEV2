@@ -10,7 +10,13 @@ if(isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
     $equipmentModel->setId($_GET['id']);
 
     $equipments->deleteHistoric($equipmentModel);
-    $equipments->deleteEquipment($equipmentModel);
+    $status = $equipments->deleteEquipment($equipmentModel);
+
+    if($status == 'error') {
+        $_SESSION['indexErrorMessage'] = "O equipamento está registrado em algum lugar, remova-o primeiro.";
+        header('Location: ../index.php');
+        die();
+    }
 
     $_SESSION['successMessage'] = "O equipamento " . $_GET['id'] . " foi apagada com sucesso.";
 } else {

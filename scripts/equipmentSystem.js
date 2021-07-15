@@ -247,10 +247,15 @@ submitFormBtn.addEventListener('click', (e) => {
     const brand = document.getElementById('brand');
     const state = document.getElementById('state');
     const category = document.getElementById('category');
-    const status = 'd';
+    const status = 'd'; 
+    let id = null;
+
+    if(document.getElementById('id')) {
+        id=document.getElementById('id').value;
+    }
 
     const equipmentData = {
-        id: document.getElementById('id').value,
+        id,
         internalCode: document.getElementById('internalCode').value,
         brand: brand.options[brand.selectedIndex].text,
         state: state.options[state.selectedIndex].text,

@@ -43,6 +43,8 @@ class malfunctionsDAOMS implements malfunctionsDAO
         $sql->bindValue(':assistanceId', $mf->getAssistanceId());
         $sql->bindValue(':providerId', $mf->getProviderId());
         $sql->execute();
+        
+        return $this->pdo->lastInsertId();
     }
 
     public function deleteMalfunction(malfunction $mf) {

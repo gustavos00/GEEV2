@@ -184,19 +184,19 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
             <h1>Atualizar equipamento</h1>
 
                 <?php
-                if (isset($_SESSION['createEquipmentError'])) {
+                if (isset($_SESSION['updateEquipmentError'])) {
                     echo '
                     <div class="alert">
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            ' . $_SESSION['createEquipmentError'] . '
-                            <button type="button" class="btn-close unsetSessionVariable" data-session-name="createEquipmentError" data-bs-dismiss="alert"></button>
+                            ' . $_SESSION['updateEquipmentError'] . '
+                            <button type="button" class="btn-close unsetSessionVariable" data-session-name="updateEquipmentError" data-bs-dismiss="alert"></button>
                         </div>
                     </div>
                     ';
                 }
                 ?>
 
-                <form id="form" data-cookieName="__geecreateequipment" action="<?php getUrl('/actions/createEquipment.php'); ?>" method="post">
+                <form id="form" data-cookieName="__geeupdateequipment" action="<?php getUrl('/actions/createEquipment.php'); ?>" method="post">
                     <div class="description dataContainer">
                         <h3>Descrição</h3>
                         <input type="hidden" value="<?= $equipmentData->getId() ?>" id="id">

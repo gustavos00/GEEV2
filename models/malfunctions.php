@@ -12,6 +12,8 @@ class malfunction
     private $providerName;
     private $providerId;
 
+    private $equipmentId;
+
     function getId()
     {
         return $this->id;

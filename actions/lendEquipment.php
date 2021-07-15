@@ -1,6 +1,7 @@
 <?php
 require_once '../dao/equipmentsDaoMS.php';
 require_once '../dao/lentDaoMS.php';
+require_once '../dao/statesDaoMS.php';
 require_once '../config.php';
 session_start();
 
@@ -14,16 +15,19 @@ function checkInput($i) {
 }
 
 $lentDao = new lentDAOMS($pdo);
+$equipmentsDaoMS = new equipmentsDAOMS($pdo);
+$statesDaoMS = new statesDAOMS($pdo);
 $isLent = $lentDao->checkIfIsLent($_POST['selectedEquipmentId']);
 
 if(isset($_POST['responsibleUser']) && checkInput($_POST['initialDate']) && isset($_POST['selectedEquipmentId']) && checkInput($_POST['responsibleUser']) && checkInput($_POST['selectedEquipmentId'])) {
     if(!$isLent) {
         if(checkFullDate($_POST['initialDate'])) { //Se não existir ou se não for válida
-            if(!isset($_POST['finalDate'])) {
+            if($_POST['finalDate'] == "") {
                 $finalDate = null;
             } else {
                 $finalDate = $_POST['finalDate'];
             }
+
             
             $newLent = new lent();
             $newLent->setUser($_POST['responsibleUser']);
@@ -34,6 +38,13 @@ if(isset($_POST['responsibleUser']) && checkInput($_POST['initialDate']) && isse
             $newLent->setEquipmentId($_POST['selectedEquipmentId']);
 
             $lentDao->createLent($newLent);
+            $status = $equipmentsDaoMS->setAsLent($_POST['selectedEquipmentId'], $statesDaoMS->getIdByName('Emprestado'));
+
+            if($status == 'error')  {
+                $_SESSION['indexErrorMessage'] = "O processo foi criado mas não foi possível alterar o estado automaticamente para emprestado.";
+                header('Location: ../index.php');
+                die(); 
+            }            
 
             unset($_SESSION['lentEquipmentError']);
             $internalCode = explode(" - ", $_POST['equipments'])[0];
@@ -48,6 +59,6 @@ if(isset($_POST['responsibleUser']) && checkInput($_POST['initialDate']) && isse
 } else {
     $_SESSION['indexErrorMessage'] = "Não foram inseridos todos os dados necessários.";
 }
-
 header('Location: ../index.php');
 die(); 
+

@@ -167,9 +167,38 @@ class equipmentsDAOMS implements equipmentsDAO
     }
     
     public function deleteEquipment(equipments $e) {
-        $sql = $this->pdo->prepare("DELETE FROM equipamentos WHERE idEquipamentos = :equipmentId");
-        $sql->bindValue(':equipmentId', $e->getId());
-        $sql->execute();
+        try {
+            $sql = $this->pdo->prepare("DELETE FROM equipamentos WHERE idEquipamentos = :equipmentId");
+            $sql->bindValue(':equipmentId', $e->getId());
+            $sql->execute();
+        } catch (Exception $e) {
+            return 'error';
+        }
+
+    }
+
+    public function setAsLent($id, $cid) {
+        try {
+            $sql = $this->pdo->prepare("UPDATE equipamentos SET estados_idestados = :categoryId WHERE idEquipamentos = :id");
+            $sql->bindValue(':id', $id);
+            $sql->bindValue(':categoryId', $cid);
+            $sql->execute();
+        } catch (Exception $e) {
+            return 'error';
+        }
+
+    }
+
+    public function setMalfunction($id, $mid) {
+        try {
+            $sql = $this->pdo->prepare("UPDATE equipamentos SET avarias_idavarias = :malfunctionId WHERE idEquipamentos = :id");
+            $sql->bindValue(':id', $id);
+            $sql->bindValue(':malfunctionId', $mid);
+            $sql->execute();
+        } catch (Exception $e) {
+            return 'error';
+        }
+
     }
 
     public function setEquipmentAsRetired(equipments $e, $categoryId) {
@@ -227,8 +256,8 @@ class equipmentsDAOMS implements equipmentsDAO
 
                 $equipmentData[] =  $eq;
             }
-            return $equipmentData;
         }
+        return $equipmentData;
     }
 
     public function getAllNotRetiredEquipaments() {

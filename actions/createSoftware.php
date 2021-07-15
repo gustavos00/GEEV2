@@ -21,6 +21,12 @@ if(checkFullDate($_POST['initialDate']) && checkInput($_POST['key']) && checkInp
     if(isset($_POST['type']) && isset($_POST['provider']) && checkInput($_POST['type']) && checkInput($_POST['provider'])) {
         $typeId = $softwares->getSoftwareTypeIdByName($_POST['type']);
         $providerId = $providers->getIdByName($_POST['provider']);
+
+        if($_POST['finalDate'] == "") {
+            $finalDate = null;
+        } else {
+            $finalDate = $_POST['finalDate'];
+        }
         
         if(filter_var($typeId, FILTER_VALIDATE_INT) && filter_var($providerId, FILTER_VALIDATE_INT)) {
             $newSoftware = new softwares();
@@ -28,7 +34,7 @@ if(checkFullDate($_POST['initialDate']) && checkInput($_POST['key']) && checkInp
             $newSoftware->setKey($_POST['key']);
             $newSoftware->setVersion($_POST['version']);
             $newSoftware->setInitialDate($_POST['initialDate']);
-            $newSoftware->setFinalDate($_POST['finalDate']);
+            $newSoftware->setFinalDate($finalDate);
         
             $newSoftware->setTypeName($_POST['type']);
             $newSoftware->setTypeId($typeId);

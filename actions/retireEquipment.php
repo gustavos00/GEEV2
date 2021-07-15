@@ -9,6 +9,12 @@ if(isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
     $categorys = new categorysDAOMS($pdo);
     $categoryId = $categorys->getRetiredCategoryId();
 
+    if(!$categoryId) {
+        $_SESSION['indexErrorMessage'] = "Não existe nenhum tipo registrado como 'Abatido'";
+        header('Location: ../index.php');
+        die();
+    }
+
     $newEquipment = new equipments();
     $newEquipment->setId($_GET['id']);
 

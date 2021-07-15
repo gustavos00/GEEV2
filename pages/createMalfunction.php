@@ -192,6 +192,17 @@ function getUrl($adress)
                             <input class="input" autocomplete="off" data-filterName="provider" placeholder="Pesquisar por tipos..." type="text" name="filter">
                         </div>
 
+                        <div class="filter">
+                            <select class="select" id="equipments" name="equipments">
+                            <option value="" selected disabled hidden>Selecione um equipmento..</option>
+                            <?php foreach ($allEquipments as $equipment) {
+                                echo ' <option data-id="' . $equipment->getId() . '"> ' . $equipment->getInternalCode() . ' - ' . $equipment->getCategoryName() . ' (' . $equipment->getIpAdress() . ')' . '</option> ';
+                            } ?>
+                            </select>
+
+                            <input class="input" autocomplete="off" data-filterName="equipments" placeholder="Pesquisar por equipamentos.." type="text" name="filter">
+                        </div>
+
 
                         <div class="filterContainer">
                             <p>Caso já esteja uma assistência criada para esta avaria, escolha-a abaixo.</p>

@@ -2,6 +2,7 @@
 require_once '../config.php';
 require_once '../dao/malfunctionsDaoMS.php';
 require_once '../dao/providersDaoMS.php';
+require_once '../dao/equipmentsDaoMS.php';
 session_start();
 
 function checkFullDate($date) {
@@ -23,6 +24,9 @@ if(checkFullDate($_POST['dateMalfunction'])) {//Check if date is valid
     if(isset($_POST['provider']) && checkInput($_POST['provider'])) {
         $malfunction = new malfunctionsDaoMS($pdo);
         $provider = new providersDaoMS($pdo);
+        $equipments = new equipmentsDaoMS($pdo);
+
+        $eqId = $equipments->getIdByInternalCode(explode(" - ", $_POST['equipments'])[0]);
 
         $newMalfunction = new malfunction();
 
@@ -33,7 +37,8 @@ if(checkFullDate($_POST['dateMalfunction'])) {//Check if date is valid
         $newMalfunction->setProviderName(['provider']);
         $newMalfunction->setProviderId($providerId);
 
-        $malfunction->createMalfunction($newMalfunction);
+        $malfunctionId = $malfunction->createMalfunction($newMalfunction);
+        $equipments->setMalfunction($eqId, $malfunctionId);
 
         unset($_SESSION['createMalfunctionError']);
         $_SESSION['successMessage'] = "O avaria na data " . $_POST['dateMalfunction'] . " foi criada com sucesso.";

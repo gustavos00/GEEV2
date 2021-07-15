@@ -193,7 +193,7 @@ function getUrl($adress)
                             <input class="input" autocomplete="off" data-filterName="type" placeholder="Pesquisar por tipos..." type="text" name="filter">
                         </div>
                         
-                        <button class="btn softwareActionButton" data-modalId="createTypeModal">Criar tipo</button>
+                        <button class="btn smallBtn softwareActionButton" data-modalId="createTypeModal">Criar tipo</button>
 
                         <div class="filter">
                             <select class="select" id="provider" name="provider">
@@ -205,6 +205,8 @@ function getUrl($adress)
 
                             <input class="input" autocomplete="off" data-filterName="type" placeholder="Pesquisar por tipos..." type="text" name="filter">
                         </div>
+
+                        <a href="createProvider.php" class="btn smallBtn" >Criar fornecedor</a>
 
                         <input class="input"  placeholder="Data inicial" onfocus="(this.type='date')" onblur="(this.type='text')"  name="initialDate" id="initialDate">
 

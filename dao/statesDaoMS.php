@@ -40,11 +40,6 @@ class statesDAOMS implements statesDAO
         if ($sql->rowCount() > 0) {
             $data = $sql->fetch(\PDO::FETCH_ASSOC);
 
-            $s = new brand();
-
-            $s->setId($data['idestados']);
-            $s->setBrandName($data['estado']);
-
             return $data['idestados'];
         }
         return;

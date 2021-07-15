@@ -68,7 +68,7 @@ class categorysDAOMS implements categorysDAO
             $data = $sql->fetch(\PDO::FETCH_ASSOC);
             return $data['idestados'];
         }
-        return ;
+        return false;
     }
 
     public function deleteCategory(category $c) {

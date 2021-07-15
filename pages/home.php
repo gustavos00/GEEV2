@@ -25,7 +25,8 @@ $allAssistances = $assistance->getAll();
 
 $allEquipments = $equipments->getAll();
 $allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
-$AllNotLentEquipments = $equipments->getAllNotLentEquipments();
+$allNotLentEquipments = $equipments->getAllNotLentEquipments();
+$allEquipmentsLent = $lent->getAll();
 
 $allLentProcess = $lent->getAll();
 
@@ -505,7 +506,7 @@ function getUrl($adress)
                     <div class="filter">
                         <select class="select" id="lendEquipmentSelect" name="equipments">
                             <option value="" selected disabled hidden>Selecione um equipamento..</option>
-                            <?php foreach ($AllNotLentEquipments as $notLentEquipment) {
+                            <?php foreach ($allNotLentEquipments as $notLentEquipment) {
                                 echo ' <option data-id="' . $notLentEquipment->getId() . '"> ' . $notLentEquipment->getInternalCode() . ' - ' . $notLentEquipment->getCategoryName() . ' (' . $notLentEquipment->getIpAdress() . ')' . '</option> ';
                             } ?>
                         </select>
