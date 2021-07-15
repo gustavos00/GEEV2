@@ -240,6 +240,7 @@ const lentProcessFiterOptions = ['Em aberto', 'Devolvidos']
 const generatePDFFilterSelect = document.getElementById('generatePdfFilter');
 
 function renderFilter(options) {
+  generatePDFFilterSelect.innerHTML = '';
   options.forEach(element => {
     const option = document.createElement('option');
     option.innerHTML = element;
@@ -265,6 +266,7 @@ document.getElementById('generatePdfSelect').addEventListener('change', function
     case 'Emprestimos':
       renderFilter(lentProcessFiterOptions);
       break;
+      
     default:
       console.log(this.value);
       alert('Ocorreu um erro, tente novamente.')
