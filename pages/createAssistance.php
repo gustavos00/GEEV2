@@ -191,7 +191,7 @@ function getUrl($adress)
 
                         <div class="filter">
                             <select class="select" id="technical" name="technical">
-                                <option value="" selected disabled hidden>Selecione um tecnico..</option>
+                                <option value="" selected disabled hidden>Selecione um fornecedor..</option>
                                 <?php foreach ($allProviders as $provider) {
                                     echo ' <option>' . $provider->getName() . '</option> ';
                                 } ?>
@@ -199,6 +199,8 @@ function getUrl($adress)
 
                             <input class="input" autocomplete="off" data-filterName="technical" placeholder="Pesquisar por tecnicos..." type="text" name="filter">
                         </div>
+
+                        <a href="createEquipment.php" class="btn smallBtn" >Criar fornecedor</a>
 
                         <div class="filter">
                             <select class="select" id="assistanceType" name="assistanceType">
@@ -221,6 +223,8 @@ function getUrl($adress)
 
                             <input class="input" autocomplete="off" data-filterName="equipments" placeholder="Pesquisar por equipamentos..." type="text" name="filter">
                         </div>
+
+                        <a href="createEquipment.php" class="btn smallBtn" >Criar equipamento</a>
                         
                         <input id="actionButton" data-who="createMalfunction" class="btn" type="submit" value="Criar avaria">
                     </div>
