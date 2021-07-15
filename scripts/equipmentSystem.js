@@ -197,6 +197,17 @@ function request(data) {
     xhttp.send(JSON.stringify(data));
 }
 
+function addValueInObject(object, key, value) {
+    let res = {};
+    let textObject = JSON.stringify(object);
+    if (textObject === '{}') {
+        res = JSON.parse('{"' + key + '":"' + value + '"}');
+    } else {
+        res = JSON.parse('{' + textObject.substring(1, textObject.length - 1) + ',"' + key + '":"' + value + '"}');
+    }
+    return res;
+}
+
 function generateTable(softwareData) {
     tbodyElement.innerHTML = '';
 
@@ -243,19 +254,14 @@ addSoftwareBtn.addEventListener('click', (e) => {
 const submitFormBtn = document.getElementById('submitFormBtn')
 submitFormBtn.addEventListener('click', (e) => {
     e.preventDefault();
+    let newEquipmentData;
     const provider = document.getElementById('provider')
     const brand = document.getElementById('brand');
     const state = document.getElementById('state');
     const category = document.getElementById('category');
-    const status = 'd'; 
-    let id = null;
-
-    if(document.getElementById('id')) {
-        id=document.getElementById('id').value;
-    }
+    const status = 'd';
 
     const equipmentData = {
-        id,
         internalCode: document.getElementById('internalCode').value,
         brand: brand.options[brand.selectedIndex].text,
         state: state.options[state.selectedIndex].text,
@@ -282,5 +288,13 @@ submitFormBtn.addEventListener('click', (e) => {
         status: status,
     }
 
-    request(equipmentData);
+    console.log(document.getElementById('id'))
+
+    if (document.getElementById('id')) {
+        newEquipmentData = addValueInObject(equipmentData, 'id', document.getElementById('id').value);
+        request(newEquipmentData);
+    } else {
+        request(equipmentData);
+    }
+
 })

@@ -201,9 +201,9 @@ class equipmentsDAOMS implements equipmentsDAO
 
     }
 
-    public function setEquipmentAsRetired(equipments $e, $categoryId) {
-        $sql = $this->pdo->prepare("UPDATE equipamentos SET estados_idestados = :categoryId WHERE idEquipamentos = :equipmentId");
-        $sql->bindValue(':categoryId', $categoryId);
+    public function setEquipmentAsRetired(equipments $e, $stateId) {
+        $sql = $this->pdo->prepare("UPDATE equipamentos SET estados_idestados = :stateId WHERE idEquipamentos = :equipmentId");
+        $sql->bindValue(':stateId', $stateId);
         $sql->bindValue(':equipmentId', $e->getId());
         $sql->execute();
     }

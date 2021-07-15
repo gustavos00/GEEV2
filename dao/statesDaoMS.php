@@ -59,6 +59,13 @@ class statesDAOMS implements statesDAO
         $sql->execute();
     }
 
+    public function createLendState() {
+        $sql = $this->pdo->prepare("INSERT INTO estados(estado) VALUES ('Emprestado')");
+        $sql->execute();
+
+        return $this->pdo->lastInsertId();
+    }
+
     public function checkIfExist($n) {
         $sql = $this->pdo->prepare("SELECT * FROM estados WHERE estado = :stateName");
         $sql->bindValue(':stateName', $n);
@@ -66,6 +73,17 @@ class statesDAOMS implements statesDAO
 
         if($sql->rowCount() > 0) {
             return true;
+        }
+        return false;
+    }
+
+    public function getRetiredStateId() {
+        $sql = $this->pdo->prepare("SELECT `idestados` FROM `estados` WHERE `estado` = 'Abatido'");
+        $sql->execute();
+
+        if($sql->rowCount() > 0) {
+            $data = $sql->fetch(\PDO::FETCH_ASSOC);
+            return $data['idestados'];
         }
         return false;
     }
