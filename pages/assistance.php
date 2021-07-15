@@ -26,6 +26,7 @@ $allAssistances = $assistance->getAll();
 $allEquipments = $equipments->getAll();
 $allNotRetiredEquipments = $equipments->getAllNotRetiredEquipaments();
 $AllNotLentEquipments = $equipments->getAllNotLentEquipments();
+$allLentEquipments = $equipments->getAllLentEquipments();
 
 $allLentProcess = $lent->getAll();
 
@@ -275,7 +276,7 @@ function getUrl($adress)
                     <input class="input"  placeholder="Data final" onfocus="(this.type='date')" onblur="(this.type='text')" name="finalDate" id="finalDate">
                     <select class="select" id="returnEquipmentSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione um equipamento..</option>
-                        <?php foreach ($allNotRetiredEquipments as $lentEquipment) {
+                        <?php foreach ($allLentEquipments as $lentEquipment) {
                             echo ' <option data-id="' . $lentEquipment->getId() . '"> ' . $lentEquipment->getInternalCode() . ' - ' . $lentEquipment->getCategoryName() . ' (' . $lentEquipment->getIpAdress() . ')' . '</option> ';
                         } ?>
                     </select>
@@ -284,6 +285,7 @@ function getUrl($adress)
                 </form>
                 <input type="submit" form="returnEquipmentForm" data-hiddenInput="returnEquipmentId" data-who="returnEquipment" data-select="returnEquipmentSelect" id="returnEquipmentBtnAction" value="Retornar" class="btn"/>
             </div>
+
 
             <div data-actionBtn="deleteLentProcessBtnAction" id="deleteLentProcess" class="equipmentModal modalContent deleteLentProcess">
                 <h3>Olá, qual processo de emprestimo você quer apagar?</h3>
