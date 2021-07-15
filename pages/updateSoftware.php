@@ -201,7 +201,7 @@ function getUrl($adress)
 
                         <div class="filter">
                             <select value=<?= $specific->getTypeName()?> class="select" id="type" name="type">
-                                <option value="" selected disabled hidden>Selecione um tipo..</option>
+                                <option value="" disabled hidden>Selecione um tipo..</option>
                                 <?php foreach ($allSoftwaresType as $type) {
                                     echo ' <option> ' . $type->getTypeName() . '</option> ';
                                 } ?>
@@ -214,7 +214,7 @@ function getUrl($adress)
 
                         <div class="filter">
                             <select class="select" id="provider" name="provider">
-                                <option value="" selected disabled hidden>Selecione um fornecedor..</option>
+                                <option value="" disabled hidden>Selecione um fornecedor..</option>
                                 <?php foreach ($allProviders as $provider) {
                                     echo ' <option> ' . $provider->getName() . '</option> ';
                                 } ?>

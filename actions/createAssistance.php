@@ -31,7 +31,9 @@ if (checkInput($_POST['technical']) && checkInput($_POST['objective']) && isset(
     //DATA INICIAL
     if(validateDate($_POST['initialDateAssistance'])) { //Se não for valida «
         $_SESSION['createAssistanceError'] = "A data inicial inserida não é válida.";
-    } else if(!isset($_POST['initialDateAssistance'])) { //Se não existir
+        header('Location: ../index.php');
+        exit(0);
+    } else if($_POST['initialDateAssistance'] == "") { //Se não existir
         $initialDateAssistance = date("Y-m-d H:i:s"); 
     } else {
         $initialDateAssistance = $_POST['initialDateAssistance'];
@@ -40,10 +42,8 @@ if (checkInput($_POST['technical']) && checkInput($_POST['objective']) && isset(
     //DATA FINAL
     if(validateDate($_POST['finalDateAssistance'])) { //Se não for valida 
         $_SESSION['createAssistanceError'] = "A data final inserida não é válida.";
-    } else if(!isset($_POST['finalDateAssistance'])) { //Se não existir
-        $finalDateAssistance = date("Y-m-d H:i:s"); 
-    } else {
-        $finalDateAssistance = $_POST['finalDateAssistance'];
+        header('Location: ../index.php');
+        exit(0);
     }
 
     $duration = round((strtotime($finalDateAssistance) - strtotime($initialDateAssistance))/3600, 1);
@@ -68,11 +68,8 @@ if (checkInput($_POST['technical']) && checkInput($_POST['objective']) && isset(
     $assistance->createAssistance($newAssistance);
 
     $_SESSION['successMessage'] = "A assistência na data " . $initialDateAssistance . " foi criada com sucesso.";
-    
-    header('Location: ../index.php');
-    exit(0);
 } else {
-
     $_SESSION['createAssistanceError'] = 'Aparentemente não foram inseridos todos os dados necessários.';
-    var_dump($_SESSION);
 }
+header('Location: ../index.php');
+exit(0);

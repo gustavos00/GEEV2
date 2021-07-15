@@ -68,10 +68,11 @@ class assistanceDAOMS implements assistanceDAO
         $sql->bindValue(':id',$id);
         $sql->execute();
 
+        $a = new assistance();   
         if($sql->rowCount() > 0) {
             $data = $sql->fetch(\PDO::FETCH_ASSOC);
 
-            $a = new assistance();           
+        
 
             $a->setId($data['idAssistencia']);
             $a->setInitialDate($data['dataInicio']);
@@ -84,10 +85,9 @@ class assistanceDAOMS implements assistanceDAO
             $a->setTypeId($data['idtipoOcorrencia']);
             $a->setTypeName($data['tipoOcorrencia']);
             $a->setEquipmentId($data['equipamentos_idEquipamentos']);      
-            
-            return $a;
+        
         }
-        return;
+        return $a;
     }
 
     public function getAssistanceByEquipmentId($eid) {

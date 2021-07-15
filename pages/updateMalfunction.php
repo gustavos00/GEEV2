@@ -31,6 +31,7 @@ $allLentProcess = $lent->getAll();
 
 //For the page
 $malfunctionData = $malfunctions->getSpecific($_GET['id']);
+$assistanceData = $assistance->getSpecific($malfunctionData->getAssistanceId());
 $allAssistanceTypes = $assistance->getAllAssistanceTypes();
 
 
@@ -192,8 +193,8 @@ if(!isset($_GET['id']) && !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
                         <textarea class="textarea"  placeholder="Insira uma descrição..." name="description" id="description" cols="30" rows="10"><?php echo ($malfunctionData->getDescription());?></textarea>
 
                         <div class="filter">
-                            <select class="select" id="provider" name="provider">
-                                <option value="" selected disabled hidden>Selecione um fornecedor..</option>
+                            <select class="select required" value="<?= $malfunctionData->getProviderName() ?>" id="provider" name="provider">
+                                <option disabled hidden>Selecione um fornecedor..</option>
                                 <?php foreach ($allProviders as $provider) {
                                     echo ' <option>' . $provider->getName() . '</option> ';
                                 } ?>
@@ -208,8 +209,8 @@ if(!isset($_GET['id']) && !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
                             <input id="assistanceId" type="hidden" name="assistanceId">
 
                             <div class="filter">
-                                <select class="select" id="assistance" name="assistance">
-                                    <option value="" selected disabled hidden>Selecione uma assistência..</option>
+                                <select class="select required" value="<?php echo($assistanceData->getId() . '>' . $assistanceData->getTypeName() . '(' . $assistanceData->getInitialDate() . ' / ' . $assistanceData->getFinalDate()) ?>" id="assistance" name="assistance">
+                                    <option disabled hidden>Selecione uma assistência..</option>
                                     <?php foreach($allAssistances as $assistance) {  
                                         echo ' <option data-id=' . $assistance->getId() . '>' . $assistance->getTypeName() . '(' . $assistance->getInitialDate() . ' / ' . $assistance->getFinalDate() . ') </option> ';
                                     } ?>

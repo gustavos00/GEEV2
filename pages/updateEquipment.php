@@ -203,8 +203,8 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
                         <input class="input" value="<?= $equipmentData->getInternalCode() ?>" required maxlength="20" placeholder="Código interno*" type="text" name="internalCode" id="internalCode">
 
                         <div class="filter">
-                            <select class="select required" id="category" name="category">
-                                <option value="" selected disabled hidden>Selecione uma categoria..</option>
+                            <select class="select required" value="<?= $equipmentData->getCategoryName() ?>" id="category" name="category">
+                                <option disabled hidden>Selecione uma categoria..</option>
                                 <?php foreach ($allCategorys as $category) {
                                     echo ' <option> ' . $category->getCategoryName() . '</option> ';
                                 } ?>
@@ -214,8 +214,8 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
                         </div>
 
                         <div class="filter">
-                            <select class="select required" id="brand" name="brand">
-                                <option value="" selected disabled hidden>Selecione uma marca..</option>
+                            <select class="select required" value="<?= $equipmentData->getBrandName() ?>" id="brand" name="brand">
+                                <option disabled hidden>Selecione uma marca..</option>
                                 <?php foreach ($allBrands as $brand) {
                                     echo ' <option> ' . $brand->getBrandName() . '</option> ';
                                 } ?>
@@ -225,8 +225,8 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
                         </div>
                                             
                         <div class="filter">
-                            <select class="select required" id="state" name="state">
-                                <option value="" selected disabled hidden>Selecione um estado..</option>
+                            <select class="select required" value="<?= $equipmentData->getStateName() ?>" id="state" name="state">
+                                <option disabled hidden>Selecione um estado..</option>
                                 <?php foreach ($allStates as $state) {
                                     echo ' <option> ' . $state->getState() . '</option> ';
                                 } ?>
@@ -275,8 +275,8 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
                     <div class="providers dataContainer">
                         <h3>Fornecedor</h3>
                         <div class="filter">
-                            <select class="select required" id="provider" name="provider">
-                                <option value="" selected disabled hidden>Selecione um fornecedor..</option>
+                            <select class="select required" value="<?= $equipmentData->getProviderName() ?>" id="provider" name="provider">
+                                <option disabled hidden>Selecione um fornecedor..</option>
                                 <?php foreach ($allProviders as $provider) {
                                     echo ' <option> ' . $provider->getName() . '</option> ';
                                 } ?>
@@ -413,6 +413,7 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
 
                 <form id="returnEquipmentForm" action="<?php getUrl('/actions/returnEquipment.php'); ?>" method="post">
                     <input type="hidden" name="selectedEquipmentId" id="returnEquipmentId">
+
                     <input class="input"  placeholder="Data final" onfocus="(this.type='date')" onblur="(this.type='text')" name="finalDate" id="finalDate">
                     <select class="select" id="returnEquipmentSelect" name="equipments">
                         <option value="" selected disabled hidden>Selecione um equipamento..</option>

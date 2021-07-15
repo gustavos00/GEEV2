@@ -199,8 +199,8 @@ function getUrl($adress)
                         </div>
 
                         <div class="filter">
-                            <select class="select" id="technical" name="technical">
-                                <option value="" selected disabled hidden>Selecione um fornecedor..</option>
+                            <select class="required select" value="<?= $assistanceData->getTechnicalName() ?> id="technical" name="technical">
+                                <option value="" disabled hidden>Selecione um fornecedor..</option>
                                 <?php foreach ($allProviders as $provider) {
                                     echo ' <option>' . $provider->getName() . '</option> ';
                                 } ?>
@@ -212,8 +212,8 @@ function getUrl($adress)
                         <a href="createEquipment.php" class="btn smallBtn" >Criar fornecedor</a>
 
                         <div class="filter">
-                            <select class="select" id="assistanceType" name="assistanceType">
-                                <option value="" selected disabled hidden>Selecione um tipo de ocorrencia..</option>
+                            <select class="required select" value="<?= $assistanceData->getTypeName() ?>" id="assistanceType" name="assistanceType">
+                                <option value="" disabled hidden>Selecione um tipo de ocorrencia..</option>
                                 <?php foreach ($allAssistanceTypes as $type) {
                                     echo ' <option>' . $type->getTypeName() . '</option> ';
                                 } ?>
@@ -223,8 +223,8 @@ function getUrl($adress)
                         </div>
 
                         <div class="filter">
-                            <select class="select" id="equipments" name="equipments">
-                                <option value="" selected disabled hidden>Selecione um equipamento..</option>
+                            <select value="<?= $assistanceData->getEquipmentName() ?>" class="select required" id="equipments" name="equipments">
+                                <option value="" disabled hidden>Selecione um equipamento..</option>
                                 <?php foreach ($allEquipments as $equipment) {
                                     echo ' <option>' . $equipment->getInternalCode() . ' (' . $equipment->getIpAdress() . ') </option> ';
                                 } ?>
