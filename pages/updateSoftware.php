@@ -213,9 +213,9 @@ function getUrl($adress)
                         <button class="btn smallBtn softwareActionButton" data-modalId="createTypeModal">Criar tipo</button>
 
                         <div class="filter">
-                            <select value=<?= $specific->getTypeName()?> class="select" id="type" name="type">
+                            <select class="select" id="provider" name="provider">
                                 <option value="" selected disabled hidden>Selecione um fornecedor..</option>
-                                <?php foreach ($AllProviders as $provider) {
+                                <?php foreach ($allProviders as $provider) {
                                     echo ' <option> ' . $provider->getName() . '</option> ';
                                 } ?>
                             </select>

@@ -23,6 +23,7 @@ async function getAllEquipmentSoftwares(id) {
                 }
                 softwaresData.push(oneSoftwareData);
                 generateTable(softwaresData);
+
             }
         })
 }
@@ -33,7 +34,7 @@ function stateCategoryBrandRequest(data) {
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            closeModal();
+            location.reload();
         }
 
         if (this.readyState == 4 && this.status == 400) {

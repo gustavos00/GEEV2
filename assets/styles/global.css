@@ -67,6 +67,11 @@ body::-webkit-scrollbar-thumb,
 	background-color: var(--secondary-background-content-body);
 }
 
+
+a {
+    text-decoration: none;
+}
+
 /* ALERTS */
 .alert { width: 100%}
 

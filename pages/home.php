@@ -71,6 +71,15 @@ function getUrl($adress)
             </div>
 
             <div class="actionsButtonsContainer">
+
+                <a href="home.php" class="dropdownContainer">
+                    <div class="actionButton">
+                        <i class="fas fa-house-user"></i>   
+                        Ir para a página inicial
+                        <i id="arrow" class="arrow fas fa-arrow-right"></i>
+                    </div>
+                </a>
+
                 <div class="dropdownContainer">
                     <div class="actionButton equipment">
                         <i class="fas fa-desktop"></i>

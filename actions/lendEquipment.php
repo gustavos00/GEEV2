@@ -70,3 +70,6 @@ if(isset($_POST['responsibleUser']) && checkInput($_POST['initialDate']) && isse
     $_SESSION['indexErrorMessage'] = "Não foram inseridos todos os dados necessários.";
 }
 
+
+header('Location: ../index.php');
+die();
