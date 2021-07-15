@@ -97,8 +97,6 @@ if(checkInput($data->internalCode)) { //Check if input is just empty spaces
             $internalCodeStatus = 'd';
         }
 
-        var_dump($equipments->getInternalCodeStatus($data->internalCode));
-
         //Se o novo for igual ao antigo retorna true, se for diferente retorna false    
         if (!$equipments->getInternalCodeStatus($data->internalCode)) { //Validate equipment
             $updatedEquipment = new equipments();
@@ -132,7 +130,7 @@ if(checkInput($data->internalCode)) { //Check if input is just empty spaces
             $updatedEquipment->setCategoryName($data->category);
 
             $equipments->updateEquipment($updatedEquipment, $internalCodeStatus, $serieNumberStatus, $ipStatus);
-            
+        
             
             if ($data->status == "d") {
                 $softwaresIds = [];
@@ -154,10 +152,6 @@ if(checkInput($data->internalCode)) { //Check if input is just empty spaces
 
             unset($_SESSION['updateEquipmentError']);
             $_SESSION['successMessage'] = "O equipmento " . $data->internalCode . " foi atualizado com sucesso.";
-            
-            if(isset($_COOKIE['__geeupdateequipment'])) {
-                setcookie("__geeupdateequipment", 'DELETED', 1, '/');
-            }
 
             http_response_code(200);
         } else {
@@ -175,5 +169,3 @@ if(checkInput($data->internalCode)) { //Check if input is just empty spaces
     print_r($_SESSION['updateEquipmentError']);
     http_response_code(400);
 }
-
-

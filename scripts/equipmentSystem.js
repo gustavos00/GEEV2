@@ -254,6 +254,7 @@ addSoftwareBtn.addEventListener('click', (e) => {
 
 const submitFormBtn = document.getElementById('submitFormBtn')
 submitFormBtn.addEventListener('click', (e) => {
+
     e.preventDefault();
     let newEquipmentData;
     const provider = document.getElementById('provider')
@@ -262,40 +263,43 @@ submitFormBtn.addEventListener('click', (e) => {
     const category = document.getElementById('category');
     const status = 'd';
 
-    const equipmentData = {
-        internalCode: document.getElementById('internalCode').value,
-        brand: brand.options[brand.selectedIndex].text,
-        state: state.options[state.selectedIndex].text,
-        category: category.options[category.selectedIndex].text,
-        model: document.getElementById('model').value,
-        serieNumber: document.getElementById('serieNumber').value,
+    if (!category.options[category.selectedIndex].disabled && !state.options[state.selectedIndex].disabled && !brand.options[brand.selectedIndex].disabled && !provider.options[provider.selectedIndex].disabled) {
 
-        features: document.getElementById('features').value,
-        obs: document.getElementById('obs').value,
-        acquisitionDate: document.getElementById('acquisitionDate').value,
-        patrimonialCode: document.getElementById('patrimonialCode').value,
+        const equipmentData = {
+            internalCode: document.getElementById('internalCode').value,
+            brand: brand.options[brand.selectedIndex].text,
+            state: state.options[state.selectedIndex].text,
+            category: category.options[category.selectedIndex].text,
+            model: document.getElementById('model').value,
+            serieNumber: document.getElementById('serieNumber').value,
 
-        user: document.getElementById('user').value,
-        location: document.getElementById('location').value,
-        userDate: document.getElementById('userDate').value,
+            features: document.getElementById('features').value,
+            obs: document.getElementById('obs').value,
+            acquisitionDate: document.getElementById('acquisitionDate').value,
+            patrimonialCode: document.getElementById('patrimonialCode').value,
 
-        lanPort: document.getElementById('lanPort').value,
-        activeEquipment: document.getElementById('activeEquipment').value,
-        ipAdress: document.getElementById('ipAdress').value,
+            user: document.getElementById('user').value,
+            location: document.getElementById('location').value,
+            userDate: document.getElementById('userDate').value,
 
-        provider: provider.options[provider.selectedIndex].text,
-        softwares: softwaresData,
+            lanPort: document.getElementById('lanPort').value,
+            activeEquipment: document.getElementById('activeEquipment').value,
+            ipAdress: document.getElementById('ipAdress').value,
 
-        status: status,
-    }
+            provider: provider.options[provider.selectedIndex].text,
+            softwares: softwaresData,
 
-    console.log(document.getElementById('id'))
+            status: status,
+        }
 
-    if (document.getElementById('id')) {
-        newEquipmentData = addValueInObject(equipmentData, 'id', document.getElementById('id').value);
-        request(newEquipmentData);
+        if (document.getElementById('id')) {
+            newEquipmentData = addValueInObject(equipmentData, 'id', document.getElementById('id').value);
+            request(newEquipmentData);
+        } else {
+            request(equipmentData);
+        }
+
     } else {
-        request(equipmentData);
+        alert('Insira todos os dados necessários, por favor.')
     }
-
 })
