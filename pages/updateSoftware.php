@@ -40,6 +40,7 @@ $allCategorys = $categorys->getAll();
 $allBrands = $brands->getAll();
 $allStates = $states->getAll();
 $specific = $softwares->getSpecificSoftwareById($_GET['id']);
+$allSoftwaresType = $softwares->getAllSoftwareTypes();
 
 if(!isset($_GET['id']) && !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
     $_SESSION['indexErrorMessage'] = 'Ocorreu um problema a encontrar o equipamento para o atualizar, tente novamente.';
@@ -209,7 +210,7 @@ function getUrl($adress)
                             <input class="input" autocomplete="off" data-filterName="type" placeholder="Pesquisar por tipos..." type="text" name="filter">
                         </div>
                         
-                        <button class="btn softwareActionButton" data-modalId="createTypeModal">Criar tipo</button>
+                        <button class="btn smallBtn softwareActionButton" data-modalId="createTypeModal">Criar tipo</button>
 
                         <div class="filter">
                             <select value=<?= $specific->getTypeName()?> class="select" id="type" name="type">
@@ -222,9 +223,11 @@ function getUrl($adress)
                             <input class="input" autocomplete="off" data-filterName="type" placeholder="Pesquisar por fornecedores..." type="text" name="filter">
                         </div>
 
-                        <input value=<?= $specific->getInitialDate()?> class="input" placeholder="Data inicial" onfocus="(this.type='date')" onblur="(this.type='text')" name="initialDate" id="initialDate">
+                        <a href="createProvider.php" class="btn smallBtn" >Criar fornecedor</a>
 
-                        <input value=<?= $specific->getFinalDate()?> class="input" placeholder="Data final" onfocus="(this.type='date')" onblur="(this.type='text')" name="finalDate" id="finalDate">
+                        <input value="<?= $specific->getInitialDate()?>" class="input" placeholder="Data inicial" onfocus="(this.type='date')" onblur="(this.type='text')" name="initialDate" id="initialDate">
+
+                        <input value="<?= $specific->getFinalDate()?>" class="input" placeholder="Data final" onfocus="(this.type='date')" onblur="(this.type='text')" name="finalDate" id="finalDate">
 
                         <input class="btn" type="submit" value="Atualizar software">
                     </div>
