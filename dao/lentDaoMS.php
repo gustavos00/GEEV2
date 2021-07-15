@@ -21,9 +21,14 @@ class lentDAOMS implements lentDAO
         $sql->execute();
     }
 
-    public function returnEquipment(lent $l) {
+    public function returnEquipment(lent $l, $stateId) {
         $sql = $this->pdo->prepare("UPDATE emprestimos SET dataFim = :finalDate WHERE equipamentos_idEquipamentos = :equipmentId");
         $sql->bindValue(':finalDate', $l->getFinalDate());
+        $sql->bindValue(':equipmentId', $l->getEquipmentId());
+        $sql->execute();
+
+        $sql = $this->pdo->prepare("UPDATE equipamentos SET estados_idestados = :state WHERE idequipamentos = :equipmentId");
+        $sql->bindValue(':state', $stateId);
         $sql->bindValue(':equipmentId', $l->getEquipmentId());
         $sql->execute();
     }

@@ -66,6 +66,13 @@ class statesDAOMS implements statesDAO
         return $this->pdo->lastInsertId();
     }
 
+    public function createActiveState() {
+        $sql = $this->pdo->prepare("INSERT INTO estados(estado) VALUES ('Ativo')");
+        $sql->execute();
+
+        return $this->pdo->lastInsertId();
+    }
+
     public function checkIfExist($n) {
         $sql = $this->pdo->prepare("SELECT * FROM estados WHERE estado = :stateName");
         $sql->bindValue(':stateName', $n);

@@ -22,13 +22,32 @@ $isLent = $lentDao->checkIfIsLent($_POST['selectedEquipmentId']);
 if(isset($_POST['responsibleUser']) && checkInput($_POST['initialDate']) && isset($_POST['selectedEquipmentId']) && checkInput($_POST['responsibleUser']) && checkInput($_POST['selectedEquipmentId'])) {
     if(!$isLent) {
         if(checkFullDate($_POST['initialDate'])) { //Se não existir ou se não for válida
+            $internalCode = explode(" - ", $_POST['equipments'])[0];
             if($_POST['finalDate'] == "") {
                 $finalDate = null;
+
+                $stateId = $statesDaoMS->getIdByName('Emprestado');
+                if(is_null($stateId)) {
+                    $stateId = $statesDaoMS->createLendState();
+                    $_SESSION['successMessage'] = "O processo foi criado mas como não havia um estado 'Abatido', foi criado.";
+                } else {
+                    unset($_SESSION['indexErrorMessage']);
+
+                    $_SESSION['successMessage'] = "O processo de emprestimo do equipamento "  .  $internalCode . " foi criado com sucesso.";
+                }
             } else {
                 $finalDate = $_POST['finalDate'];
+
+                $stateId = $statesDaoMS->getIdByName('Ativo');//Recebe o id do ativo
+                if(is_null($stateId)) { //Se for null
+                    $stateId = $statesDaoMS->createActiveState();//Cria o ativo
+                    
+                    $_SESSION['successMessage'] = "O equipamento " . $internalCode . " foi emprestado e retornado com sucesso mas como não havia um estado 'Ativo' , foi criado.";
+                } else {
+                    $_SESSION['successMessage'] = "O equipamento " . $internalCode . " foi emprestado e retornado com sucesso.";
+                }
             }
 
-            
             $newLent = new lent();
             $newLent->setUser($_POST['responsibleUser']);
             $newLent->setInitialDate($_POST['initialDate']);
@@ -37,18 +56,7 @@ if(isset($_POST['responsibleUser']) && checkInput($_POST['initialDate']) && isse
             $newLent->setObs($_POST['obs']);
             $newLent->setEquipmentId($_POST['selectedEquipmentId']);
 
-            $stateId = $statesDaoMS->getIdByName('Emprestado');
-
-            if(is_null($stateId)) {
-                $stateId = $statesDaoMS->createLendState();
-                $_SESSION['successMessage'] = "O processo foi criado mas como não havia um estado 'Abatido', foi criado.";
-            } else {
-                unset($_SESSION['indexErrorMessage']);
-                $internalCode = explode(" - ", $_POST['equipments'])[0];
-
-                $_SESSION['successMessage'] = "O processo de emprestimo do equipamento "  .  $internalCode . " foi criado com sucesso.";
-            }
-
+        
             $lentDao->createLent($newLent);
             $status = $equipmentsDaoMS->setAsLent($_POST['selectedEquipmentId'], $stateId);    
 
@@ -61,6 +69,4 @@ if(isset($_POST['responsibleUser']) && checkInput($_POST['initialDate']) && isse
 } else {
     $_SESSION['indexErrorMessage'] = "Não foram inseridos todos os dados necessários.";
 }
-header('Location: ../index.php');
-die(); 
 

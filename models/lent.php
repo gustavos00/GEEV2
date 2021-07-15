@@ -96,6 +96,6 @@ class lent
 interface lentDAO
 {
     public function checkIfIslent($id);
-    public function returnEquipment(lent $l);
+    public function returnEquipment(lent $l, $stateId);
     public function getAll();
 }
