@@ -202,7 +202,7 @@ if(!isset($_GET['id']) && !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
                                 } ?>
                             </select>
 
-                            <div class="createActionsContainern">
+                            <div class="createActionsContainer">
                                 <button id="createProviderContact" class="btn">Criar contacto</button>
                                 <button id="createProviderContactType" data-modalid="createcontactTypeModal" class="actionBtn btn">Criar tipo de contacto</button>
                             </div>
