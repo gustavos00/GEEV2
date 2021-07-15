@@ -71,11 +71,14 @@ if(checkInput($data->internalCode)) { //Check if input is just empty spaces
             }
         }
 
+        
+
         if($oldEquipmentData->getSerieNumber() != $data->serieNumber) {
             $serieNumberStatus = 'd';
             if(!is_null($data->serieNumber)) {
                 if(filter_var($data->serieNumber, FILTER_SANITIZE_STRING)) {
                     if($equipments->getSerieNumberStatus($data->serieNumber)) {
+                        print_r($oldEquipmentData->getSerieNumber());
                         print_r("O número de série inserido já está a ser utilizado.");
     
                         http_response_code(400);
@@ -93,6 +96,8 @@ if(checkInput($data->internalCode)) { //Check if input is just empty spaces
         if($oldEquipmentData->getInternalCode() != $data->internalCode) {
             $internalCodeStatus = 'd';
         }
+
+        var_dump($equipments->getInternalCodeStatus($data->internalCode));
 
         //Se o novo for igual ao antigo retorna true, se for diferente retorna false    
         if (!$equipments->getInternalCodeStatus($data->internalCode)) { //Validate equipment

@@ -49,7 +49,6 @@ if($data->serieNumber == "") {
 if(checkInput($data->internalCode)) { //Check if input is just empty spaces
     if(isset($data->brand) && isset($data->model) && isset($data->category) && isset($data->provider)) { //Check if exist some important data
         if($data->ipAdress != "") {
-            print_r($data->ipAdress);
             if(filter_var($data->ipAdress, FILTER_VALIDATE_IP)) {
                 if($equipments->getIpStatus($data->ipAdress)) {
                     print_r("O endereço IP inserido já está a ser utilizado.");

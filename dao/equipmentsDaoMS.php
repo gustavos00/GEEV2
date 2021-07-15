@@ -316,7 +316,7 @@ class equipmentsDAOMS implements equipmentsDAO
 
         if($sql->rowCount() > 0) {
             $data = $sql->fetch(\PDO::FETCH_ASSOC);
-            return ($data['codInterno'] == $ic); //Se o novo for igual ao antigo
+            return ($data['codInterno'] != $ic); //Se o novo for igual ao antigo
         }
         
         return false;

@@ -19,6 +19,7 @@ function writeCookie(key, value, days) {
     window.document.cookie = key + "=" + value + "; expires=" + date.toGMTString() + "; path=/";
 
     return value;
+
 };
 
 function getCookie(name) {
@@ -33,7 +34,7 @@ function getCookie(name) {
 
 function destroyPHPsession() {
     var xhttp = new XMLHttpRequest();
-    
+
     xhttp.open("POST", "../actions/system/destroySession.php", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.onreadystatechange = function () {
@@ -43,12 +44,14 @@ function destroyPHPsession() {
     };
 
     xhttp.send();
-    location.reload();
 }
 
 for (let i in cookieData) {
     if (cookieData[i] !== "" && cookieData !== undefined) {
-        document.getElementsByName(i)[0].value = cookieData[i]
+        if (!document.getElementById('id')) {
+            document.getElementsByName(i)[0].value = cookieData[i]
+        }
+
     }
 }
 

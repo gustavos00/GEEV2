@@ -187,6 +187,7 @@ function request(data) {
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
+            document.cookie = cookieName + '="";-1; path=/';
             window.location.href = 'home.php';
         }
         if (this.readyState == 4 && this.status == 400) {
