@@ -55,3 +55,7 @@ body {
     font-weight: normal;
     font-size: 1.5rem;
 }
+
+.filterContainer {
+    margin-top: 1rem;
+}

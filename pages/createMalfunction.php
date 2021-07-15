@@ -189,8 +189,10 @@ function getUrl($adress)
                                 } ?>
                             </select>
 
-                            <input class="input" autocomplete="off" data-filterName="provider" placeholder="Pesquisar por tipos..." type="text" name="filter">
+                            <input class="input" autocomplete="off" data-filterName="provider" placeholder="Pesquisar por fornecedores..." type="text" name="filter">
                         </div>
+
+                        <a href="createProvider.php" class="btn smallBtn" >Criar fornecedor</a>
 
                         <div class="filter">
                             <select class="select" id="equipments" name="equipments">
@@ -202,6 +204,8 @@ function getUrl($adress)
 
                             <input class="input" autocomplete="off" data-filterName="equipments" placeholder="Pesquisar por equipamentos.." type="text" name="filter">
                         </div>
+
+                        <a href="createEquipment.php" class="btn smallBtn" >Criar equipamento</a>
 
 
                         <div class="filterContainer">
