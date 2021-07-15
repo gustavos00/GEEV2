@@ -4,7 +4,6 @@ for (let button of buttons) {
     button.addEventListener('click', (e) => {
         e.preventDefault();
         const variable = e.target.dataset.sessionName;
-
         var data = { variable: variable };
 
         var xhttp = new XMLHttpRequest();
