@@ -284,6 +284,8 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
 
                             <input class="input" autocomplete="off" data-filterName="provider" placeholder="Pesquisar por fornecedor.." type="text" name="filter">
                         </div>
+
+                        <a href="createProvider.php" class="btn smallBtn" >Criar fornecedor</a>
                     </div>
 
                     <div class="softwares dataContainer">
@@ -299,7 +301,11 @@ $userDate = str_replace('-', '/', $equipmentData->getUserDate());
                             <input class="input" autocomplete="off" data-filterName="softwares" placeholder="Pesquisar por softwares.." type="text" name="filter">
                         </div>
 
-                        <button class="btn smallBtn" id="addSoftwareBtn">Adicionar software</button>
+                        
+                        <div class="softwareBtnsContainer">
+                            <a href="createSoftware.php" class="btn smallBtn" >Criar software</a>
+                            <button class="btn smallBtn" id="addSoftwareBtn">Adicionar software</button>
+                        </div>
 
                         <div class="tableContainer">
                             <table class="table table-hover table-striped" id="providerContacts">
