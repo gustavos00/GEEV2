@@ -276,16 +276,28 @@ class equipments
 interface equipmentsDAO
 {
     public function getAll();
+    public function getAllNotLentEquipments();
+    public function getAllLentEquipments();
+    public function getAllNotRetiredEquipaments();
+    public function getHistoric($id);
 
     public function createEquipment(equipments $e);
 
     public function updateEquipment(equipments $e, $internalCodeStatus, $serieNumberStatus, $ipStatus);
 
     public function deleteEquipment(equipments $e);
+    public function deleteHistoric(equipments $e);  
+
+    public function setAsLent($id, $cid);
+    public function setMalfunction($id, $mid);
 
     public function getSpecificById($id);
     public function setEquipmentAsRetired(equipments $e, $categoryId);
     public function getIdByInternalCode($ic);
 
     public function linkSoftwares($softwareId, $equipmentId);
+
+    public function getIpStatus($ip);
+    public function getInternalCodeStatus($ic);
+    public function getSerieNumberStatus($ns);
 }

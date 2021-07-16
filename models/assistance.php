@@ -157,6 +157,10 @@ interface assistanceDAO
     public function createAssistance(assistance $a);
     
     public function getAll();
+    public function getSpecific($id);
+    public function getAssistanceByEquipmentId($eid);
+
+    public function updateAssistance(assistance $a);
 
     public function deleteAssistance(assistance $a);
 

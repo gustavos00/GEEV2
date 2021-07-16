@@ -91,6 +91,7 @@ interface providersDao
     public function getSpecific($id);
     public function getSpecificProviderContacts($id);
     public function getIdByName($n);
+    public function getContactTypeIdByName($n);
     public function getAllContactsType();
 
     public function createContact(provider $p);
@@ -100,6 +101,10 @@ interface providersDao
 
     public function deleteAllProviderContacts(provider $p);
     public function deleteProvider($id);
+    public function deleteContactType($t);
     
     public function linkProviderToContacts($providerId, $contactsId);
+    public function unlinkProviderToContacts($providerId, $contactsIds);
+
+    public function checkContactTypeStatus($id);
 }

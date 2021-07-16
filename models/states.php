@@ -30,9 +30,13 @@ interface statesDAO
 {
     public function getAll();
     public function getIdByName($n);
+    public function getRetiredStateId();
 
     public function createState(state $s);
+    public function createLendState();
+    public function createActiveState();
 
     public function deleteState(state $s);
+
     public function checkIfExist($n);
 }

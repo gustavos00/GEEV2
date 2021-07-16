@@ -107,15 +107,24 @@ class softwares
 interface sotfwaresDao
 {
     public function getAllSoftwares();
+    public function getAllSoftwareTypes();
+    public function getSpecificSoftwareById($id);
+    public function getSpecificSoftware($id);
+    public function getSoftwareTypeIdByName($n);
+    public function getSpecificEquipmentSoftwares($id);
 
     public function insertSoftware(softwares $s);
+    public function createSoftwareType($t);
 
     public function updateSoftware(softwares $s);
 
-    public function deleteSoftware(softwares $s);
+    public function unlinkSoftwares($eqId, $softwaresIds);
+    public function linkSoftwares($eqId, $softwaresIds);
 
-    public function getAllSoftwareTypes();
-    public function getSpecificSoftwareById($id);
+    public function deleteAllSoftwares($contactIds);
+    public function deleteSoftware(softwares $s);
+    public function deleteSoftwareType($t);
+    
     public function checkIfSoftwareTypeExists($n);
 
 

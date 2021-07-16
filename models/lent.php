@@ -95,7 +95,12 @@ class lent
 
 interface lentDAO
 {
-    public function checkIfIslent($id);
-    public function returnEquipment(lent $l, $stateId);
+    public function getAllOpenLentProcess();
     public function getAll();
+
+    public function createLent(lent $l);
+    public function checkIfIslent($id);
+    
+    public function returnEquipment(lent $l, $stateId);
+    public function deleteLentProcess($id);
 }
