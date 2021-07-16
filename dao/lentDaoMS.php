@@ -62,6 +62,35 @@ class lentDAOMS implements lentDAO
         return $lentData;
     }
 
+    public function getAllWithFilter($f) {
+        $lentData = [];
+
+        $sql = $this->pdo->prepare("SELECT emprestimos.*, equipamentos.codInterno FROM emprestimos 
+        LEFT JOIN equipamentos ON emprestimos.equipamentos_idEquipamentos = equipamentos.idEquipamentos" . $f);
+        $sql->execute();
+    
+        if($sql->rowCount() > 0) {
+            $data = $sql->fetchAll(\PDO::FETCH_ASSOC);
+
+            foreach ($data as $item) {
+                $eq = new lent();
+
+                $eq->setId($item['idemprestimos']);
+                $eq->setUser($item['responsavel']);
+                $eq->setInitialDate($item['dataInicio']);
+                $eq->setFinalDate($item['dataFim']);
+                $eq->setContact($item['contacto']);
+                $eq->setObs($item['observacoes']);
+            
+                $eq->setEquipmentInternalCode($item['codInterno']);
+                $eq->setEquipmentId($item['equipamentos_idEquipamentos']);
+
+                $lentData[] =  $eq;
+            }  
+        }
+        return $lentData;
+    }
+
     public function getAllOpenLentProcess() {
         $lentData = [];
 

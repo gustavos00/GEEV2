@@ -63,6 +63,40 @@ class assistanceDAOMS implements assistanceDAO
         return $assistanceData;
     }
 
+    public function getAllWithFilter($f) {
+        $assistanceData = [];
+
+        $sql = $this->pdo->prepare("SELECT * FROM ((assistencia 
+        INNER JOIN tipoocorrencia ON assistencia.tipoocorrencia_idtipoocorrencia = tipoocorrencia.idtipoocorrencia) 
+        INNER JOIN equipamentos ON assistencia.equipamentos_idEquipamentos = equipamentos.idEquipamentos) 
+        INNER JOIN prestadorservicos ON assistencia.prestadorservicos_idprestadorServico = prestadorservicos.idprestadorServico" .  $f);
+        $sql->execute();
+
+        if($sql->rowCount() > 0) {
+            $data = $sql->fetchAll(\PDO::FETCH_ASSOC);
+
+            foreach ($data as $item) {
+                $a = new assistance();
+
+                $a->setId($item['idAssistencia']);
+                $a->setInitialDate($item['dataInicio']);
+                $a->setFinalDate($item['dataFim']);
+                $a->setDescription($item['descricao']);
+                $a->setDuration($item['duracao']);
+                $a->setTechnicalName($item['nome']);
+                $a->setGoals($item['objetivo']);
+                $a->setFrontOffice($item['frontOffice']);
+                $a->setTypeId($item['idtipoOcorrencia']);
+                $a->setTypeName($item['tipoOcorrencia']);
+                $a->setEquipmentId($item['equipamentos_idEquipamentos']); 
+                $a->setEquipmentName($item['codInterno']);         
+
+                $assistanceData[] =  $a;
+            } 
+        }
+        return $assistanceData;
+    }
+
     public function getSpecific($id) {
         $sql = $this->pdo->prepare("SELECT * FROM ((assistencia INNER JOIN tipoocorrencia ON assistencia.tipoocorrencia_idtipoocorrencia = tipoocorrencia.idtipoocorrencia) INNER JOIN equipamentos ON assistencia.equipamentos_idEquipamentos = equipamentos.idEquipamentos) INNER JOIN prestadorservicos ON assistencia.prestadorservicos_idprestadorServico = prestadorservicos.idprestadorServico WHERE assistencia.idassistencia = :id");
         $sql->bindValue(':id',$id);
@@ -71,8 +105,6 @@ class assistanceDAOMS implements assistanceDAO
         $a = new assistance();   
         if($sql->rowCount() > 0) {
             $data = $sql->fetch(\PDO::FETCH_ASSOC);
-
-        
 
             $a->setId($data['idAssistencia']);
             $a->setInitialDate($data['dataInicio']);

@@ -60,6 +60,57 @@ class equipmentsDAOMS implements equipmentsDAO
         return $equipmentData;
     }
 
+    public function getAllWithFilter($f)
+    {
+        $equipmentData = [];
+
+        $sql = $this->pdo->prepare(
+            "SELECT equipamentos.*, prestadorservicos.nome, estados.estado, marca.nomeMarca, categoria.nomecategoria FROM equipamentos
+            LEFT JOIN estados ON equipamentos.estados_idestados = estados.idestados
+            LEFT JOIN marca ON equipamentos.marca_idmarca = marca.idmarca
+            LEFT JOIN categoria ON equipamentos.categoria_idcategoria = categoria.idcategoria
+            LEFT JOIN prestadorservicos ON equipamentos.prestadorservicos_idprestadorservico = prestadorservicos.idprestadorservico" . $f
+        );
+
+        $sql->execute();
+
+        if ($sql->rowCount() > 0) {
+            $data = $sql->fetchAll(\PDO::FETCH_ASSOC);
+
+            foreach ($data as $item) {
+                $eq = new equipments();
+
+                $eq->setId($item['idEquipamentos']);
+                $eq->setInternalCode($item['codInterno']);
+                $eq->setSerieNumber($item['nSerie']);
+                $eq->setFeatures(ucwords(strtolower($item['caracteristicas'])));
+                $eq->setObs(ucwords(strtolower($item['observacoes'])));
+                $eq->setPatrimonialCode($item['codPatrimonial']);
+                $eq->setIpAdress($item['enderecoIp']);
+                $eq->setAcquisitionDate($item['dataAdquisicao']);
+                $eq->setLanPort($item['tomadaDeRede']);
+                $eq->setUser($item['responsavel']);
+                $eq->setUserDate($item['dataResponsavel']);
+                $eq->setModel($item['modelo']);
+                $eq->setLocation($item['localizacao']);
+                $eq->setActiveEquipment($item['equipamentoAtivo']);
+
+                $eq->setCategoryId($item['categoria_idCategoria']);
+                $eq->setStateId($item['estados_idestados']);
+                $eq->setBrandId($item['marca_idmarca']);
+                $eq->setProviderId($item['prestadorServicos_idprestadorServico']);
+
+                $eq->setCategoryName(ucwords(strtolower($item['nomecategoria'])));
+                $eq->setStateName(ucwords(strtolower($item['estado'])));
+                $eq->setBrandName($item['nomeMarca']);
+                $eq->setProviderName($item['nome']);
+
+                $equipmentData[] =  $eq;
+            }
+        }
+        return $equipmentData;
+    }
+
     public function createEquipment(equipments $e) {
         $sql = $this->pdo->prepare("
         INSERT INTO `equipamentos`(`codInterno`, `modelo`, `nSerie`, `caracteristicas`, `observacoes`, `dataadquisicao`, `codpatrimonial`, `enderecoip`, `tomadaderede`, `responsavel`, `dataresponsavel`, `equipamentoativo`, `localizacao`, `categoria_idCategoria`, `estados_idestados`, `marca_idmarca`, `prestadorservicos_idprestadorservico`) VALUES (:internalCode, :model, :serieNumber, :features, :obs,  :acquisitionDate, :patrimonialCode, :ipAdress, :lanPort, :user, :userDate, :activeEquipment, :location, :idCategory, :idState, :idBrand, :idProvider)");

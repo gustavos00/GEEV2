@@ -94,4 +94,15 @@ class statesDAOMS implements statesDAO
         }
         return false;
     }
+
+    public function getActiveStateId() {
+        $sql = $this->pdo->prepare("SELECT `idestados` FROM `estados` WHERE `estado` = 'Ativo'");
+        $sql->execute();
+
+        if($sql->rowCount() > 0) {
+            $data = $sql->fetch(\PDO::FETCH_ASSOC);
+            return $data['idestados'];
+        }
+        return false;
+    }
 }

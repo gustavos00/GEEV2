@@ -4,6 +4,7 @@ require_once '../dao/softwaresDaoMS.php';
 require_once '../dao/equipmentsDaoMS.php';
 require_once '../dao/assistanceDaoMS.php';
 require_once '../dao/lentDaoMS.php';
+require_once '../dao/statesDaoMS.php';
 require_once '../dao/malfunctionsDaoMS.php';
 require_once '../config.php';
 session_start();
@@ -20,7 +21,26 @@ function generateSubheader($subheaderName) {
 
 function generateAssistance($pdo) {
     $assistance = new assistanceDAOMS($pdo);
-    $Allassistances = $assistance->getAll();
+    switch ($_POST['generatePdfFilter']) {  
+        case 'Concluidos':
+            $filter = ' WHERE assistencia.dataFim IS NOT NULL';
+            $Allassistances = $assistance->getAllWithFilter($filter);
+            break;
+        
+        case 'Front Office':
+            $filter = ' WHERE assistencia.frontOffice = "Sim";';
+            $Allassistances = $assistance->getAllWithFilter($filter);
+            break;
+
+        case 'Em aberto':
+            $filter = ' WHERE assistencia.dataFim IS NULL;';
+            $Allassistances = $assistance->getAllWithFilter($filter);
+            break;
+        default:
+            $Allassistances = $assistance->getAll();
+            break;
+    }
+    
     $data = '';
 
     foreach($Allassistances as $assistanceData) {
@@ -41,7 +61,34 @@ function generateAssistance($pdo) {
 
 function generateEquipment($pdo) {
     $equipment = new equipmentsDAOMS($pdo);
-    $allEquipments = $equipment->getAll();
+    $state = new statesDAOMS($pdo);
+
+    switch ($_POST['generatePdfFilter']) {  
+        case 'Ativos':
+            $activeStateId = $state->getActiveStateId();
+
+            if(!$activeStateId) {
+                $activeStateId = $state->createActiveState();
+            }
+
+            $filter = ' WHERE equipamentos.estados_idestados = ' . $activeStateId . ';';
+            $allEquipments = $equipment->getAllWithFilter($filter);
+            break;
+
+        case 'Emprestados':
+            $filter = ' INNER JOIN emprestimos ON equipamentos.idEquipamentos = emprestimos.equipamentos_idEquipamentos;';
+            $allEquipments = $equipment->getAllWithFilter($filter);
+            break; 
+
+            
+        case 'Avariado':
+            $filter = ' WHERE equipamentos.avarias_idavarias IS NOT NULL;';
+            $allEquipments = $equipment->getAllWithFilter($filter);
+            break; 
+        default:
+        $allEquipments = $equipment->getAll();
+            break;
+    }
 
     $data = '';
 
@@ -88,7 +135,16 @@ function generateEquipment($pdo) {
 
 function generateMalfuncion($pdo) {
     $malfunctions = new malfunctionsDAOMS($pdo);
-    $allMalfunctions = $malfunctions->getAll();
+    switch ($_POST['generatePdfFilter']) {  
+        case 'Com assistências':
+            $filter = ' WHERE avarias.assistencia_idAssistencia IS NOT NULL;';
+            $allMalfunctions = $malfunctions->getAllWithFilter($filter);
+            break;
+        default:
+            $allMalfunctions = $malfunctions->getAll();
+            break;
+    }
+
     $data = '';
 
     foreach($allMalfunctions as $malfunctionData) {
@@ -109,7 +165,17 @@ function generateMalfuncion($pdo) {
 
 function generateSoftware($pdo) {
     $softwares = new softwaresDAOMS($pdo);
-    $allSoftwares = $softwares->getAllSoftwares();
+
+    switch ($_POST['generatePdfFilter']) {  
+        case 'Caducados':
+            $filter = ' WHERE DATE(softwares.dataFinal) <= DATE(NOW());';
+            $allSoftwares = $softwares->getAllSoftwaresWithFilter($filter);
+            break;
+        default:
+            $allSoftwares = $softwares->getAllSoftwares();
+            break;
+    }
+    
     $data = '';
 
     foreach($allSoftwares as $softwareData) {
@@ -125,10 +191,23 @@ function generateSoftware($pdo) {
 
 function generateLent($pdo) {
     $lent = new lentDAOMS($pdo);
-    $allLent = $lent->getAll();
-    $data = '';
 
-    var_dump($allLent);
+    switch ($_POST['generatePdfFilter']) {  
+        case 'Devolvidos':
+            $filter = ' WHERE emprestimos.dataFim IS NOT NULL;';
+            $allLent = $lent->getAllWithFilter($filter);
+            break;
+
+        case 'Em aberto':
+            $filter = ' WHERE emprestimos.dataFim IS NULL;';
+            $allLent = $lent->getAllWithFilter($filter);
+            break;
+        default:
+            $allLent = $lent->getAll();
+            break;
+    }
+    
+    $data = '';
 
     foreach($allLent as $lent) {
         $data .= generateHeader('Emprestimo', $lent->getId());
@@ -173,7 +252,6 @@ $pdfData .= '<p> Gerado na data: ' . $date . '</p>';
 
 $mpdf = new \Mpdf\Mpdf();
 $mpdf->WriteHTML($pdfData);
-
-var_dump($_POST);   
+$mpdf->Output(); 
 
 
